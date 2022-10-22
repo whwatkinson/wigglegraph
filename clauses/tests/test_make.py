@@ -5,7 +5,7 @@ import pytest
 
 from clauses.make import build_params_from_string, parse_make_statment
 from enums.statement import Statement
-from exceptions.statements import IllegalParameterType, StatementError
+from exceptions.statements import StatementError
 
 
 @contextmanager
@@ -20,10 +20,9 @@ class TestMake:
             # fmt: off
             pytest.param("MAKE (node:NodeLabel)", (Statement.MAKE, 'node', 'NodeLabel', None), does_not_raise(), id='EXP PASS: Simple case'),
             pytest.param("MAKE (:NodeLabel)", (Statement.MAKE, None, 'NodeLabel', None), does_not_raise(), id='EXP PASS: Simple case, no handle'),
-            # pytest.param("MAKE (node:NodeLabel{name:'Name'})", (Statement.MAKE, 'node', 'NodeLabel', {'name':'Name'}), does_not_raise(), id='EXP PASS: Simple dict params'),
-            # pytest.param("MAKE (:NodeLabel{uuid: '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'})", (Statement.MAKE, 'node', 'NodeLabel', None), does_not_raise(), id='EXP PASS: simple case'),
+            pytest.param("MAKE (node:NodeLabel{name:'Name'})", (Statement.MAKE, 'node', 'NodeLabel', {'name': 'Name'}), does_not_raise(), id='EXP PASS: Simple dict params'),
+            pytest.param("MAKE (:NodeLabel{uuid: '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'})", (Statement.MAKE, None, 'NodeLabel', {'uuid': '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'}), does_not_raise(), id='EXP PASS: simple case'),
             pytest.param("MAKeeE (node:NodeLabel)", (Statement.MAKE, 'node', 'NodeLabel', None), pytest.raises(StatementError), id='EXP EXCEPTION: Statement Error'),
-            # ("MAKE (:NodeLabel)", None, does_not_raise()),
         ],
     )
     def test_make(
@@ -56,7 +55,7 @@ class TestMake:
             ),
             pytest.param(
                 "{foo: 3.14159}",
-                {"foo": "Bar"},
+                {"foo": 3.14159},
                 does_not_raise(),
                 id="EXP PASS: string to float",
             ),
@@ -68,16 +67,28 @@ class TestMake:
             ),
             pytest.param(
                 "{foo: ['bar', 'baz']}",
-                {"foo": True},
+                {"foo": ["bar", "baz"]},
                 does_not_raise(),
                 id="EXP PASS: string to list",
             ),
             pytest.param(
-                "{foo: {foo: 'Bar}}",
-                None,
-                pytest.raises(IllegalParameterType),
-                id="EXP EXCEPTION: Not allowed a nested data structure",
+                "{foo: 'Bar' | foo2: 6 | foo3: 3.14159 | foo4: True | foo5: ['bar', 'baz']}",
+                {
+                    "foo": "Bar",
+                    "foo2": 6,
+                    "foo3": 3.14159,
+                    "foo4": True,
+                    "foo5": ["bar", "baz"],
+                },
+                does_not_raise(),
+                id="EXP PASS: all supported datatypes",
             ),
+            # pytest.param(
+            #     "{foo: {foo: 'Bar}}",
+            #     None,
+            #     pytest.raises(IllegalParameterType),
+            #     id="EXP EXCEPTION: Not allowed a nested data structure",
+            # ),
         ],
     )
     def test_build_params_from_string(
