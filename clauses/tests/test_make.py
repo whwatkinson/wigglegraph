@@ -1,6 +1,11 @@
 from contextlib import contextmanager
+from typing import Optional
 
 import pytest
+
+from clauses.make import build_params_from_string, parse_make_statment
+from enums.statement import Statement
+from exceptions.statements import IllegalParameterType, StatementError
 
 
 @contextmanager
@@ -12,19 +17,72 @@ class TestMake:
     @pytest.mark.parametrize(
         "test_statement, expected_result, exception",
         [
-            ("MAKE (node:NodeLabel)", None, does_not_raise()),
-            ("MAKE (:NodeLabel)", None, does_not_raise()),
-            ("MAKE (:NodeLabel{name:'Name'})", None, does_not_raise()),
-            (
-                "MAKE (:NodeLabel{uuid: '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'})",
-                None,
-                does_not_raise(),
-            ),
-            # ("MAKE (:NodeLabel)", None, does_not_raise()),
+            # fmt: off
+            pytest.param("MAKE (node:NodeLabel)", (Statement.MAKE, 'node', 'NodeLabel', None), does_not_raise(), id='EXP PASS: Simple case'),
+            pytest.param("MAKE (:NodeLabel)", (Statement.MAKE, None, 'NodeLabel', None), does_not_raise(), id='EXP PASS: Simple case, no handle'),
+            # pytest.param("MAKE (node:NodeLabel{name:'Name'})", (Statement.MAKE, 'node', 'NodeLabel', {'name':'Name'}), does_not_raise(), id='EXP PASS: Simple dict params'),
+            # pytest.param("MAKE (:NodeLabel{uuid: '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'})", (Statement.MAKE, 'node', 'NodeLabel', None), does_not_raise(), id='EXP PASS: simple case'),
+            pytest.param("MAKeeE (node:NodeLabel)", (Statement.MAKE, 'node', 'NodeLabel', None), pytest.raises(StatementError), id='EXP EXCEPTION: Statement Error'),
             # ("MAKE (:NodeLabel)", None, does_not_raise()),
         ],
     )
-    def test_make(self, test_statement: str, expected_result, exception):
+    def test_make(
+        self,
+        test_statement: str,
+        expected_result: tuple,
+        exception: Optional[Exception],
+    ) -> None:
 
         with exception:
-            pass
+            test = parse_make_statment(test_statement)
+            clause, handle, node_label, params = expected_result
+
+            assert test.clause == clause
+            assert test.handle == handle
+            assert test.node_label == node_label
+            assert test.params == params
+
+    @pytest.mark.parametrize(
+        "params_string, expected_result, exception",
+        [
+            pytest.param(
+                "{foo: 'Bar'}",
+                {"foo": "Bar"},
+                does_not_raise(),
+                id="EXP PASS: string to string",
+            ),
+            pytest.param(
+                "{foo: 6}", {"foo": 6}, does_not_raise(), id="EXP PASS: string to int"
+            ),
+            pytest.param(
+                "{foo: 3.14159}",
+                {"foo": "Bar"},
+                does_not_raise(),
+                id="EXP PASS: string to float",
+            ),
+            pytest.param(
+                "{foo: True}",
+                {"foo": True},
+                does_not_raise(),
+                id="EXP PASS: string to bool",
+            ),
+            pytest.param(
+                "{foo: ['bar', 'baz']}",
+                {"foo": True},
+                does_not_raise(),
+                id="EXP PASS: string to list",
+            ),
+            pytest.param(
+                "{foo: {foo: 'Bar}}",
+                None,
+                pytest.raises(IllegalParameterType),
+                id="EXP EXCEPTION: Not allowed a nested data structure",
+            ),
+        ],
+    )
+    def test_build_params_from_string(
+        self, params_string: str, expected_result: dict, exception: Optional[Exception]
+    ) -> None:
+        with exception:
+            test = build_params_from_string(params_string)
+            assert test == expected_result
