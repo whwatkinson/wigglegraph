@@ -1,0 +1,2 @@
+class WiggleGraphBaseException(Exception):
+    pass
