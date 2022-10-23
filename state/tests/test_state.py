@@ -2,9 +2,7 @@ from typing import Generator
 
 import pytest
 
-
 from state.wiggle_number import get_current_wiggle_number, update_wiggle_number
-
 
 TEST_WIGGLE_NUMBER_FILE_PATH = "state/tests/test_wiggle_number.txt"
 

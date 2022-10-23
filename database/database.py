@@ -1,4 +1,5 @@
-import json
+from json import dump, load
+from json.decoder import JSONDecodeError
 
 from exceptions.database import NodeExistsError
 
@@ -9,11 +10,11 @@ def load_database(file_path: str) -> dict:
 
     try:
         with open(file_path, "r") as file_handle:
-            database = json.load(file_handle)
+            database = load(file_handle)
 
             return database
 
-    except Exception:
+    except JSONDecodeError:
         return {}
 
 
@@ -31,7 +32,7 @@ def add_item_to_database(file_path: str, item: dict):
     database.update(item)
 
     with open(file_path, "w") as file_handle:
-        json.dump(database, file_handle, ensure_ascii=False)
+        dump(database, file_handle, ensure_ascii=False)
 
 
 def wipe_database(file_path: str):

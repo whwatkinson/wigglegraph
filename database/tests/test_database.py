@@ -2,7 +2,7 @@ from typing import Generator
 
 import pytest
 
-from database.database import wipe_database, add_item_to_database, load_database
+from database.database import add_item_to_database, load_database, wipe_database
 from exceptions.database import NodeExistsError
 
 TEST_DATABASE_FILE_PATH = "test_database.json"
@@ -11,7 +11,6 @@ TEST_DATABASE_FILE_PATH = "test_database.json"
 class TestDataBase:
     @pytest.fixture
     def clear_database(self):
-
         wipe_database(TEST_DATABASE_FILE_PATH)
         yield None
         wipe_database(TEST_DATABASE_FILE_PATH)

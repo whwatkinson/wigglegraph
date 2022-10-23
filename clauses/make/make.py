@@ -2,19 +2,19 @@ from ast import literal_eval
 from re import search
 from typing import Union
 
-from nodes.node import Node
-from state.wiggle_number import (
-    get_current_wiggle_number,
-    update_wiggle_number,
-    WIGGLE_NUMBER_FILE_PATH,
-)
-from models.enums.statement import Statement
 from exceptions.statements import (
     IllegalNodePropertyType,
     MissingNodeLabel,
     StatementError,
 )
+from models.enums.statement import Statement
 from models.statement import ParsedStatement
+from nodes.node import Node
+from state.wiggle_number import (
+    WIGGLE_NUMBER_FILE_PATH,
+    get_current_wiggle_number,
+    update_wiggle_number,
+)
 
 
 def make_node(parsed_statement: ParsedStatement, wiggle_nuber_file_path: str) -> Node:

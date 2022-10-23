@@ -4,12 +4,12 @@ from typing import Optional
 import pytest
 
 from clauses.make.make import build_properties_from_string, parse_make_statment
-from models.enums.statement import Statement
 from exceptions.statements import (
     IllegalNodePropertyType,
     MissingNodeLabel,
     StatementError,
 )
+from models.enums.statement import Statement
 
 
 @contextmanager
