@@ -4,7 +4,7 @@ from typing import Optional
 import pytest
 
 from clauses.make.make_helpers import build_properties_from_string, parse_make_statment
-from exceptions.statements import (
+from exceptions.statements.statements import (
     IllegalNodePropertyType,
     MissingNodeLabel,
     StatementError,
