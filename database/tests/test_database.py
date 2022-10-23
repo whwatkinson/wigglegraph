@@ -11,9 +11,9 @@ TEST_DATABASE_FILE_PATH = "test_database.json"
 class TestDataBase:
     @pytest.fixture
     def clear_database(self):
-        wipe_database(TEST_DATABASE_FILE_PATH)
+        wipe_database(TEST_DATABASE_FILE_PATH, im_sure=True)
         yield None
-        wipe_database(TEST_DATABASE_FILE_PATH)
+        wipe_database(TEST_DATABASE_FILE_PATH, im_sure=True)
 
     def test_database(self, clear_database: Generator) -> None:
 

@@ -3,7 +3,7 @@ from typing import Optional
 
 import pytest
 
-from clauses.make.make import build_properties_from_string, parse_make_statment
+from clauses.make.make_helpers import build_properties_from_string, parse_make_statment
 from exceptions.statements import (
     IllegalNodePropertyType,
     MissingNodeLabel,
@@ -17,7 +17,7 @@ def does_not_raise():
     yield
 
 
-class TestMake:
+class TestMakeHelpers:
     @pytest.mark.parametrize(
         "test_statement, expected_result, exception",
         [
