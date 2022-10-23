@@ -35,11 +35,12 @@ class TestMake:
         exception: Optional[Exception],
         clear_database: Generator,
     ) -> None:
+
         with exception:
+
             parsed_statement = parse_make_statment(test_statement)
             node = make_node(parsed_statement, TEST_WIGGLE_NUMBER_STATE_FILE_PATH)
             add_item_to_database(TEST_DATABASE_FILE_PATH, node.export_node())
-
             test = load_database(TEST_DATABASE_FILE_PATH)
 
             assert len(test) == 1
