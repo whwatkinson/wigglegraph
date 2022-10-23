@@ -19,7 +19,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Add python path
         run: |
-          echo "::set-env name=PYTHONPATH::home/runner/work/wigglegraph"
+          echo 'PYTHONPATH<<EOF' >> $GITHUB_ENV
+          echo $(pwd) >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
