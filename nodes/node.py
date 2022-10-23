@@ -12,8 +12,12 @@ class Node(BaseModel):
     updated_at: Optional[float] = None
 
     # User defined
-    properties: Optional[dict[str, Any]] = None
-    edges: Optional[list[str]] = None
+    belongings: Optional[dict[str, Any]] = None
+    relations: Optional[list[str]] = None
 
     def __repr__(self) -> str:
         return f"{self.node_label}: {self.wiggle_number}"
+
+    def export_node(self) -> dict:
+
+        return {self.wiggle_number: self.dict()}

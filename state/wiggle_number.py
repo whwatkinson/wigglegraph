@@ -1,21 +1,22 @@
 WIGGLE_NUMBER_FILE_PATH = "state/wiggle_number.txt"
 
-WN = 0
-
 
 def get_current_wiggle_number(file_path: str) -> int:
 
     with open(file_path, "r") as file_handle:
         wiggle_number_string = file_handle.read()
 
-    wiggle_number = int(wiggle_number_string)
+    if wiggle_number_string:
+        wiggle_number = int(wiggle_number_string)
+    else:
+        wiggle_number = 0
 
     return wiggle_number
 
 
 def update_wiggle_number(file_path: str, wiggle_number: int) -> int:
 
-    with open(file_path, "w+") as file_handle:
+    with open(file_path, "w") as file_handle:
         file_handle.write(str(wiggle_number))
 
     return wiggle_number

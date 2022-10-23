@@ -44,7 +44,7 @@ class TestMake:
             assert test.clause == clause
             assert test.handle == handle
             assert test.node_label == node_label
-            assert test.properties == params
+            assert test.belongings == params
             assert test.statement_string == test_statement
 
     @pytest.mark.parametrize(

@@ -23,15 +23,18 @@ def make_node(parsed_statement: ParsedStatement, wiggle_nuber_file_path: str) ->
         raise Exception
 
     wiggle_number = get_current_wiggle_number(wiggle_nuber_file_path)
-    update_wiggle_number(wiggle_number, wiggle_nuber_file_path)
-    node = Node(
-        node_label=parsed_statement.node_label,
-        properties=parsed_statement.properties,
-        wiggle_number=wiggle_number,
-    )
-    print(node)
 
-    pass
+    node = Node(
+        wiggle_number=wiggle_number,
+        node_label=parsed_statement.node_label,
+        belongings=parsed_statement.belongings,
+        relations=parsed_statement.edges,
+    )
+    wiggle_number += 1
+
+    update_wiggle_number(wiggle_nuber_file_path, wiggle_number)
+
+    return node
 
 
 def parse_make_statment(statement_string: str) -> ParsedStatement:
@@ -78,7 +81,7 @@ def parse_make_statment(statement_string: str) -> ParsedStatement:
         clause=statement,
         handle=handle,
         node_label=node_label,
-        properties=params,
+        belongings=params,
         statement_string=statement_string,
     )
 
@@ -158,4 +161,9 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
 
 
 if __name__ == "__main__":
-    make_node("", WIGGLE_NUMBER_FILE_PATH)
+
+    statement = """MAKE (:NodeLabel{uuid: '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'})"""
+
+    parsed_statment = parse_make_statment(statement)
+
+    x = make_node(parsed_statment, WIGGLE_NUMBER_FILE_PATH)
