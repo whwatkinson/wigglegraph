@@ -11,23 +11,35 @@ def parse_make_statment(statement_string: str) -> ParsedStatement:
 
     # validate that the correct statement is called
 
-    make_statement_pattern = r"""(?P<clause>MAKE|make)"""
+    statement = None
+    handle = None
+    params = None
 
-    if not search(make_statement_pattern, statement_string):
+    make_statement_pattern = r"""(?P<clause>MAKE|make)"""
+    statement_search = search(make_statement_pattern, statement_string)
+
+    if not statement_search:
         raise StatementError(statement_string)
 
-    node_label_pattern = r""":\s*(?P<node_label>\w+)"""
+    statement = Statement[statement_search.group("clause").upper()]
 
-    if not search(node_label_pattern, statement_string):
+    node_label_pattern = r""":\s*(?P<node_label>\w+)"""
+    node_label_search = search(node_label_pattern, statement_string)
+
+    if not node_label_search:
         raise MissingNodeLabel(statement_string)
 
-    parsing_pattern = rf"""{make_statement_pattern}\s*\((?P<handle>\w+)?\s*{node_label_pattern}\s*{{?(?P<params>[\w\'\:\|\s\-\.\,\[\]]+)?\s*}}?\s*\)"""
+    node_label = node_label_search.group("node_label")
 
-    if matches := search(parsing_pattern, statement_string):
+    handle_pattern = r"""\(\s*(?P<handle>[a-zA-Z0-9]+)\:"""
 
-        handle = matches.group("handle")
-        node_label = matches.group("node_label")
-        params_string = matches.group("params")
+    if handle_search := search(handle_pattern, statement_string):
+        handle = handle_search.group("handle")
+
+    params_pattern = r"""\s*?(?P<params>[\w\'\:\|\s\-\.\,\[\]]+)?\s*}\s*\)"""
+    if params_search := search(params_pattern, statement_string):
+
+        params_string = params_search.group("params")
 
         if params_string:
             params = build_params_from_string(params_string)
@@ -35,13 +47,13 @@ def parse_make_statment(statement_string: str) -> ParsedStatement:
         else:
             params = None
 
-        return ParsedStatement(
-            clause=Statement.MAKE,
-            handle=handle,
-            node_label=node_label,
-            params=params,
-            statement_string=statement_string,
-        )
+    return ParsedStatement(
+        clause=statement,
+        handle=handle,
+        node_label=node_label,
+        params=params,
+        statement_string=statement_string,
+    )
 
 
 def build_params_from_string(params_string: str) -> dict:

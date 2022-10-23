@@ -41,6 +41,7 @@ class TestMake:
             assert test.handle == handle
             assert test.node_label == node_label
             assert test.params == params
+            assert test.statement_string == test_statement
 
     @pytest.mark.parametrize(
         "params_string, expected_result, exception",
