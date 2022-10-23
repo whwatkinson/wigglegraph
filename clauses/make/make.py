@@ -28,7 +28,7 @@ def make_node(parsed_statement: ParsedStatement, wiggle_nuber_file_path: str) ->
         wiggle_number=wiggle_number,
         node_label=parsed_statement.node_label,
         belongings=parsed_statement.belongings,
-        relations=parsed_statement.edges,
+        relations=parsed_statement.relations,
     )
     wiggle_number += 1
 
@@ -167,3 +167,4 @@ if __name__ == "__main__":
     parsed_statment = parse_make_statment(statement)
 
     x = make_node(parsed_statment, WIGGLE_NUMBER_FILE_PATH)
+    print(x.export_node())
