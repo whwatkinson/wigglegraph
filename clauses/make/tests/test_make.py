@@ -3,8 +3,8 @@ from typing import Optional
 
 import pytest
 
-from clauses.make import build_params_from_string, parse_make_statment
-from enums.statement import Statement
+from clauses.make.make import build_params_from_string, parse_make_statment
+from models.enums.statement import Statement
 from exceptions.statements import IllegalParameterType, MissingNodeLabel, StatementError
 
 
