@@ -1,4 +1,4 @@
-FP_WIGGLE_NUMBER = "state/wiggle_number.txt"
+WIGGLE_NUMBER_FILE_PATH = "state/wiggle_number.txt"
 
 WN = 0
 
@@ -22,13 +22,13 @@ def update_wiggle_number(file_path: str, wiggle_number: int) -> int:
 
 
 if __name__ == "__main__":
-    wn = get_current_wiggle_number(FP_WIGGLE_NUMBER)
+    wn = get_current_wiggle_number(WIGGLE_NUMBER_FILE_PATH)
 
     for _ in range(10):
         wn += 1
 
-    update_wiggle_number(FP_WIGGLE_NUMBER, wn)
+    update_wiggle_number(WIGGLE_NUMBER_FILE_PATH, wn)
 
-    wn = get_current_wiggle_number(FP_WIGGLE_NUMBER)
+    wn = get_current_wiggle_number(WIGGLE_NUMBER_FILE_PATH)
 
     print(wn)

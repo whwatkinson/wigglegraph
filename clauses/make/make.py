@@ -2,9 +2,36 @@ from ast import literal_eval
 from re import search
 from typing import Union
 
+from nodes.node import Node
+from state.wiggle_number import (
+    get_current_wiggle_number,
+    update_wiggle_number,
+    WIGGLE_NUMBER_FILE_PATH,
+)
 from models.enums.statement import Statement
-from exceptions.statements import IllegalParameterType, MissingNodeLabel, StatementError
+from exceptions.statements import (
+    IllegalNodePropertyType,
+    MissingNodeLabel,
+    StatementError,
+)
 from models.statement import ParsedStatement
+
+
+def make_node(parsed_statement: ParsedStatement, wiggle_nuber_file_path: str) -> Node:
+
+    if parsed_statement.clause is not Statement.MAKE:
+        raise Exception
+
+    wiggle_number = get_current_wiggle_number(wiggle_nuber_file_path)
+    update_wiggle_number(wiggle_number, wiggle_nuber_file_path)
+    node = Node(
+        node_label=parsed_statement.node_label,
+        properties=parsed_statement.properties,
+        wiggle_number=wiggle_number,
+    )
+    print(node)
+
+    pass
 
 
 def parse_make_statment(statement_string: str) -> ParsedStatement:
@@ -42,7 +69,7 @@ def parse_make_statment(statement_string: str) -> ParsedStatement:
         params_string = params_search.group("params")
 
         if params_string:
-            params = build_params_from_string(params_string)
+            params = build_properties_from_string(params_string)
 
         else:
             params = None
@@ -51,12 +78,12 @@ def parse_make_statment(statement_string: str) -> ParsedStatement:
         clause=statement,
         handle=handle,
         node_label=node_label,
-        params=params,
+        properties=params,
         statement_string=statement_string,
     )
 
 
-def build_params_from_string(params_string: str) -> dict:
+def build_properties_from_string(params_string: str) -> dict:
 
     params_dict = dict()
     params_list = params_string.split("|")
@@ -72,7 +99,7 @@ def build_params_from_string(params_string: str) -> dict:
             value = match.group("value")
 
             if value.strip() == "":
-                raise IllegalParameterType(param)
+                raise IllegalNodePropertyType(param)
 
             value_parsed = string_to_correct_data_type(value)
 
@@ -120,7 +147,7 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
 
     # dict
     if "{" in value and "}" in value:
-        raise IllegalParameterType(value)
+        raise IllegalNodePropertyType(value)
 
     # string
     try:
@@ -128,3 +155,7 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
         return value_parsed
     except Exception:
         pass
+
+
+if __name__ == "__main__":
+    make_node("", WIGGLE_NUMBER_FILE_PATH)

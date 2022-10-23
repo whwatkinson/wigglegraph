@@ -9,5 +9,5 @@ class ParsedStatement(BaseModel):
     clause: Statement
     handle: Optional[str]
     node_label: str
-    params: Optional[dict]
+    properties: Optional[dict]
     statement_string: str

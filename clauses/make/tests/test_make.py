@@ -3,9 +3,13 @@ from typing import Optional
 
 import pytest
 
-from clauses.make.make import build_params_from_string, parse_make_statment
+from clauses.make.make import build_properties_from_string, parse_make_statment
 from models.enums.statement import Statement
-from exceptions.statements import IllegalParameterType, MissingNodeLabel, StatementError
+from exceptions.statements import (
+    IllegalNodePropertyType,
+    MissingNodeLabel,
+    StatementError,
+)
 
 
 @contextmanager
@@ -40,7 +44,7 @@ class TestMake:
             assert test.clause == clause
             assert test.handle == handle
             assert test.node_label == node_label
-            assert test.params == params
+            assert test.properties == params
             assert test.statement_string == test_statement
 
     @pytest.mark.parametrize(
@@ -88,14 +92,14 @@ class TestMake:
             pytest.param(
                 "foo: {foo: 'Bar}",
                 None,
-                pytest.raises(IllegalParameterType),
+                pytest.raises(IllegalNodePropertyType),
                 id="EXP EXCEPTION: Not allowed a nested data structure",
             ),
         ],
     )
-    def test_build_params_from_string(
+    def test_build_properties_from_string(
         self, params_string: str, expected_result: dict, exception: Optional[Exception]
     ) -> None:
         with exception:
-            test = build_params_from_string(params_string)
+            test = build_properties_from_string(params_string)
             assert test == expected_result
