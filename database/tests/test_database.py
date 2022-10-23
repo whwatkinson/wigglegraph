@@ -2,19 +2,12 @@ from typing import Generator
 
 import pytest
 
-from database.database import add_item_to_database, load_database, wipe_database
+from database.database import add_item_to_database, load_database
 from exceptions.database import NodeExistsError
-
-TEST_DATABASE_FILE_PATH = "test_database.json"
+from testing import TEST_DATABASE_FILE_PATH
 
 
 class TestDataBase:
-    @pytest.fixture
-    def clear_database(self):
-        wipe_database(TEST_DATABASE_FILE_PATH, im_sure=True)
-        yield None
-        wipe_database(TEST_DATABASE_FILE_PATH, im_sure=True)
-
     def test_database(self, clear_database: Generator) -> None:
 
         # Check the db is empty

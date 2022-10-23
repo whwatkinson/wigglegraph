@@ -7,9 +7,9 @@ from exceptions.statements.statements import (
     MissingNodeLabel,
     StatementError,
 )
+from graph_logger.graph_logger import graph_logger
 from models.enums.statement import Statement
 from models.statement import ParsedStatement
-from graph_logger.graph_logger import graph_logger
 
 
 def parse_make_statment(statement_string: str) -> ParsedStatement:

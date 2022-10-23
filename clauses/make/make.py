@@ -1,10 +1,7 @@
 from models.enums.statement import Statement
 from models.statement import ParsedStatement
 from nodes.node import Node
-from state.wiggle_number import (
-    get_current_wiggle_number,
-    update_wiggle_number,
-)
+from state.wiggle_number import get_current_wiggle_number, update_wiggle_number
 
 
 def make_node(parsed_statement: ParsedStatement, wiggle_nuber_file_path: str) -> Node:

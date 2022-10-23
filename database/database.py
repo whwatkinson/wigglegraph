@@ -2,7 +2,6 @@ from json import dump, load
 from json.decoder import JSONDecodeError
 
 from exceptions.database import NodeExistsError
-
 from graph_logger.graph_logger import graph_logger
 
 DATABASE_FILE_PATH = "database/database.json"

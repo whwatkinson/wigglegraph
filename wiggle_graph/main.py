@@ -1,10 +1,7 @@
-from state.wiggle_number import (
-    WIGGLE_NUMBER_FILE_PATH,
-)
-from database.database import DATABASE_FILE_PATH, add_item_to_database
-
-from clauses.make.make_helpers import parse_make_statment
 from clauses.make.make import make_node
+from clauses.make.make_helpers import parse_make_statment
+from database.database import DATABASE_FILE_PATH, add_item_to_database
+from state.wiggle_number import WIGGLE_NUMBER_FILE_PATH
 
 
 def main(statement: str):
