@@ -5,6 +5,10 @@ from pydantic import BaseModel
 
 
 class Node(BaseModel):
+    """
+    The structure of the Node is Wiggle Graph.
+    """
+
     # Internal
     wn: int
     node_label: str

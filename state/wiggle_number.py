@@ -6,8 +6,8 @@ WIGGLE_NUMBER_FILE_PATH = "state/wiggle_number.txt"
 def get_current_wiggle_number(file_path: str) -> int:
     """
     Gets the current Wiggle number, which is the next available.
-    :param file_path:
-    :return: The Wiggle number
+    :param file_path: The file path to the Wiggle number state file
+    :return: The Current Wiggle number
     """
     graph_logger.debug("Attempting getting Wiggle number")
     with open(file_path, "r") as file_handle:
@@ -26,8 +26,8 @@ def get_current_wiggle_number(file_path: str) -> int:
 def update_wiggle_number(file_path: str, wiggle_number: int) -> int:
     """
     Updates the Wiggle state file to the next availble number
-    :param file_path:
-    :param wiggle_number:
+    :param file_path: The file path to the Wiggle number state file
+    :param wiggle_number: The Current Wiggle number
     :return: The Wiggle number
     """
 
