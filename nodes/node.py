@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 class Node(BaseModel):
     # Internal
-    wiggle_number: int
+    wn: int
     node_label: str
     created_at: float = datetime.now().timestamp()
     updated_at: Optional[float] = None
@@ -16,8 +16,8 @@ class Node(BaseModel):
     relations: Optional[list[str]] = None
 
     def __repr__(self) -> str:
-        return f"{self.node_label}: {self.wiggle_number}"
+        return f"{self.node_label}: {self.wn}"
 
     def export_node(self) -> dict:
 
-        return {self.wiggle_number: self.dict()}
+        return {self.wn: self.dict()}

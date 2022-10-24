@@ -13,6 +13,11 @@ from models.statement import ParsedStatement
 
 
 def parse_make_statment(statement_string: str) -> ParsedStatement:
+    """
+    Parses the input from the user to make a node
+    :param statement_string: The raw input string
+    :return: A parsed statement to be passed to make_node
+    """
     graph_logger.debug(statement_string)
     # validate that the correct statement is called
 
@@ -62,7 +67,11 @@ def parse_make_statment(statement_string: str) -> ParsedStatement:
 
 
 def build_properties_from_string(params_string: str) -> dict:
-
+    """
+    The extracted params to be turned into a dictionary
+    :param params_string: The raw params string
+    :return: A parsed dictionary with correct data types
+    """
     params_dict = dict()
     params_list = params_string.split("|")
     key_value_pattern = r"""(?P<key>[\w]+):\s?(?P<value>[\[\]\s\,'\w\d\-\.]+)"""
@@ -87,7 +96,13 @@ def build_properties_from_string(params_string: str) -> dict:
 
 
 def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
-
+    """
+    Turns a string to the correct datatype.
+    By identifying characteristics of data types this allows for making a best guess.
+    :param value: The string to be marshalled
+    :return: The correct data type
+    """
+    graph_logger.info(f"starting conversion of  string {value}")
     value = value.strip('"')
     value = value.strip("'")
 
@@ -108,6 +123,7 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
     if "." in value:
         try:
             value_parsed = float(value)
+            graph_logger.debug(f"{value} was detirmined to be a float")
             return value_parsed
         except (TypeError, ValueError):
             pass
@@ -115,21 +131,26 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
     #  int
     try:
         value_parsed = int(value)
+        graph_logger.debug(f"{value} was detirmined to be an int")
         return value_parsed
     except (ValueError, TypeError):
         pass
 
     # list
     if "[" in value and "]" in value:
+        graph_logger.debug(f"{value} was detirmined to be a list")
         return literal_eval(value)
 
     # dict
     if "{" in value and "}" in value:
+        graph_logger.debug(f"{value} was detirmined to be a dict, not allowed")
         raise IllegalNodePropertyType(value)
 
     # string
     try:
+        # catch all.. todo make this better
         value_parsed = str(value)
+        graph_logger.debug(f"{value} was detirmined to be a string")
         return value_parsed
     except Exception:
         pass
