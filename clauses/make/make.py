@@ -14,7 +14,7 @@ def make_node(parsed_statement: ParsedStatement, wiggle_number_file_path: str) -
     """
     graph_logger.debug("Starting make node")
     if parsed_statement.clause is not Statement.MAKE:
-        # todo is this useful
+        # todo is this useful?
         raise Exception
 
     wiggle_number = get_current_wiggle_number(wiggle_number_file_path)
@@ -31,3 +31,7 @@ def make_node(parsed_statement: ParsedStatement, wiggle_number_file_path: str) -
     update_wiggle_number(wiggle_number_file_path, wiggle_number)
 
     return node
+
+
+def make(nodes, edges):
+    pass
