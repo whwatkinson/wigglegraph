@@ -1,0 +1,38 @@
+{
+  "2": {
+    "wn": 2,
+    "node_label": "NodeLabel",
+    "created_at": 1666966778.478946,
+    "updated_at": null,
+    "belongings": null,
+    "relations": null
+  },
+  "3": {
+    "wn": 3,
+    "node_label": "NodeLabel",
+    "created_at": 1666966778.478946,
+    "updated_at": null,
+    "belongings": {
+      "uuid": "7e48f6ae-b25a-4634-91af-b1fb67b90ad9"
+    },
+    "relations": null
+  },
+  "4": {
+    "wn": 4,
+    "node_label": "NodeLabel",
+    "created_at": 1666966778.478946,
+    "updated_at": null,
+    "belongings": {
+      "name": "Name"
+    },
+    "relations": null
+  },
+  "5": {
+    "wn": 5,
+    "node_label": "NodeLabel",
+    "created_at": 1666966807.727581,
+    "updated_at": null,
+    "belongings": null,
+    "relations": null
+  }
+}
