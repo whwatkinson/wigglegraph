@@ -27,7 +27,8 @@ def parse_make_statement(statement_string: str) -> tuple[list[ParsedStatement], 
 
 
 def find_nodes_from_statement(statement_string: str) -> list[str]:
-    graph_logger.debug(f"Parsing statement: {statement_string}")
+    graph_logger.debug(f"Parsing statement for nodes: {statement_string}")
+
     make_statement_pattern = r"""(?P<clause>MAKE|make)"""
     statement_search = search(make_statement_pattern, statement_string)
 
@@ -44,6 +45,13 @@ def find_nodes_from_statement(statement_string: str) -> list[str]:
     graph_logger.debug(f"Found {len(nodes)} from {statement_string}")
 
     return nodes
+
+
+def find_edges_from_statements(statement_string: str) -> list[str]:
+
+    graph_logger.debug(f"Parsing statement for relationships: {statement_string}")
+
+    # v1_rel = r"""\(.*:.+\)(?P<relationship>-\[[\w]*:.+\]->)\(.+:.+\)"""
 
 
 def parse_node(node_statement_string: str) -> list[ParsedStatement]:

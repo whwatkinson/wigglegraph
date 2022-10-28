@@ -7,6 +7,7 @@ from clauses.make.make_helpers import (
     build_properties_from_string,
     parse_node,
     find_nodes_from_statement,
+    find_edges_from_statements,
 )
 from exceptions.statements.statements import (
     IllegalNodePropertyType,
@@ -112,13 +113,19 @@ class TestMakeHelpers:
         "test_statement, expected_result, exception",
         [
             pytest.param(
-                "MAKE (node:NodeLabel)", 1, does_not_raise(), id="EXP PASS: single case"
+                "MAKE (node:NodeLabel)", 1, does_not_raise(), id="EXP PASS: simple case"
+            ),
+            pytest.param(
+                "MAKE (:NodeLabel)",
+                1,
+                does_not_raise(),
+                id="EXP PASS: simple case, no handle",
             ),
             pytest.param(
                 "MAKE (node:NodeLabel)-[:rel]->(node2:NodeLabel)",
                 2,
                 does_not_raise(),
-                id="EXP PASS: two nodes",
+                id="EXP PASS: 2 nodes",
             ),
             pytest.param(
                 "MAKE (node:NodeLabel)-[:cat)]->(node:NodeLabel{name:'Name'})-[:cat)]->(node:NodeLabel{uuid: '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'})",
@@ -128,6 +135,12 @@ class TestMakeHelpers:
             ),
             pytest.param(
                 "MAKE ", 0, pytest.raises(Exception), id="EXP EXCEPTION: No nodes"
+            ),
+            pytest.param(
+                "MAKE (node:)",
+                0,
+                pytest.raises(MissingNodeLabel),
+                id="EXP EXCEPTION: No node label",
             ),
             pytest.param(
                 "MAKeeE (node:NodeLabel)",
@@ -143,4 +156,22 @@ class TestMakeHelpers:
 
         with exception:
             test = find_nodes_from_statement(test_statement)
+            assert len(test) == expected_result
+
+    @pytest.mark.parametrize(
+        "test_statement, expected_result, exception",
+        [
+            # fmt: off
+            pytest.param("MAKE (:NodeLabel)-[:rel]->(node2:NodeLabel)", 1, does_not_raise(), id='EXP PASS: 1 relationship'),
+            pytest.param("", 2, does_not_raise(), id='EXP PASS: 2 relationships'),
+            pytest.param("", 3, does_not_raise(), id='EXP PASS: 3 relationships'),
+            pytest.param("", 0, pytest.raises(Exception), id='EXP Exception: TDB'),
+        ],
+    )
+    def test_find_edges_from_statements(
+        self, test_statement: str, expected_result: int, exception: Optional[Exception]
+    ) -> None:
+
+        with exception:
+            test = find_edges_from_statements(test_statement)
             assert len(test) == expected_result
