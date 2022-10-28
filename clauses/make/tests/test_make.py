@@ -3,9 +3,8 @@ from typing import Generator, Optional
 
 import pytest
 
-from clauses.make.make import make_node
-from clauses.make.make_helpers import parse_make_statment
-from database.database import add_item_to_database, load_database
+from clauses.make.make import make
+from database.database import load_database
 from exceptions.statements.statements import MissingNodeLabel, StatementError
 from testing import TEST_DATABASE_FILE_PATH, TEST_WIGGLE_NUMBER_STATE_FILE_PATH
 
@@ -38,9 +37,11 @@ class TestMake:
 
         with exception:
 
-            parsed_statement = parse_make_statment(test_statement)
-            node = make_node(parsed_statement, TEST_WIGGLE_NUMBER_STATE_FILE_PATH)
-            add_item_to_database(TEST_DATABASE_FILE_PATH, node.export_node())
+            make(
+                test_statement,
+                TEST_WIGGLE_NUMBER_STATE_FILE_PATH,
+                TEST_DATABASE_FILE_PATH,
+            )
             test = load_database(TEST_DATABASE_FILE_PATH)
 
             assert len(test) == 1

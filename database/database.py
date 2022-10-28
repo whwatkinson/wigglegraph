@@ -87,4 +87,4 @@ if __name__ == "__main__":
     # add_item_to_database(DATABASE_FILE_PATH, i)
     add_item_to_database(DATABASE_FILE_PATH, i)
 
-    wipe_database(DATABASE_FILE_PATH)
+    wipe_database(DATABASE_FILE_PATH, True)

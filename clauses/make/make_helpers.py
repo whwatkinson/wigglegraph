@@ -1,5 +1,5 @@
 from ast import literal_eval
-from re import search
+from re import search, findall
 from typing import Union
 
 from exceptions.statements.statements import (
@@ -12,18 +12,21 @@ from models.enums.statement import Statement
 from models.statement import ParsedStatement
 
 
-def parse_make_statment(statement_string: str) -> ParsedStatement:
-    """
-    Parses the input from the user to make a node
-    :param statement_string: The raw input string
-    :return: A parsed statement to be passed to make_node
-    """
-    graph_logger.debug(statement_string)
-    # validate that the correct statement is called
+def parse_make_statement(statement_string: str) -> tuple[list[ParsedStatement], None]:
 
-    statement = None
-    handle = None
-    params = None
+    nodes = find_nodes_from_statement(statement_string)
+
+    node_statements = [
+        parse_node(node_statement_string) for node_statement_string in nodes
+    ]
+
+    # edges = None
+    # edge_statements = None
+
+    return node_statements, None
+
+
+def find_nodes_from_statement(statement_string: str) -> list[str]:
 
     make_statement_pattern = r"""(?P<clause>MAKE|make)"""
     statement_search = search(make_statement_pattern, statement_string)
@@ -31,23 +34,48 @@ def parse_make_statment(statement_string: str) -> ParsedStatement:
     if not statement_search:
         raise StatementError(statement_string)
 
-    statement = Statement[statement_search.group("clause").upper()]
+    nodes_pattern = r"""(?P<node>\(\s*[\w]*\s*:[\w'\:\|\s\-\.\,\[\]\{\}]+\))"""
 
-    node_label_pattern = r""":\s*(?P<node_label>\w+)"""
-    node_label_search = search(node_label_pattern, statement_string)
+    nodes = findall(nodes_pattern, statement_string)
 
-    if not node_label_search:
+    if not nodes:
         raise MissingNodeLabel(statement_string)
 
-    node_label = node_label_search.group("node_label")
+    return nodes
+
+
+def parse_node(node_statement_string: str) -> list[ParsedStatement]:
+    # parse_make_statment
+    """
+    Parses the input from the user to make a node
+    :param node_statement_string: The raw input string
+    :return: A parsed statement to be passed to make_node
+    """
+    graph_logger.debug(node_statement_string)
+    # validate that the correct statement is called
+
+    # statement = None
+    # handle = None
+    # params = None
+
+    # make_statement_pattern = r"""(?P<clause>MAKE|make)"""
+    # statement_search = search(make_statement_pattern, node_statement_string)
 
     handle_pattern = r"""\(\s*(?P<handle>[a-zA-Z0-9]+)\:"""
 
-    if handle_search := search(handle_pattern, statement_string):
+    if handle_search := search(handle_pattern, node_statement_string):
         handle = handle_search.group("handle")
 
+    node_label_pattern = r""":\s*(?P<node_label>\w+)"""
+    node_label_search = search(node_label_pattern, node_statement_string)
+
+    if not node_label_search:
+        raise MissingNodeLabel(node_statement_string)
+
+    node_label = node_label_search.group("node_label")
+
     params_pattern = r"""\s*?(?P<params>[\w\'\:\|\s\-\.\,\[\]]+)?\s*}\s*\)"""
-    if params_search := search(params_pattern, statement_string):
+    if params_search := search(params_pattern, node_statement_string):
 
         params_string = params_search.group("params")
 
@@ -58,11 +86,11 @@ def parse_make_statment(statement_string: str) -> ParsedStatement:
             params = None
 
     return ParsedStatement(
-        clause=statement,
+        clause=Statement.MAKE,
         handle=handle,
         node_label=node_label,
         belongings=params,
-        statement_string=statement_string,
+        statement_string=node_statement_string,
     )
 
 

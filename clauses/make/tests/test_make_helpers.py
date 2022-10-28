@@ -3,7 +3,11 @@ from typing import Optional
 
 import pytest
 
-from clauses.make.make_helpers import build_properties_from_string, parse_make_statment
+from clauses.make.make_helpers import (
+    build_properties_from_string,
+    parse_node,
+    find_nodes_from_statement,
+)
 from exceptions.statements.statements import (
     IllegalNodePropertyType,
     MissingNodeLabel,
@@ -26,11 +30,11 @@ class TestMakeHelpers:
             pytest.param("MAKE (:NodeLabel)", (Statement.MAKE, None, 'NodeLabel', None), does_not_raise(), id='EXP PASS: Simple case, no handle'),
             pytest.param("MAKE (node:NodeLabel{name:'Name'})", (Statement.MAKE, 'node', 'NodeLabel', {'name': 'Name'}), does_not_raise(), id='EXP PASS: Simple dict params'),
             pytest.param("MAKE (:NodeLabel{uuid: '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'})", (Statement.MAKE, None, 'NodeLabel', {'uuid': '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'}), does_not_raise(), id='EXP PASS: simple case'),
-            pytest.param("MAKeeE (node:NodeLabel)", None, pytest.raises(StatementError), id='EXP EXCEPTION: Statement Error'),
+            # pytest.param("MAKeeE (node:NodeLabel)", None, pytest.raises(StatementError), id='EXP EXCEPTION: Statement Error'),
             pytest.param("MAKE (node:)", None, pytest.raises(MissingNodeLabel), id='EXP EXCEPTION: Missing node label'),
         ],
     )
-    def test_make(
+    def test_parse_node(
         self,
         test_statement: str,
         expected_result: tuple,
@@ -38,7 +42,7 @@ class TestMakeHelpers:
     ) -> None:
 
         with exception:
-            test = parse_make_statment(test_statement)
+            test = parse_node(test_statement)
             clause, handle, node_label, params = expected_result
 
             assert test.clause == clause
@@ -103,3 +107,40 @@ class TestMakeHelpers:
         with exception:
             test = build_properties_from_string(params_string)
             assert test == expected_result
+
+    @pytest.mark.parametrize(
+        "test_statement, expected_result, exception",
+        [
+            pytest.param(
+                "MAKE (node:NodeLabel)", 1, does_not_raise(), id="EXP PASS: single case"
+            ),
+            pytest.param(
+                "MAKE (node:NodeLabel)-[:rel]->(node2:NodeLabel)",
+                2,
+                does_not_raise(),
+                id="EXP PASS: two nodes",
+            ),
+            pytest.param(
+                "MAKE (node:NodeLabel)-[:cat)]->(node:NodeLabel{name:'Name'})-[:cat)]->(node:NodeLabel{uuid: '7e48f6ae-b25a-4634-91af-b1fb67b90ad9'})",
+                3,
+                does_not_raise(),
+                id="EXP PASS: three nodes",
+            ),
+            pytest.param(
+                "MAKE ", 0, pytest.raises(Exception), id="EXP EXCEPTION: No nodes"
+            ),
+            pytest.param(
+                "MAKeeE (node:NodeLabel)",
+                0,
+                pytest.raises(StatementError),
+                id="EXP EXCEPTION: Statement Error",
+            ),
+        ],
+    )
+    def test_find_nodes_from_statement(
+        self, test_statement: str, expected_result: int, exception: Optional[Exception]
+    ) -> None:
+
+        with exception:
+            test = find_nodes_from_statement(test_statement)
+            assert len(test) == expected_result
