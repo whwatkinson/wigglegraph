@@ -27,7 +27,7 @@ def parse_make_statement(statement_string: str) -> tuple[list[ParsedStatement], 
 
 
 def find_nodes_from_statement(statement_string: str) -> list[str]:
-
+    graph_logger.debug(f"Parsing statement: {statement_string}")
     make_statement_pattern = r"""(?P<clause>MAKE|make)"""
     statement_search = search(make_statement_pattern, statement_string)
 
@@ -41,6 +41,8 @@ def find_nodes_from_statement(statement_string: str) -> list[str]:
     if not nodes:
         raise MissingNodeLabel(statement_string)
 
+    graph_logger.debug(f"Found {len(nodes)} from {statement_string}")
+
     return nodes
 
 
@@ -51,21 +53,22 @@ def parse_node(node_statement_string: str) -> list[ParsedStatement]:
     :param node_statement_string: The raw input string
     :return: A parsed statement to be passed to make_node
     """
-    graph_logger.debug(node_statement_string)
-    # validate that the correct statement is called
 
-    # statement = None
-    # handle = None
-    # params = None
+    # TODO use compile for the regexs
 
-    # make_statement_pattern = r"""(?P<clause>MAKE|make)"""
-    # statement_search = search(make_statement_pattern, node_statement_string)
+    graph_logger.debug(f"parsing {node_statement_string}")
 
+    # HANDLE
     handle_pattern = r"""\(\s*(?P<handle>[a-zA-Z0-9]+)\:"""
 
     if handle_search := search(handle_pattern, node_statement_string):
         handle = handle_search.group("handle")
+        graph_logger.debug(f"found {handle=} form {node_statement_string}")
+    else:
+        graph_logger.debug(f"{node_statement_string} does not have handle")
+        handle = None
 
+    # NODE LABEL
     node_label_pattern = r""":\s*(?P<node_label>\w+)"""
     node_label_search = search(node_label_pattern, node_statement_string)
 
@@ -73,17 +76,18 @@ def parse_node(node_statement_string: str) -> list[ParsedStatement]:
         raise MissingNodeLabel(node_statement_string)
 
     node_label = node_label_search.group("node_label")
+    graph_logger.debug(f"Found {node_label=} from {node_statement_string}")
 
     params_pattern = r"""\s*?(?P<params>[\w\'\:\|\s\-\.\,\[\]]+)?\s*}\s*\)"""
     if params_search := search(params_pattern, node_statement_string):
 
         params_string = params_search.group("params")
-
+        graph_logger.debug(f"Found {params_string=} from {node_statement_string}")
         if params_string:
             params = build_properties_from_string(params_string)
 
-        else:
-            params = None
+    else:
+        params = None
 
     return ParsedStatement(
         clause=Statement.MAKE,
@@ -136,38 +140,41 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
 
     # bool
     if value in {"True", "False"}:
-
+        found_bool = None
         match value:
             case "False":
-                return False
+                found_bool = False
             case "false":
-                return False
+                found_bool = False
             case "True":
-                return True
+                found_bool = True
             case "true":
-                return True
+                found_bool = True
+        graph_logger.debug(f"{value} was detirmined to be {found_bool}")
+        return found_bool
 
     #  float
     if "." in value:
         try:
-            value_parsed = float(value)
-            graph_logger.debug(f"{value} was detirmined to be a float")
-            return value_parsed
+            found_float = float(value)
+            graph_logger.debug(f"{value} was detirmined to be a float: {found_float}")
+            return found_float
         except (TypeError, ValueError):
             pass
 
     #  int
     try:
-        value_parsed = int(value)
-        graph_logger.debug(f"{value} was detirmined to be an int")
-        return value_parsed
+        found_int = int(value)
+        graph_logger.debug(f"{value} was detirmined to be an int: {found_int}")
+        return found_int
     except (ValueError, TypeError):
         pass
 
     # list
     if "[" in value and "]" in value:
-        graph_logger.debug(f"{value} was detirmined to be a list")
-        return literal_eval(value)
+        found_list = literal_eval(value)
+        graph_logger.debug(f"{value} was detirmined to be a list: {found_list}")
+        return found_list
 
     # dict
     if "{" in value and "}" in value:
@@ -177,8 +184,8 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
     # string
     try:
         # catch all.. todo make this better
-        value_parsed = str(value)
-        graph_logger.debug(f"{value} was detirmined to be a string")
-        return value_parsed
+        found_str = str(value)
+        graph_logger.debug(f"{value} was detirmined to be a string: {found_str}")
+        return found_str
     except Exception:
         pass
