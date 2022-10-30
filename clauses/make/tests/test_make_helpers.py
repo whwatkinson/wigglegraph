@@ -164,15 +164,16 @@ class TestMakeHelpers:
             test = find_nodes_from_statement(test_statement)
             assert len(test) == expected_result
 
-    @pytest.mark.xfail
+    # @pytest.mark.xfail
     @pytest.mark.parametrize(
         "test_statement, expected_result, exception",
         [
             # fmt: off
+            pytest.param("MAKE (:NodeLabel)", 0, does_not_raise(), id='EXP PASS: No relationships'),
             pytest.param("MAKE (:NodeLabel)-[:rel]->(node2:NodeLabel)", 1, does_not_raise(), id='EXP PASS: 1 relationship'),
-            pytest.param("", 2, does_not_raise(), id='EXP PASS: 2 relationships'),
-            pytest.param("", 3, does_not_raise(), id='EXP PASS: 3 relationships'),
-            pytest.param("", 0, pytest.raises(Exception), id='EXP Exception: TDB'),
+            pytest.param("MAKE (:NodeLabel)-[:rel1]->(node2:NodeLabel)-[:re2]->(node3:NodeLabel)", 2, pytest.raises(Exception), id='EXP PASS: 2 relationships'),
+            # pytest.param("", 3, does_not_raise(), id='EXP PASS: 3 relationships'),
+            # pytest.param("", 0, pytest.raises(Exception), id='EXP Exception: TDB'),
         ],
     )
     def test_find_edges_from_statements(

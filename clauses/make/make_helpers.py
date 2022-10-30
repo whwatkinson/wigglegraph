@@ -1,5 +1,4 @@
 from ast import literal_eval
-from re import findall
 from typing import Union
 
 from exceptions.statements.statements import (
@@ -17,6 +16,7 @@ from patterns.nodes import (
     node_label_regex,
     node_params_regex,
     key_value_regex,
+    relationship_regex,
 )
 
 
@@ -58,17 +58,21 @@ def find_edges_from_statements(statement_string: str) -> list[str]:
 
     # v1_rel = r"""\(.*:.+\)(?P<relationship>-\[[\w]*:.+\]->)\(.+:.+\)"""
 
-    relationship_pattern = r"""(?P<rel>\<*-\[\s*\w*\s*:\s*\w+\s*\]-\>*)"""
+    # relationship_pattern = r"""(?P<rel>\<*-\[\s*\w*\s*:\s*\w+\s*\]-\>*)"""
+    #
+    # relationship_matches = findall(
+    #     pattern=relationship_pattern, string=statement_string
+    # )
 
-    relationship_matches = findall(
-        pattern=relationship_pattern, string=statement_string
-    )
+    relationship_matches = relationship_regex.findall(statement_string)
 
     if len(relationship_matches) > 2:
         # not supporting multi relationship creation atm
         raise Exception
 
     # lookup in parsed statement list and update
+
+    return relationship_matches
 
 
 def parse_node(node_statement_string: str) -> ParsedStatement:
