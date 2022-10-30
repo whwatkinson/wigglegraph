@@ -164,6 +164,7 @@ class TestMakeHelpers:
             test = find_nodes_from_statement(test_statement)
             assert len(test) == expected_result
 
+    @pytest.mark.xfail
     @pytest.mark.parametrize(
         "test_statement, expected_result, exception",
         [

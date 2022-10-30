@@ -1,5 +1,5 @@
 from ast import literal_eval
-from re import search, findall
+from re import findall
 from typing import Union
 
 from exceptions.statements.statements import (
@@ -10,6 +10,14 @@ from exceptions.statements.statements import (
 from graph_logger.graph_logger import graph_logger
 from models.enums.statement import Statement
 from models.statement import ParsedStatement
+from patterns.nodes import (
+    make_clause_regex,
+    nodes_regex,
+    node_handle_regex,
+    node_label_regex,
+    node_params_regex,
+    key_value_regex,
+)
 
 
 def parse_make_statement(statement_string: str) -> tuple[list[ParsedStatement], None]:
@@ -29,15 +37,12 @@ def parse_make_statement(statement_string: str) -> tuple[list[ParsedStatement], 
 def find_nodes_from_statement(statement_string: str) -> list[str]:
     graph_logger.debug(f"Parsing statement for nodes: {statement_string}")
 
-    make_statement_pattern = r"""(?P<clause>MAKE|make)"""
-    statement_search = search(pattern=make_statement_pattern, string=statement_string)
+    statement_search = make_clause_regex.search(statement_string)
 
     if not statement_search:
         raise StatementError(statement_string)
 
-    nodes_pattern = r"""(?P<node>\(\s*[\w]*\s*:[\w\'\"\:\|\s\-\.\,\[\]\{\}]+\))"""
-
-    nodes = findall(pattern=nodes_pattern, string=statement_string)
+    nodes = nodes_regex.findall(statement_string)
 
     if not nodes:
         raise MissingNodeLabel(statement_string)
@@ -53,7 +58,7 @@ def find_edges_from_statements(statement_string: str) -> list[str]:
 
     # v1_rel = r"""\(.*:.+\)(?P<relationship>-\[[\w]*:.+\]->)\(.+:.+\)"""
 
-    relationship_pattern = r"""(?P<rel>\<*-\[\w*:\w+\]-\>*)"""
+    relationship_pattern = r"""(?P<rel>\<*-\[\s*\w*\s*:\s*\w+\s*\]-\>*)"""
 
     relationship_matches = findall(
         pattern=relationship_pattern, string=statement_string
@@ -73,14 +78,10 @@ def parse_node(node_statement_string: str) -> ParsedStatement:
     :return: A parsed statement to be passed to make_node
     """
 
-    # TODO use compile for the regex's
-
     graph_logger.debug(f"parsing {node_statement_string}")
 
     # HANDLE
-    handle_pattern = r"""\(\s*(?P<handle>[a-zA-Z0-9]+)\:"""
-
-    if handle_search := search(pattern=handle_pattern, string=node_statement_string):
+    if handle_search := node_handle_regex.search(string=node_statement_string):
         handle = handle_search.group("handle")
         graph_logger.debug(f"found {handle=} form {node_statement_string}")
     else:
@@ -88,8 +89,7 @@ def parse_node(node_statement_string: str) -> ParsedStatement:
         handle = None
 
     # NODE LABEL
-    node_label_pattern = r"""\(\s*\w*\s*:\s*(?P<node_label>\w+)"""
-    node_label_search = search(pattern=node_label_pattern, string=node_statement_string)
+    node_label_search = node_label_regex.search(string=node_statement_string)
 
     if not node_label_search:
         raise MissingNodeLabel(node_statement_string)
@@ -97,9 +97,8 @@ def parse_node(node_statement_string: str) -> ParsedStatement:
     node_label = node_label_search.group("node_label")
     graph_logger.debug(f"Found {node_label=} from {node_statement_string}")
 
-    params_pattern = r"""\s*?(?P<params>[\w\'\:\|\s\-\.\,\[\]]+)?\s*}\s*\)"""
     params = None
-    if params_search := search(pattern=params_pattern, string=node_statement_string):
+    if params_search := node_params_regex.search(string=node_statement_string):
 
         params_string = params_search.group("params")
         graph_logger.debug(f"Found {params_string=} from {node_statement_string}")
@@ -123,13 +122,12 @@ def build_properties_from_string(params_string: str) -> dict:
     """
     params_dict = dict()
     params_list = params_string.split("|")
-    key_value_pattern = r"""(?P<key>[\w]+):\s?(?P<value>[\[\]\s\,'\w\d\-\.]+)"""
 
     for param in params_list:
 
         param = param.strip()
 
-        if match := search(pattern=key_value_pattern, string=param):
+        if match := key_value_regex.search(string=param):
 
             key = match.group("key")
             value = match.group("value")
