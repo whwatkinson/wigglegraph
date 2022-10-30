@@ -16,6 +16,7 @@ def make_node(
     Takes a parsed statement and adds the record to the graph
     :param parsed_statement: A prepared input from the user
     :param wiggle_number_file_path: A file path to the Wiggle number
+    :param database_file_path: A file path to the database
     :return: A node really to be added to the database
     """
     graph_logger.debug("Starting make node")

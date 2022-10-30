@@ -116,10 +116,16 @@ class TestMakeHelpers:
                 "MAKE (node:NodeLabel)", 1, does_not_raise(), id="EXP PASS: simple case"
             ),
             pytest.param(
+                """MAKE (n:Person{first_name:'Harry' | last_name:"Watkinson | favourite_number: 6 | favourite_color: 'green' | uuid: '2beb78d1-d4f4-48b8-a875-1014bee3daa2'})""",
+                1,
+                does_not_raise(),
+                id="EXP PASS: simple case",
+            ),
+            pytest.param(
                 "MAKE (:NodeLabel)",
                 1,
                 does_not_raise(),
-                id="EXP PASS: simple case, no handle",
+                id="EXP PASS: many param case case, no handle",
             ),
             pytest.param(
                 "MAKE (node:NodeLabel)-[:rel]->(node2:NodeLabel)",
