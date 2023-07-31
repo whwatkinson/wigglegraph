@@ -1,0 +1,26 @@
+{
+  "6": {
+    "wn": 6,
+    "node_label": "Person",
+    "created_at": 1667126899.771429,
+    "updated_at": null,
+    "belongings": {
+      "favourite_number": 6,
+      "favourite_color": "green",
+      "uuid": "2beb78d1-d4f4-48b8-a875-1014bee3daa2"
+    },
+    "relations": null
+  },
+  "7": {
+    "wn": 7,
+    "node_label": "Person",
+    "created_at": 1667126925.356175,
+    "updated_at": null,
+    "belongings": {
+      "favourite_number": 6,
+      "favourite_color": "green",
+      "uuid": "2beb78d1-d4f4-48b8-a875-1014bee3daa2"
+    },
+    "relations": null
+  }
+}
