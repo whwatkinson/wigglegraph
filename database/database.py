@@ -3,7 +3,6 @@ from json.decoder import JSONDecodeError
 
 from exceptions.database import NodeExistsError
 from graph_logger.graph_logger import graph_logger
-
 from testing import DATABASE_TEST_FILE_PATH
 
 

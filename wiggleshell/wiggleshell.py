@@ -1,11 +1,10 @@
-from typing import Optional
 from pathlib import Path
 from string import ascii_uppercase
+from typing import Optional
 
 from pydantic import BaseModel
 
 from project_root import get_project_root
-
 
 STATE_FOLDER = Path(f"{get_project_root()}/state/")
 DBMS_FOLDER = Path(f"{get_project_root()}/dbms/")

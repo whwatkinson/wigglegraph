@@ -1,5 +1,4 @@
 from graph_logger.graph_logger import graph_logger
-
 from testing import WIGGLE_NUMBER_TEST_FILE_PATH
 
 
