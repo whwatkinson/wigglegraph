@@ -1,6 +1,6 @@
 import pytest
 
-from state.wiggle_number import get_current_wiggle_number, update_wiggle_number
+from graph.state.wiggle_number import get_current_wiggle_number, update_wiggle_number
 from testing import WIGGLE_NUMBER_TEST_FILE_PATH
 
 

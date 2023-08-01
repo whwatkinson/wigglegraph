@@ -2,7 +2,7 @@ from typing import Generator
 
 import pytest
 
-from database.database import wipe_database
+from graph.database.database import wipe_database
 from testing import DATABASE_TEST_FILE_PATH, WIGGLE_NUMBER_TEST_FILE_PATH
 
 

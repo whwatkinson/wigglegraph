@@ -6,7 +6,6 @@ from pydantic import BaseModel
 
 from project_root import get_project_root
 
-STATE_FOLDER = Path(f"{get_project_root()}/state/")
 DBMS_FOLDER = Path(f"{get_project_root()}/dbms/")
 INPUT_PROMPT_SPACING = " " * 5
 
@@ -156,6 +155,8 @@ def wiggle_shell():
     while True:
         path_to_db = select_databases()
         print(path_to_db)
+
+        # foo = input(f"Please write a qry:{INPUT_PROMPT_SPACING}")
         break
 
 
