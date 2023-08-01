@@ -2,11 +2,19 @@ from typing import Optional
 from pathlib import Path
 from string import ascii_uppercase
 
+from pydantic import BaseModel
+
 from project_root import get_project_root
 
 
 DATABASES_FOLDER = Path(f"{get_project_root()}/database/")
+STATE_FOLDER = Path(f"{get_project_root()}/state/")
 INPUT_PROMPT_SPACING = " " * 5
+
+
+class DatabaseFilePaths(BaseModel):
+    db: Path
+    wn: Path
 
 
 def get_existing_databases(skips: Optional[set[str]] = None) -> list[str]:
@@ -60,7 +68,16 @@ def create_new_database(db_name: str) -> Path:
     return path_touch_db
 
 
-def handle_new_database() -> Path:
+def create_new_wiggle_number_file(db_name: str) -> Path:
+
+    # todo check that this does not exist
+    new_wn_state_file_path = STATE_FOLDER.joinpath(f"wiggle_number_{db_name}.txt")
+    new_wn_state_file_path.touch()
+
+    return new_wn_state_file_path
+
+
+def new_database() -> DatabaseFilePaths:
     """
 
     :return:
@@ -70,14 +87,19 @@ def handle_new_database() -> Path:
         try:
             # todo cancel operation
             db_path = create_new_database(new_db_name)
+            wn_path = create_new_wiggle_number_file(new_db_name)
             print(f"Using {new_db_name}")
-            return db_path
+            return DatabaseFilePaths(db=db_path, wn=wn_path)
         except Exception:
             print(f"{new_db_name} is already taken, please choose another name.")
             continue
 
 
-def handle_existing_database() -> Path:
+def get_existing_wn_file() -> Path:
+    pass
+
+
+def get_existing_database() -> DatabaseFilePaths:
     """
 
     :return:
@@ -87,7 +109,7 @@ def handle_existing_database() -> Path:
 
         if not choices:
             print("There are no databases, please create a new database.")
-            db_path = handle_new_database()
+            db_path = new_database()
             return db_path
         db_selected = input(
             f"Please select a database to use (Letter):{INPUT_PROMPT_SPACING}"
@@ -95,8 +117,9 @@ def handle_existing_database() -> Path:
         try:
             db_name = choices[db_selected]
             # TODO make sure that this exists
-            db_path = Path(f"database/{db_name}/{db_name}_database.json")
-            return db_path
+            db_path = DATABASES_FOLDER.joinpath(f"{db_name}/{db_name}_database.json")
+            wn_path = STATE_FOLDER.joinpath(f"wiggle_number_{db_name}.txt")
+            return DatabaseFilePaths(db=db_path, wn=wn_path)
         except KeyError:
             print("Nope try again...")
             continue
@@ -114,9 +137,9 @@ def select_databases() -> Path:
     db_choice = input(f"Use existing db (y/n):{INPUT_PROMPT_SPACING}")
     match db_choice:
         case "y":
-            db_path = handle_existing_database()
+            db_path = get_existing_database()
         case _:
-            db_path = handle_new_database()
+            db_path = new_database()
 
     return db_path
 
