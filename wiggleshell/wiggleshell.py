@@ -9,6 +9,7 @@ from project_root import get_project_root
 
 DATABASES_FOLDER = Path(f"{get_project_root()}/database/")
 STATE_FOLDER = Path(f"{get_project_root()}/state/")
+DBMS_FOLDER = Path(f"{get_project_root()}/dbms/")
 INPUT_PROMPT_SPACING = " " * 5
 
 
@@ -27,7 +28,7 @@ def get_existing_databases(skips: Optional[set[str]] = None) -> list[str]:
     if not skips:
         skips = set()
     existing_databases = [
-        x.name for x in DATABASES_FOLDER.iterdir() if x.is_dir() and x.name not in skips
+        x.name for x in DBMS_FOLDER.iterdir() if x.is_dir() and x.name not in skips
     ]
 
     return existing_databases
@@ -60,8 +61,8 @@ def create_new_database(db_name: str) -> Path:
 
     if db_name in existing_databases:
         raise Exception("Name taken")
-    DATABASES_FOLDER.joinpath(f"{db_name}").mkdir(parents=True, exist_ok=True)
-    new_db_folder = DATABASES_FOLDER.joinpath(f"{db_name}")
+    DBMS_FOLDER.joinpath(f"{db_name}").mkdir(parents=True, exist_ok=True)
+    new_db_folder = DBMS_FOLDER.joinpath(f"{db_name}")
     path_touch_db = new_db_folder.joinpath(f"database_{db_name}.json")
     path_touch_db.touch()
 
@@ -71,7 +72,7 @@ def create_new_database(db_name: str) -> Path:
 def create_new_wiggle_number_file(db_name: str) -> Path:
 
     # todo check that this does not exist
-    new_wn_state_file_path = STATE_FOLDER.joinpath(f"wiggle_number_{db_name}.txt")
+    new_wn_state_file_path = DBMS_FOLDER.joinpath(f"wiggle_number_{db_name}.txt")
     new_wn_state_file_path.touch()
 
     return new_wn_state_file_path
@@ -95,8 +96,9 @@ def new_database() -> DatabaseFilePaths:
             continue
 
 
-def get_existing_wn_file() -> Path:
-    pass
+def get_existing_wn_file(db_name: str) -> Path:
+    wn_file = STATE_FOLDER.joinpath(f"wiggle_number_{db_name}.txt")
+    return wn_file
 
 
 def get_existing_database() -> DatabaseFilePaths:
@@ -117,15 +119,15 @@ def get_existing_database() -> DatabaseFilePaths:
         try:
             db_name = choices[db_selected]
             # TODO make sure that this exists
-            db_path = DATABASES_FOLDER.joinpath(f"{db_name}/{db_name}_database.json")
-            wn_path = STATE_FOLDER.joinpath(f"wiggle_number_{db_name}.txt")
+            db_path = DBMS_FOLDER.joinpath(f"{db_name}/{db_name}_database.json")
+            wn_path = get_existing_wn_file(db_name)
             return DatabaseFilePaths(db=db_path, wn=wn_path)
         except KeyError:
             print("Nope try again...")
             continue
 
 
-def select_databases() -> Path:
+def select_databases() -> None:
     """
     Select the databases to be used.
     :return: A path to the correct DB.
