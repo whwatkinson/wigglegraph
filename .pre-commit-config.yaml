@@ -5,19 +5,20 @@ repos:
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
+
 -   repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
     -   id: black
         exclude: ^dist/
--   repo: https://gitlab.com/pycqa/flake8
+
+-   repo: https://github.com/pycqa/flake8
     rev: 4.0.1
     hooks:
     -   id: flake8
         args: ["-j8", "--ignore=E501"]
 
-#-   repo: https://github.com/pycqa/isort
-#    rev: 5.10.1
-#    hooks:
-#    -   id: isort
-#        name: isort (python)
+-   repo: https://github.com/pre-commit/mirrors-isort
+    rev: ''  # Use the revision sha / tag you want to point at
+    hooks:
+    -   id: isort
