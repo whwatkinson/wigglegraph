@@ -1,6 +1,6 @@
 from graph_logger.graph_logger import graph_logger
 
-WIGGLE_NUMBER_FILE_PATH = "state/wiggle_number.txt"
+from testing import WIGGLE_NUMBER_TEST_FILE_PATH
 
 
 def get_current_wiggle_number(file_path: str) -> int:
@@ -19,7 +19,7 @@ def get_current_wiggle_number(file_path: str) -> int:
     else:
         graph_logger.info("Wiggle number not set retuning 0")
         wiggle_number = 0
-    graph_logger.info(f"Succesfully got Wiggle number was {wiggle_number}")
+    graph_logger.info(f"Successfully got Wiggle number was {wiggle_number}")
     return wiggle_number
 
 
@@ -39,13 +39,13 @@ def update_wiggle_number(file_path: str, wiggle_number: int) -> int:
 
 
 if __name__ == "__main__":
-    wn = get_current_wiggle_number(WIGGLE_NUMBER_FILE_PATH)
+    wn = get_current_wiggle_number(WIGGLE_NUMBER_TEST_FILE_PATH)
 
     for _ in range(10):
         wn += 1
 
-    update_wiggle_number(WIGGLE_NUMBER_FILE_PATH, wn)
+    update_wiggle_number(WIGGLE_NUMBER_TEST_FILE_PATH, wn)
 
-    wn = get_current_wiggle_number(WIGGLE_NUMBER_FILE_PATH)
+    wn = get_current_wiggle_number(WIGGLE_NUMBER_TEST_FILE_PATH)
 
     print(wn)

@@ -4,14 +4,14 @@ import pytest
 
 from database.database import add_item_to_database, load_database
 from exceptions.database import NodeExistsError
-from testing import TEST_DATABASE_FILE_PATH
+from testing import DATABASE_TEST_FILE_PATH
 
 
 class TestDataBase:
-    def test_database(self, clear_database: Generator) -> None:
+    def test_database(self, clear_database_test: Generator) -> None:
 
         # Check the db is empty
-        test = load_database(file_path=TEST_DATABASE_FILE_PATH)
+        test = load_database(file_path=DATABASE_TEST_FILE_PATH)
 
         assert len(test) == 0
 
@@ -26,12 +26,12 @@ class TestDataBase:
                 "relations": None,
             }
         }
-        add_item_to_database(file_path=TEST_DATABASE_FILE_PATH, item=item)
-        test = load_database(file_path=TEST_DATABASE_FILE_PATH)
+        add_item_to_database(file_path=DATABASE_TEST_FILE_PATH, item=item)
+        test = load_database(file_path=DATABASE_TEST_FILE_PATH)
 
         assert len(test) == 1
 
         # Insert a same record
 
         with pytest.raises(NodeExistsError):
-            add_item_to_database(file_path=TEST_DATABASE_FILE_PATH, item=item)
+            add_item_to_database(file_path=DATABASE_TEST_FILE_PATH, item=item)

@@ -7,13 +7,12 @@ from pydantic import BaseModel
 from project_root import get_project_root
 
 
-DATABASES_FOLDER = Path(f"{get_project_root()}/database/")
 STATE_FOLDER = Path(f"{get_project_root()}/state/")
 DBMS_FOLDER = Path(f"{get_project_root()}/dbms/")
 INPUT_PROMPT_SPACING = " " * 5
 
 
-class DatabaseFilePaths(BaseModel):
+class DbWnFilePaths(BaseModel):
     db: Path
     wn: Path
 
@@ -60,7 +59,7 @@ def create_new_database(db_name: str) -> Path:
     existing_databases = get_existing_databases()
 
     if db_name in existing_databases:
-        raise Exception("Name taken")
+        raise ValueError("Name taken")
     DBMS_FOLDER.joinpath(f"{db_name}").mkdir(parents=True, exist_ok=True)
     new_db_folder = DBMS_FOLDER.joinpath(f"{db_name}")
     path_touch_db = new_db_folder.joinpath(f"database_{db_name}.json")
@@ -72,13 +71,15 @@ def create_new_database(db_name: str) -> Path:
 def create_new_wiggle_number_file(db_name: str) -> Path:
 
     # todo check that this does not exist
-    new_wn_state_file_path = DBMS_FOLDER.joinpath(f"wiggle_number_{db_name}.txt")
+    new_wn_state_file_path = DBMS_FOLDER.joinpath(
+        f"{db_name}/wiggle_number_{db_name}.txt"
+    )
     new_wn_state_file_path.touch()
 
     return new_wn_state_file_path
 
 
-def new_database() -> DatabaseFilePaths:
+def new_database() -> DbWnFilePaths:
     """
 
     :return:
@@ -90,18 +91,23 @@ def new_database() -> DatabaseFilePaths:
             db_path = create_new_database(new_db_name)
             wn_path = create_new_wiggle_number_file(new_db_name)
             print(f"Using {new_db_name}")
-            return DatabaseFilePaths(db=db_path, wn=wn_path)
-        except Exception:
+            return DbWnFilePaths(db=db_path, wn=wn_path)
+        except ValueError:
             print(f"{new_db_name} is already taken, please choose another name.")
             continue
 
 
 def get_existing_wn_file(db_name: str) -> Path:
-    wn_file = STATE_FOLDER.joinpath(f"wiggle_number_{db_name}.txt")
+    wn_file = DBMS_FOLDER.joinpath(f"{db_name}/wiggle_number_{db_name}.txt")
     return wn_file
 
 
-def get_existing_database() -> DatabaseFilePaths:
+def get_existing_db_file(db_name: str) -> Path:
+    wn_file = DBMS_FOLDER.joinpath(f"{db_name}/database_{db_name}.json")
+    return wn_file
+
+
+def get_existing_database() -> DbWnFilePaths:
     """
 
     :return:
@@ -119,15 +125,15 @@ def get_existing_database() -> DatabaseFilePaths:
         try:
             db_name = choices[db_selected]
             # TODO make sure that this exists
-            db_path = DBMS_FOLDER.joinpath(f"{db_name}/{db_name}_database.json")
+            db_path = get_existing_db_file(db_name)
             wn_path = get_existing_wn_file(db_name)
-            return DatabaseFilePaths(db=db_path, wn=wn_path)
+            return DbWnFilePaths(db=db_path, wn=wn_path)
         except KeyError:
             print("Nope try again...")
             continue
 
 
-def select_databases() -> None:
+def select_databases() -> DbWnFilePaths:
     """
     Select the databases to be used.
     :return: A path to the correct DB.

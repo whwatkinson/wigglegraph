@@ -4,7 +4,7 @@ from json.decoder import JSONDecodeError
 from exceptions.database import NodeExistsError
 from graph_logger.graph_logger import graph_logger
 
-DATABASE_FILE_PATH = "database/database.json"
+from testing import DATABASE_TEST_FILE_PATH
 
 
 def load_database(file_path: str) -> dict:
@@ -65,7 +65,7 @@ def wipe_database(file_path: str, im_sure: bool = False):
 
 
 if __name__ == "__main__":
-    x = load_database(DATABASE_FILE_PATH)
+    x = load_database(DATABASE_TEST_FILE_PATH)
 
     from random import randint
 
@@ -82,9 +82,9 @@ if __name__ == "__main__":
             "relations": None,
         }
     }
-    # update_database(DATABASE_FILE_PATH)
+    # update_database(DATABASE_TEST_FILE_PATH)
     #
-    # add_item_to_database(DATABASE_FILE_PATH, i)
-    add_item_to_database(DATABASE_FILE_PATH, i)
+    # add_item_to_database(DATABASE_TEST_FILE_PATH, i)
+    add_item_to_database(DATABASE_TEST_FILE_PATH, i)
 
-    wipe_database(DATABASE_FILE_PATH, True)
+    wipe_database(DATABASE_TEST_FILE_PATH, True)
