@@ -18,7 +18,7 @@ repos:
     -   id: flake8
         args: ["-j8", "--ignore=E501"]
 
-#-   repo: https://github.com/pre-commit/mirrors-isort
-#    rev: ''  # Use the revision sha / tag you want to point at
-#    hooks:
-#    -   id: isort
+-   repo: https://github.com/pre-commit/mirrors-isort
+    rev: ''  # Use the revision sha / tag you want to point at
+    hooks:
+    -   id: isort
