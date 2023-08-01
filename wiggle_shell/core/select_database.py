@@ -32,7 +32,6 @@ def get_existing_databases(skips: Optional[set[str]] = None) -> list[str]:
 
 
 def display_available_database() -> dict[str, str]:
-
     skips = {"tests", "__pycache__"}
     existing_databases = get_existing_databases(skips)
     # Zip does the shorter of the two iterables
@@ -67,7 +66,6 @@ def create_new_database(db_name: str) -> Path:
 
 
 def create_new_wiggle_number_file(db_name: str) -> Path:
-
     # todo check that this does not exist
     new_wn_state_file_path = DBMS_FOLDER.joinpath(
         f"{db_name}/wiggle_number_{db_name}.txt"
@@ -131,14 +129,11 @@ def get_existing_database() -> DbWnFilePaths:
             continue
 
 
-def select_databases() -> DbWnFilePaths:
+def select_database() -> DbWnFilePaths:
     """
     Select the databases to be used.
     :return: A path to the correct DB.
     """
-    print("**********************")
-    print("Welcome to WiggleGraph")
-    print("**********************\n")
 
     db_choice = input(f"Use existing db (y/n):{INPUT_PROMPT_SPACING}")
     match db_choice:
@@ -148,17 +143,3 @@ def select_databases() -> DbWnFilePaths:
             db_path = new_database()
 
     return db_path
-
-
-def wiggle_shell():
-
-    while True:
-        path_to_db = select_databases()
-        print(path_to_db)
-
-        # foo = input(f"Please write a qry:{INPUT_PROMPT_SPACING}")
-        break
-
-
-if __name__ == "__main__":
-    wiggle_shell()
