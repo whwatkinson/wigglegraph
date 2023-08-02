@@ -7,12 +7,23 @@ def start_wiggle_shell() -> None:
     print("Welcome to WiggleGraph")
     print("**********************\n")
 
+    # Create or use and existing DBMS
     while True:
-        path_to_db = select_database()
-        print(path_to_db)
-
-        # foo = input(f"Please write a qry:{INPUT_PROMPT_SPACING}")
+        db_wn_fp = select_database()
         break
+
+    print(db_wn_fp)
+
+    while True:
+        qry = input("Please enter a query (q)")
+        print(qry)
+
+        match qry:
+            case "q":
+                print("Goodbye")
+                break
+            case _:
+                print("Sorry please try again.")
 
 
 if __name__ == "__main__":

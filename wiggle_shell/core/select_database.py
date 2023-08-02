@@ -1,45 +1,49 @@
+import os
+from glob import glob
 from pathlib import Path
 from string import ascii_uppercase
 from typing import Optional
 
-from pydantic import BaseModel
 
+from models.wigshell.utils import DatabaseWiggleNumberFilePaths
 from project_root import get_project_root
+
 
 DBMS_FOLDER = Path(f"{get_project_root()}/dbms/")
 INPUT_PROMPT_SPACING = " " * 5
 
 
-class DbWnFilePaths(BaseModel):
-    db: Path
-    wn: Path
-
-
-def get_existing_databases(skips: Optional[set[str]] = None) -> list[str]:
+def list_existing_dbms(
+    skips: Optional[set[str]] = None, path_to_dbms_dir: Path = DBMS_FOLDER
+) -> list[str]:
     """
     Lists the subdirectories in the database folder
-    :param skips:
+    :param skips: A list of folder to ignore
+    :param path_to_dbms_dir:
     :return: A set names of the subdirectories
     """
 
     if not skips:
         skips = set()
     existing_databases = [
-        x.name for x in DBMS_FOLDER.iterdir() if x.is_dir() and x.name not in skips
+        x.name for x in path_to_dbms_dir.iterdir() if x.is_dir() and x.name not in skips
     ]
 
     return existing_databases
 
 
-def display_available_database() -> dict[str, str]:
+def get_and_display_available_database(
+    path_to_dbms_dir: Path = DBMS_FOLDER,
+) -> dict[str, str]:
     skips = {"tests", "__pycache__"}
-    existing_databases = get_existing_databases(skips)
+    existing_databases = list_existing_dbms(skips, path_to_dbms_dir)
     # Zip does the shorter of the two iterables
     letter_db_dict = {
         char: x
         for char, x in zip(ascii_uppercase, existing_databases)
         if x not in skips
     }
+    # todo refactor this
     print("\nLetter      db_name")
     for key, value in letter_db_dict.items():
         print(f"{key}           {value}")
@@ -47,27 +51,30 @@ def display_available_database() -> dict[str, str]:
     return letter_db_dict
 
 
-def create_new_database(db_name: str) -> Path:
+def create_new_database(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> Path:
     """
     Creates a new database with
     :param db_name:
+    :param path_to_dbms_dir:
     :return:
     """
-    existing_databases = get_existing_databases()
+    existing_databases = list_existing_dbms(path_to_dbms_dir=path_to_dbms_dir)
 
     if db_name in existing_databases:
-        raise ValueError("Name taken")
-    DBMS_FOLDER.joinpath(f"{db_name}").mkdir(parents=True, exist_ok=True)
-    new_db_folder = DBMS_FOLDER.joinpath(f"{db_name}")
+        raise ValueError("Name in use")
+    path_to_dbms_dir.joinpath(f"{db_name}").mkdir(parents=True, exist_ok=True)
+    new_db_folder = path_to_dbms_dir.joinpath(f"{db_name}")
     path_touch_db = new_db_folder.joinpath(f"database_{db_name}.json")
     path_touch_db.touch()
 
     return path_touch_db
 
 
-def create_new_wiggle_number_file(db_name: str) -> Path:
+def create_new_wiggle_number_file(
+    db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
+) -> Path:
     # todo check that this does not exist
-    new_wn_state_file_path = DBMS_FOLDER.joinpath(
+    new_wn_state_file_path = path_to_dbms_dir.joinpath(
         f"{db_name}/wiggle_number_{db_name}.txt"
     )
     new_wn_state_file_path.touch()
@@ -75,7 +82,7 @@ def create_new_wiggle_number_file(db_name: str) -> Path:
     return new_wn_state_file_path
 
 
-def new_database() -> DbWnFilePaths:
+def new_database() -> DatabaseWiggleNumberFilePaths:
     """
 
     :return:
@@ -87,29 +94,29 @@ def new_database() -> DbWnFilePaths:
             db_path = create_new_database(new_db_name)
             wn_path = create_new_wiggle_number_file(new_db_name)
             print(f"Using {new_db_name}")
-            return DbWnFilePaths(db=db_path, wn=wn_path)
+            return DatabaseWiggleNumberFilePaths(db=db_path, wn=wn_path)
         except ValueError:
             print(f"{new_db_name} is already taken, please choose another name.")
             continue
 
 
-def get_existing_wn_file(db_name: str) -> Path:
-    wn_file = DBMS_FOLDER.joinpath(f"{db_name}/wiggle_number_{db_name}.txt")
+def get_existing_wn_file(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> Path:
+    wn_file = path_to_dbms_dir.joinpath(f"{db_name}/wiggle_number_{db_name}.txt")
     return wn_file
 
 
-def get_existing_db_file(db_name: str) -> Path:
-    wn_file = DBMS_FOLDER.joinpath(f"{db_name}/database_{db_name}.json")
+def get_existing_db_file(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> Path:
+    wn_file = path_to_dbms_dir.joinpath(f"{db_name}/database_{db_name}.json")
     return wn_file
 
 
-def get_existing_database() -> DbWnFilePaths:
+def get_existing_database() -> DatabaseWiggleNumberFilePaths:
     """
 
     :return:
     """
     while True:
-        choices = display_available_database()
+        choices = get_and_display_available_database()
 
         if not choices:
             print("There are no databases, please create a new database.")
@@ -123,13 +130,30 @@ def get_existing_database() -> DbWnFilePaths:
             # TODO make sure that this exists
             db_path = get_existing_db_file(db_name)
             wn_path = get_existing_wn_file(db_name)
-            return DbWnFilePaths(db=db_path, wn=wn_path)
+            return DatabaseWiggleNumberFilePaths(db=db_path, wn=wn_path)
         except KeyError:
-            print("Nope try again...")
+            print(f"{db_selected} does not exist, please select an existing DB")
             continue
 
 
-def select_database() -> DbWnFilePaths:
+def delete_database(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> int:
+
+    db_path = path_to_dbms_dir.joinpath(f"{db_name}/")
+
+    if not db_path.is_dir():
+        raise Exception()
+
+    files = glob(f"{db_path}/*")
+    if files:
+        for file in files:
+            os.remove(file)
+
+    db_path.rmdir()
+
+    return 0
+
+
+def select_database() -> DatabaseWiggleNumberFilePaths:
     """
     Select the databases to be used.
     :return: A path to the correct DB.
