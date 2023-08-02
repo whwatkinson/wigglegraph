@@ -7,13 +7,13 @@ def start_wiggle_shell() -> None:
     print("Welcome to WiggleGraph")
     print("**********************\n")
 
-    # Create or use and existing DBMS
+    # Create/Use an existing DBMS
     while True:
         db_wn_fp = select_dbms()
+        print(db_wn_fp)
         break
 
-    print(db_wn_fp)
-
+    # Interact with the DB
     while True:
         qry = input("Please enter a query (q)")
         print(qry)

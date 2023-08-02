@@ -22,19 +22,19 @@ def get_current_wiggle_number(file_path: str) -> int:
     return wiggle_number
 
 
-def update_wiggle_number(file_path: str, wiggle_number: int) -> int:
+def update_wiggle_number(file_path: str, new_wiggle_number: int) -> int:
     """
     Updates the Wiggle state file to the next availble number
     :param file_path: The file path to the Wiggle number state file
-    :param wiggle_number: The Current Wiggle number
+    :param new_wiggle_number: The Current Wiggle number
     :return: The Wiggle number
     """
 
     graph_logger.debug("Updating state for wiggle number")
     with open(file_path, "w") as file_handle:
-        file_handle.write(str(wiggle_number))
-    graph_logger.debug("Scuccesfully updated state for Wiggle number")
-    return wiggle_number
+        file_handle.write(str(new_wiggle_number))
+    graph_logger.debug("Successfully updated state for Wiggle number")
+    return new_wiggle_number
 
 
 if __name__ == "__main__":
