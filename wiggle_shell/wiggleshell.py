@@ -1,4 +1,4 @@
-from core.select_database import select_database
+from core.select_database import select_dbms
 
 
 def start_wiggle_shell() -> None:
@@ -9,7 +9,7 @@ def start_wiggle_shell() -> None:
 
     # Create or use and existing DBMS
     while True:
-        db_wn_fp = select_database()
+        db_wn_fp = select_dbms()
         break
 
     print(db_wn_fp)

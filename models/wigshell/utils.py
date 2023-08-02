@@ -3,6 +3,6 @@ from pathlib import Path
 from pydantic import BaseModel
 
 
-class DatabaseWiggleNumberFilePaths(BaseModel):
+class DbmsFilePath(BaseModel):
     db: Path
     wn: Path

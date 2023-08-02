@@ -5,7 +5,7 @@ from string import ascii_uppercase
 from typing import Optional
 
 
-from models.wigshell.utils import DatabaseWiggleNumberFilePaths
+from models.wigshell.utils import DbmsFilePath
 from project_root import get_project_root
 
 
@@ -73,16 +73,21 @@ def create_new_database(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> P
 def create_new_wiggle_number_file(
     db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
 ) -> Path:
-    # todo check that this does not exist
     new_wn_state_file_path = path_to_dbms_dir.joinpath(
         f"{db_name}/wiggle_number_{db_name}.txt"
     )
+    if new_wn_state_file_path.is_file():
+        raise ValueError("A wiggle file already exists")
+
     new_wn_state_file_path.touch()
+
+    with open(new_wn_state_file_path, "w") as file:
+        file.write("0")
 
     return new_wn_state_file_path
 
 
-def new_database() -> DatabaseWiggleNumberFilePaths:
+def create_new_dbms() -> DbmsFilePath:
     """
 
     :return:
@@ -94,23 +99,31 @@ def new_database() -> DatabaseWiggleNumberFilePaths:
             db_path = create_new_database(new_db_name)
             wn_path = create_new_wiggle_number_file(new_db_name)
             print(f"Using {new_db_name}")
-            return DatabaseWiggleNumberFilePaths(db=db_path, wn=wn_path)
+            return DbmsFilePath(db=db_path, wn=wn_path)
         except ValueError:
             print(f"{new_db_name} is already taken, please choose another name.")
             continue
 
 
-def get_existing_wn_file(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> Path:
-    wn_file = path_to_dbms_dir.joinpath(f"{db_name}/wiggle_number_{db_name}.txt")
-    return wn_file
+def get_existing_wn_file_path(
+    db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
+) -> Path:
+    wn_file_path = path_to_dbms_dir.joinpath(f"{db_name}/wiggle_number_{db_name}.txt")
+    if not wn_file_path.is_file():
+        raise FileNotFoundError()
+    return wn_file_path
 
 
-def get_existing_db_file(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> Path:
-    wn_file = path_to_dbms_dir.joinpath(f"{db_name}/database_{db_name}.json")
-    return wn_file
+def get_existing_db_file_path(
+    db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
+) -> Path:
+    db_file_path = path_to_dbms_dir.joinpath(f"{db_name}/database_{db_name}.json")
+    if not db_file_path.is_file():
+        raise FileNotFoundError()
+    return db_file_path
 
 
-def get_existing_database() -> DatabaseWiggleNumberFilePaths:
+def get_existing_dbms() -> DbmsFilePath:
     """
 
     :return:
@@ -120,19 +133,24 @@ def get_existing_database() -> DatabaseWiggleNumberFilePaths:
 
         if not choices:
             print("There are no databases, please create a new database.")
-            db_path = new_database()
+            db_path = create_new_dbms()
             return db_path
         db_selected = input(
             f"Please select a database to use (Letter):{INPUT_PROMPT_SPACING}"
         )
         try:
             db_name = choices[db_selected]
-            # TODO make sure that this exists
-            db_path = get_existing_db_file(db_name)
-            wn_path = get_existing_wn_file(db_name)
-            return DatabaseWiggleNumberFilePaths(db=db_path, wn=wn_path)
+
         except KeyError:
             print(f"{db_selected} does not exist, please select an existing DB")
+            continue
+
+        try:
+            db_path = get_existing_db_file_path(db_name)
+            wn_path = get_existing_wn_file_path(db_name)
+            return DbmsFilePath(db=db_path, wn=wn_path)
+        except FileNotFoundError as e:
+            print(f"Database files could not be found {e}")
             continue
 
 
@@ -153,7 +171,7 @@ def delete_database(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> int:
     return 0
 
 
-def select_database() -> DatabaseWiggleNumberFilePaths:
+def select_dbms() -> DbmsFilePath:
     """
     Select the databases to be used.
     :return: A path to the correct DB.
@@ -162,8 +180,8 @@ def select_database() -> DatabaseWiggleNumberFilePaths:
     db_choice = input(f"Use existing db (y/n):{INPUT_PROMPT_SPACING}")
     match db_choice:
         case "y":
-            db_path = get_existing_database()
+            db_path = get_existing_dbms()
         case _:
-            db_path = new_database()
+            db_path = create_new_dbms()
 
     return db_path
