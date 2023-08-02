@@ -87,7 +87,7 @@ def create_new_wiggle_number_file(
     return new_wn_state_file_path
 
 
-def create_new_dbms() -> DbmsFilePath:
+def create_new_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
     """
 
     :return:
@@ -96,10 +96,12 @@ def create_new_dbms() -> DbmsFilePath:
         new_db_name = input(f"Please enter a new db name:{INPUT_PROMPT_SPACING}")
         try:
             # todo cancel operation
-            db_path = create_new_database(new_db_name)
-            wn_path = create_new_wiggle_number_file(new_db_name)
+            db_path = create_new_database(new_db_name, path_to_dbms_dir)
+            wn_path = create_new_wiggle_number_file(new_db_name, path_to_dbms_dir)
             print(f"Using {new_db_name}")
-            return DbmsFilePath(db=db_path, wn=wn_path)
+            return DbmsFilePath(
+                database_file_path=db_path, wiggle_number_file_path=wn_path
+            )
         except ValueError:
             print(f"{new_db_name} is already taken, please choose another name.")
             continue
@@ -123,7 +125,7 @@ def get_existing_db_file_path(
     return db_file_path
 
 
-def get_existing_dbms() -> DbmsFilePath:
+def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
     """
 
     :return:
@@ -133,7 +135,7 @@ def get_existing_dbms() -> DbmsFilePath:
 
         if not choices:
             print("There are no databases, please create a new database.")
-            db_path = create_new_dbms()
+            db_path = create_new_dbms(path_to_dbms_dir=path_to_dbms_dir)
             return db_path
         db_selected = input(
             f"Please select a database to use (Letter):{INPUT_PROMPT_SPACING}"
@@ -146,9 +148,15 @@ def get_existing_dbms() -> DbmsFilePath:
             continue
 
         try:
-            db_path = get_existing_db_file_path(db_name)
-            wn_path = get_existing_wn_file_path(db_name)
-            return DbmsFilePath(db=db_path, wn=wn_path)
+            db_path = get_existing_db_file_path(
+                db_name=db_name, path_to_dbms_dir=path_to_dbms_dir
+            )
+            wn_path = get_existing_wn_file_path(
+                db_name=db_name, path_to_dbms_dir=path_to_dbms_dir
+            )
+            return DbmsFilePath(
+                database_file_path=db_path, wiggle_number_file_path=wn_path
+            )
         except FileNotFoundError as e:
             print(f"Database files could not be found {e}")
             continue

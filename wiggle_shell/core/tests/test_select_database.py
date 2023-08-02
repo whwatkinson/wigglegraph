@@ -10,6 +10,7 @@ from wiggle_shell.core.select_database import (
     create_new_wiggle_number_file,
     get_existing_wn_file_path,
     get_existing_db_file_path,
+    create_new_dbms,
 )
 from testing import TEST_DBMS_FOLDER_PATH
 
@@ -17,6 +18,7 @@ from testing import TEST_DBMS_FOLDER_PATH
 class TestSelectDatabase:
     @staticmethod
     def clear_dbmss() -> None:
+
         skips = {"sample_dbms"}
         existing_databases = list_existing_dbms(
             skips=skips, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
@@ -128,8 +130,21 @@ class TestSelectDatabase:
                 db_name="NOT A WN", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
 
-    def test_new_database(self) -> None:
-        pass
+    @pytest.mark.xfail
+    def test_create_new_dbms(self, setup_databases: Generator) -> None:
+
+        new_db_name = "test_foo"
+
+        test = create_new_dbms(new_db_name, TEST_DBMS_FOLDER_PATH)
+
+        exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
+            f"{new_db_name}/database_{new_db_name}.json"
+        )
+        exp_wiggle_number_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
+            f"{new_db_name}/wiggle_number_{new_db_name}.txt"
+        )
+        assert test.database_file_path == exp_database_file_path
+        assert test.wiggle_number_file_path == exp_wiggle_number_file_path
 
     def test_get_existing_database(self) -> None:
         pass
