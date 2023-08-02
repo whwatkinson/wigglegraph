@@ -154,7 +154,7 @@ def get_existing_dbms() -> DbmsFilePath:
             continue
 
 
-def delete_database(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> int:
+def delete_dbms(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> int:
 
     db_path = path_to_dbms_dir.joinpath(f"{db_name}/")
 

@@ -6,7 +6,7 @@ from wiggle_shell.core.select_database import (
     get_and_display_available_database,
     list_existing_dbms,
     create_new_database,
-    delete_database,
+    delete_dbms,
     create_new_wiggle_number_file,
     get_existing_wn_file_path,
     get_existing_db_file_path,
@@ -15,25 +15,22 @@ from testing import TEST_DBMS_FOLDER_PATH
 
 
 class TestSelectDatabase:
+    @staticmethod
+    def clear_dbmss() -> None:
+        skips = {"sample_dbms"}
+        existing_databases = list_existing_dbms(
+            skips=skips, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+        )
+
+        for db_name in existing_databases:
+            delete_dbms(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+
     @pytest.fixture
     def setup_databases(self) -> Generator:
-        skips = {"sample_dbms"}
-        existing_databases = list_existing_dbms(
-            skips=skips, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
-        )
-
-        for db_name in existing_databases:
-            delete_database(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+        self.clear_dbmss()
         create_new_database(db_name="test", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
-
         yield None
-        skips = {"sample_dbms"}
-        existing_databases = list_existing_dbms(
-            skips=skips, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
-        )
-
-        for db_name in existing_databases:
-            delete_database(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+        self.clear_dbmss()
 
     def test_list_existing_databases(self, setup_databases: Generator) -> None:
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
