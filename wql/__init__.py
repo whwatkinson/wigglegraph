@@ -1,3 +1,0 @@
-"""
-Wiggle Query Language (wql)
-"""
