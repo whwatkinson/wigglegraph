@@ -1,6 +1,6 @@
 from typing import Optional
 
-from models.wql.query import Make
+from models.wql.raw_query import Make
 from wiggle_query_language.clauses.make.make_patterns import MAKE_STATEMENT_BROAD
 
 

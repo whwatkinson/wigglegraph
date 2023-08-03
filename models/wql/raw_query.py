@@ -7,7 +7,7 @@ class Make(BaseModel):
     statement: str
 
 
-class ParsedQuery(BaseModel):
+class RawQuery(BaseModel):
     make: Optional[list[Make]]
     find: Optional[dict]
     criteria: Optional[dict]
