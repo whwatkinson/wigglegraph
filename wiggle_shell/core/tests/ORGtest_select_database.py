@@ -2,8 +2,8 @@ from typing import Generator
 
 import pytest
 
-from wiggle_shell.core.select_database import (
-    get_and_display_available_database,
+from wiggle_shell.core.ORGselect_database import (
+    get_and_display_available_dbms,
     list_existing_dbms,
     create_new_database,
     delete_dbms,
@@ -35,18 +35,14 @@ class TestSelectDatabase:
         yield None
         self.clear_dbmss()
 
-    def test_list_existing_databases(self, setup_databases: Generator) -> None:
+    def test_list_existing_dbms(self, setup_databases: Generator) -> None:
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
         assert len(test) == 2
         assert "test" in test
 
-    def test_get_and_display_available_database(
-        self, setup_databases: Generator
-    ) -> None:
-        test = get_and_display_available_database(
-            path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
-        )
+    def test_get_and_display_available_dbms(self, setup_databases: Generator) -> None:
+        test = get_and_display_available_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
         assert len(test) == 2
         assert test["A"] == "sample_dbms"

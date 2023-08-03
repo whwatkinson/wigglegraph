@@ -32,7 +32,7 @@ def list_existing_dbms(
     return existing_databases
 
 
-def get_and_display_available_database(
+def get_and_display_available_dbms(
     path_to_dbms_dir: Path = DBMS_FOLDER,
 ) -> dict[str, str]:
     skips = {"tests", "__pycache__"}
@@ -149,7 +149,7 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
     """
     # todo test for this and break up
     while True:
-        choices = get_and_display_available_database()
+        choices = get_and_display_available_dbms()
 
         if not choices:
             print("There are no databases, please create a new database.")

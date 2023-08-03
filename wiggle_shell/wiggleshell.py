@@ -1,4 +1,4 @@
-from core.select_database import select_dbms
+from core.select_dbms.select_dbms import select_dbms
 
 
 def start_wiggle_shell() -> None:
