@@ -1,1 +1,3 @@
 # wigglegraph
+
+Welcome to Wigglegraph.
