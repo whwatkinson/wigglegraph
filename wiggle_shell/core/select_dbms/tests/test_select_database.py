@@ -47,5 +47,5 @@ class TestSelectDatabase:
 
         with pytest.raises(FileNotFoundError):
             get_existing_db_file_path(
-                db_name="NOT A WN", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+                db_name="NOT A DB", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
