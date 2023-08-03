@@ -10,7 +10,8 @@ from wiggle_shell.core.select_database import (
     create_new_wiggle_number_file,
     get_existing_wn_file_path,
     get_existing_db_file_path,
-    create_new_dbms,
+    get_new_dbms_file_paths,
+    get_existing_dbms_file_paths,
 )
 from testing import TEST_DBMS_FOLDER_PATH
 
@@ -130,12 +131,11 @@ class TestSelectDatabase:
                 db_name="NOT A WN", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
 
-    @pytest.mark.xfail
-    def test_create_new_dbms(self, setup_databases: Generator) -> None:
+    def test_get_new_dbms_file_paths(self, setup_databases: Generator) -> None:
 
         new_db_name = "test_foo"
 
-        test = create_new_dbms(new_db_name, TEST_DBMS_FOLDER_PATH)
+        test = get_new_dbms_file_paths(new_db_name, TEST_DBMS_FOLDER_PATH)
 
         exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
             f"{new_db_name}/database_{new_db_name}.json"
@@ -146,5 +146,15 @@ class TestSelectDatabase:
         assert test.database_file_path == exp_database_file_path
         assert test.wiggle_number_file_path == exp_wiggle_number_file_path
 
-    def test_get_existing_database(self) -> None:
-        pass
+    @pytest.mark.xfail
+    def test_get_existing_dbms_file_paths(self, setup_databases: Generator) -> None:
+        existing_db_name = "test"
+        test = get_existing_dbms_file_paths(existing_db_name, TEST_DBMS_FOLDER_PATH)
+        exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
+            f"{existing_db_name}/database_{existing_db_name}.json"
+        )
+        exp_wiggle_number_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
+            f"{existing_db_name}/wiggle_number_{existing_db_name}.txt"
+        )
+        assert test.database_file_path == exp_database_file_path
+        assert test.wiggle_number_file_path == exp_wiggle_number_file_path

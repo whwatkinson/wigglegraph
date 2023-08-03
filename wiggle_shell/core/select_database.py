@@ -95,16 +95,33 @@ def create_new_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
     while True:
         new_db_name = input(f"Please enter a new db name:{INPUT_PROMPT_SPACING}")
         try:
-            # todo cancel operation
-            db_path = create_new_database(new_db_name, path_to_dbms_dir)
-            wn_path = create_new_wiggle_number_file(new_db_name, path_to_dbms_dir)
-            print(f"Using {new_db_name}")
-            return DbmsFilePath(
-                database_file_path=db_path, wiggle_number_file_path=wn_path
+            return get_new_dbms_file_paths(
+                new_db_name=new_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
         except ValueError:
             print(f"{new_db_name} is already taken, please choose another name.")
             continue
+
+
+def get_new_dbms_file_paths(
+    new_db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
+) -> DbmsFilePath:
+    """
+    Creates a new DBMS
+    :param new_db_name: The name of the new dbms
+    :param path_to_dbms_dir: The path ot the DBMS directory
+    :return:
+    """
+
+    try:
+        # todo cancel operation
+        db_path = create_new_database(new_db_name, path_to_dbms_dir)
+        wn_path = create_new_wiggle_number_file(new_db_name, path_to_dbms_dir)
+        print(f"Using {new_db_name}")
+        return DbmsFilePath(database_file_path=db_path, wiggle_number_file_path=wn_path)
+    except ValueError:
+        print(f"{new_db_name} is already taken, please choose another name.")
+        raise
 
 
 def get_existing_wn_file_path(
@@ -130,6 +147,7 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
 
     :return:
     """
+    # todo test for this and break up
     while True:
         choices = get_and_display_available_database()
 
@@ -141,7 +159,7 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
             f"Please select a database to use (Letter):{INPUT_PROMPT_SPACING}"
         )
         try:
-            db_name = choices[db_selected]
+            existing_db_name = choices[db_selected]
 
         except KeyError:
             print(f"{db_selected} does not exist, please select an existing DB")
@@ -149,10 +167,10 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
 
         try:
             db_path = get_existing_db_file_path(
-                db_name=db_name, path_to_dbms_dir=path_to_dbms_dir
+                db_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
             wn_path = get_existing_wn_file_path(
-                db_name=db_name, path_to_dbms_dir=path_to_dbms_dir
+                db_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
             return DbmsFilePath(
                 database_file_path=db_path, wiggle_number_file_path=wn_path
@@ -160,6 +178,12 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
         except FileNotFoundError as e:
             print(f"Database files could not be found {e}")
             continue
+
+
+def get_existing_dbms_file_paths(
+    existing_db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
+) -> DbmsFilePath:
+    pass
 
 
 def delete_dbms(db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> int:
