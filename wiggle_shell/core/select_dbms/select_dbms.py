@@ -30,7 +30,9 @@ def list_existing_dbms(
         x.name for x in path_to_dbms_dir.iterdir() if x.is_dir() and x.name not in skips
     ]
 
-    return existing_databases
+    existing_databases_sorted = sorted(existing_databases)
+
+    return existing_databases_sorted
 
 
 def get_and_display_available_dbms(
