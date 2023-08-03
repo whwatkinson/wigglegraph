@@ -28,41 +28,43 @@ class TestSelectDatabase:
 
     def test_create_new_database(self, setup_databases: Generator) -> None:
 
-        db_name = "foo2"
+        dbms_name = "foo2"
         # Check that the db does not exit
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
         assert len(test) == 2
-        assert db_name not in test
+        assert dbms_name not in test
         assert "test" in test
 
         # Create the database file
-        create_new_database(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+        create_new_database(dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
         assert len(test) == 3
-        assert db_name in test
+        assert dbms_name in test
 
         # Create the database file again
         with pytest.raises(ValueError):
-            create_new_database(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+            create_new_database(
+                dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+            )
 
         # Check that there are still 3 dbs
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
         assert len(test) == 3
-        assert db_name in test
+        assert dbms_name in test
 
     def test_get_new_dbms_file_paths(self, setup_databases: Generator) -> None:
 
-        new_db_name = "test_foo"
-        test = get_new_dbms_file_paths(new_db_name, TEST_DBMS_FOLDER_PATH)
+        new_dbms_name = "test_foo"
+        test = get_new_dbms_file_paths(new_dbms_name, TEST_DBMS_FOLDER_PATH)
 
         exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
-            f"{new_db_name}/database_{new_db_name}.json"
+            f"{new_dbms_name}/database_{new_dbms_name}.json"
         )
         exp_wiggle_number_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
-            f"{new_db_name}/wiggle_number_{new_db_name}.txt"
+            f"{new_dbms_name}/wiggle_number_{new_dbms_name}.txt"
         )
         assert test.database_file_path == exp_database_file_path
         assert test.wiggle_number_file_path == exp_wiggle_number_file_path

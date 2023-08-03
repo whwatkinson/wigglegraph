@@ -37,12 +37,12 @@ class TestSelectDatabase:
             "sample_dbms/wiggle_number_sample_dbms.txt"
         )
         test_wn_fp = get_existing_wn_file_path(
-            db_name="sample_dbms", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+            dbms_name="sample_dbms", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
         )
 
         assert exp_wn_fp == test_wn_fp
 
         with pytest.raises(FileNotFoundError):
             get_existing_wn_file_path(
-                db_name="NOT A WN", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+                dbms_name="NOT A WN", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )

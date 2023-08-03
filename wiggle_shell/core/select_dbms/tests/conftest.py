@@ -16,13 +16,13 @@ def clear_dbmss() -> None:
         skips=skips, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
     )
 
-    for db_name in existing_databases:
-        delete_dbms(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+    for dbms_name in existing_databases:
+        delete_dbms(dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
 
 @pytest.fixture
 def setup_databases() -> Generator:
     clear_dbmss()
-    create_new_database(db_name="test", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+    create_new_database(dbms_name="test", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
     yield None
     clear_dbmss()
