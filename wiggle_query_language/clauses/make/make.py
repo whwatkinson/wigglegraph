@@ -4,6 +4,18 @@ from models.wql.raw_query import Make
 from wiggle_query_language.clauses.make.make_patterns import MAKE_STATEMENT_BROAD
 
 
+def check_params():
+    pass
+
+
+def check_make_syntax():
+    pass
+
+
+def extract_all_make_statements():
+    pass
+
+
 def extract_make_statement_from_query(query_string: str) -> Optional[list[Make]]:
     """
     Extracts the MAkE statement from the query body

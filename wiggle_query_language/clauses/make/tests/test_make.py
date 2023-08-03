@@ -87,7 +87,7 @@ class TestWqlMake:
             ),
         ],
     )
-    def test_extract_make_statement_from_query(
+    def test_extract_make_statement_from_query__basic_pattern_matching(
         self, sample_query: str, expected_output: list[str], exception
     ) -> None:
 
@@ -95,3 +95,6 @@ class TestWqlMake:
             test = extract_make_statement_from_query(sample_query)
 
             assert test == expected_output
+
+    def test_extract_make_statement_from_query_pattern_matching(self):
+        pass
