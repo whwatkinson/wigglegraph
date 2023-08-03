@@ -1,43 +1,39 @@
+from os import stat
 from typing import Generator
 
 import pytest
 
 from wiggle_shell.core.select_dbms import (
-    # create_new_database,
+    create_new_database,
     get_existing_db_file_path,
 )
 from testing import TEST_DBMS_FOLDER_PATH
 
 
 class TestSelectDatabase:
-    @pytest.mark.skip
     def test_create_new_database(self, setup_databases: Generator) -> None:
-        # TODO rewrite removing dbms functions use path
-        pass
-        # db_name = "foo2"
-        # # Check that the db does not exit
-        # test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
-        #
-        # assert len(test) == 2
-        # assert db_name not in test
-        # assert "test" in test
-        #
-        # # Create the database file
-        # create_new_database(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
-        #
-        # test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
-        #
-        # assert len(test) == 3
-        # assert db_name in test
-        #
-        # # Create the database file again
-        # with pytest.raises(ValueError):
-        #     create_new_database(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
-        #
-        # # Check that there are still 3 dbs
-        # test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
-        # assert len(test) == 3
-        # assert db_name in test
+
+        db_name = "foo2"
+        # Check that the db does not exit
+
+        test_db_fp = TEST_DBMS_FOLDER_PATH.joinpath(
+            f"{db_name}/database_{db_name}.json"
+        )
+        assert test_db_fp.is_file() is False
+
+        # Create the database file
+        test_after = create_new_database(
+            db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+        )
+        assert test_after == test_db_fp
+        assert test_after.is_file() is True
+
+        # Check to see if the file is empty
+        assert stat(test_db_fp).st_size == 0
+
+        # Create the database file again
+        with pytest.raises(ValueError):
+            create_new_database(db_name=db_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
     def test_get_existing_db_file(self) -> None:
         exp_db_fp = TEST_DBMS_FOLDER_PATH.joinpath(
