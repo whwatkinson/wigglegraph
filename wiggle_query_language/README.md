@@ -14,8 +14,8 @@
 ### Clauses:
 
 ```commandline
-MAKE (n:NodeLabel)-[:]->(n:NodeLabel);
-FIND (p:NodeLabel)-[:]->(q:NodeLabel);
+MAKE (n:NodeLabel)-[r:REL]->(n:NodeLabel);
+FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
 CRITERIA p.name = "Bar" or q.name = "Bar;
 REPORT wn(p), wn(q);
 ```

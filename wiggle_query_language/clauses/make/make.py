@@ -1,17 +1,23 @@
 from typing import Optional
 
-from wiggle_query_language.clauses.make.make_patterns import MAKE_STATEMENT
+from models.wigshell.query import Make
+from wiggle_query_language.clauses.make.make_patterns import MAKE_STATEMENT_BROAD
 
 
-def extract_make_statement_from_query(query_string: str) -> Optional[list[str]]:
+def extract_make_statement_from_query(query_string: str) -> Optional[list[Make]]:
     """
     Extracts the MAkE statement from the query body
     :param query_string:
     :return: A list of MAKE statements
     """
-    matches = MAKE_STATEMENT.findall(query_string)
+
+    matches = MAKE_STATEMENT_BROAD.findall(query_string)
+
+    # TODO check for syntax errors and return early with helpful message
+
+    matches_validated = matches
 
     if matches:
-        return matches
+        return [Make(statement=stmt) for stmt in matches_validated]
     else:
         return None

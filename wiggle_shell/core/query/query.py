@@ -6,8 +6,6 @@ from wiggle_query_language.clauses.make.make import extract_make_statement_from_
 
 def parse_raw_query(query_string: str) -> ParsedQuery:
 
-    print(query_string)
-
     make = extract_make_statement_from_query(query_string)
     find = None
     criteria = None
