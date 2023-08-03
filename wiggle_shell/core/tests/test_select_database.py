@@ -134,7 +134,6 @@ class TestSelectDatabase:
     def test_get_new_dbms_file_paths(self, setup_databases: Generator) -> None:
 
         new_db_name = "test_foo"
-
         test = get_new_dbms_file_paths(new_db_name, TEST_DBMS_FOLDER_PATH)
 
         exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
@@ -150,6 +149,7 @@ class TestSelectDatabase:
     def test_get_existing_dbms_file_paths(self, setup_databases: Generator) -> None:
         existing_db_name = "test"
         test = get_existing_dbms_file_paths(existing_db_name, TEST_DBMS_FOLDER_PATH)
+
         exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
             f"{existing_db_name}/database_{existing_db_name}.json"
         )
