@@ -2,6 +2,10 @@ from core.select_dbms.select_dbms import select_dbms
 
 
 def start_wiggle_shell() -> None:
+    """
+    Interactive shell for the Wiggle shell
+    :return: None
+    """
 
     print("**********************")
     print("Welcome to WiggleGraph")
