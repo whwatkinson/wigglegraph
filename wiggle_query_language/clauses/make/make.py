@@ -14,9 +14,9 @@ def check_params():
 
 def check_make_syntax(make_matches: list[str]) -> None:
     """
-    Checks the syntax of the MAKE statement
-    :param make_matches:
-    :return:
+    Checks the syntax of the MAKE statement.
+    :param make_matches: The extracted MAKE statements.
+    :return: None or an Exception
     """
 
     query_string = "".join(make_matches)
@@ -28,6 +28,7 @@ def check_make_syntax(make_matches: list[str]) -> None:
             )
 
     # TODO check params
+    check_params()
 
     return None
 
@@ -36,7 +37,7 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     """
     Extracts the MAKE statement from the query body.
     :param query_string: The raw query.
-    :return: A list of MAKE statements
+    :return: A list of MAKE statements.
     """
 
     if make_matches := MAKE_STATEMENT_ALL.findall(query_string):
