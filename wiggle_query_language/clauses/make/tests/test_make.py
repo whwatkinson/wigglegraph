@@ -3,10 +3,11 @@ from typing import Generator
 
 import pytest
 
-from exceptions.wql.make import MakeClauseSyntaxError
+from exceptions.wql.make import MakeClauseSyntaxError, MakeParamSyntaxError
 from wiggle_query_language.clauses.make.make import (
     extract_all_make_statements,
-    check_make_syntax,
+    check_make_clause_syntax,
+    check_make_params,
 )
 
 
@@ -92,11 +93,7 @@ class TestWqlMake:
 
         with exception:
             test = extract_all_make_statements(test_query)
-
             assert test == expected_output
-
-    def test_extract_make_statement_from_query__basic_params_matching(self) -> None:
-        pass
 
     @pytest.mark.parametrize(
         "test_make_stmt, expected_value, exception",
@@ -134,8 +131,25 @@ class TestWqlMake:
         ],
     )
     def test_check_make_syntax(
-        self, test_make_stmt: str, expected_value: None, exception
+        self, test_make_stmt: list[str], expected_value: None, exception
     ) -> None:
 
         with exception:
-            check_make_syntax(test_make_stmt)
+            check_make_clause_syntax(test_make_stmt)
+
+    @pytest.mark.parametrize(
+        "test_make_stmt, expected_value, exception",
+        [
+            pytest.param("MAKE (n:Person{first_name:'Harry'})", None, does_not_raise()),
+            pytest.param(
+                ["MAKE (n:Person{first_name:'Harry', last_name:'Watkinson'})"],
+                None,
+                pytest.raises(MakeParamSyntaxError),
+            ),
+        ],
+    )
+    def test_check_make_params(
+        self, test_make_stmt: list[str], expected_value: None, exception
+    ) -> None:
+        with exception:
+            check_make_params(test_make_stmt)

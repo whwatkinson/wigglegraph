@@ -17,6 +17,7 @@
 - Quick detection of errors and returning a helpful explanation.
 - Support for datatypes String, Array, Integer and Float.
 - For now, support for creating one relationship at a time.
+- Params when makeing Nodes and Edges are separated by a pipe.
 
 ## Clauses
 
