@@ -99,31 +99,31 @@ class TestWqlMake:
         "test_make_stmt, expected_value, exception",
         [
             pytest.param(
-                ["MAKeeE (node:NodeLabel);"],
+                "MAKeeE (node:NodeLabel);]",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                ["MAk (node:NodeLabel);"],
+                "MAk (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                ["Mkea (node:NodeLabel);"],
+                "Mkea (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                ["MAKeeE (node:NodeLabel);"],
+                "MAKeeE (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                ["JSLW (node:NodeLabel);"],
+                "JSLW (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
@@ -131,7 +131,7 @@ class TestWqlMake:
         ],
     )
     def test_check_make_syntax(
-        self, test_make_stmt: list[str], expected_value: None, exception
+        self, test_make_stmt: str, expected_value: None, exception
     ) -> None:
 
         with exception:
@@ -140,11 +140,20 @@ class TestWqlMake:
     @pytest.mark.parametrize(
         "test_make_stmt, expected_value, exception",
         [
-            pytest.param("MAKE (n:Person{first_name:'Harry'})", None, does_not_raise()),
+            pytest.param(
+                ["MAKE (n:Person)"], None, does_not_raise(), id="EXP PASS: No params"
+            ),
+            pytest.param(
+                ["MAKE (n:Person{first_name:'Harry'})"],
+                None,
+                does_not_raise(),
+                id="EXP PASS: One params",
+            ),
             pytest.param(
                 ["MAKE (n:Person{first_name:'Harry', last_name:'Watkinson'})"],
                 None,
                 pytest.raises(MakeParamSyntaxError),
+                id="EXP EXEC: Miss match 2 colons 1 pipe",
             ),
         ],
     )

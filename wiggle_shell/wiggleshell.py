@@ -1,5 +1,5 @@
 from core.select_dbms.select_dbms import select_dbms
-from core.query.query import parse_raw_query
+from core.query.query import query
 
 from wiggle_shell import INPUT_PROMPT_SPACING
 
@@ -17,7 +17,7 @@ def start_wiggle_shell() -> None:
     # Create/Use an existing DBMS
     while True:
         dbms_file_path = select_dbms()
-        print(dbms_file_path)
+        print(f"Using {dbms_file_path}")
         break
 
     # Interact with the DB
@@ -25,9 +25,12 @@ def start_wiggle_shell() -> None:
         query_string = input(f"Please enter a query (q) to exit{INPUT_PROMPT_SPACING}")
         print(query_string)
 
+        if query_string == "q":
+            print("Good Bye!")
+            break
+
         try:
-            query_parsed = parse_raw_query(query_string)
-            print(query_parsed)
+            query(query_string)
         except Exception:
             continue
 

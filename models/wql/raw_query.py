@@ -1,14 +1,16 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+from wiggle_query_language.clauses.make.make_patterns import MAKE_STATEMENT_ALL
 
 
-class Make(BaseModel):
-    statement: str
+class RawMake(BaseModel):
+    statement: str = Field(regex=MAKE_STATEMENT_ALL.pattern)
 
 
 class RawQuery(BaseModel):
-    make: Optional[list[Make]]
-    find: Optional[dict]
-    criteria: Optional[dict]
-    report: Optional[dict]
+    make: Optional[list[RawMake]]
+    find: Optional[dict] = None
+    criteria: Optional[dict] = None
+    report: Optional[dict] = None
