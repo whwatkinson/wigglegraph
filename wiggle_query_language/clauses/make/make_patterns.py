@@ -1,7 +1,9 @@
 from re import compile
 
 # MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel);
-MAKE_STATEMENT_BROAD = compile(r"\s*(?P<make>[MAKEmake]{4}.+;)\s*")
+MAKE_STATEMENT_ALL = compile(r"\s*(?P<make_stmt_all>[MAKEmake]{4}.+;)\s*")
 
-# MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel;
-MAKE_STATEMENT_CHECK_SYNTAX = compile(r"")
+# Mak (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel;
+MAKE_STATEMENT_CHECK_SYNTAX = compile(
+    r"\s?(?P<make_syntax_error>[MmNnJjKkAaSsZzIiOoLlEeWwRrDd]{3,6})\s?\("
+)

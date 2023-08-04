@@ -10,11 +10,13 @@
 
 
 ### Design philosophy and considerations
+- Match patterns with declarative language.
 - Syntactically similar to the [Cypher Query Language](https://neo4j.com/developer/cypher/)
 - Main clauses are case-insensitive.
 - Clauses are separated by a semicolon (;), better parsing will come.
 - Quick detection of errors and returning a helpful explanation.
 - Support for datatypes String, Array, Integer and Float.
+- For now, support for creating one relationship at a time.
 
 ### Clauses
 
