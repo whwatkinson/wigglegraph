@@ -17,13 +17,13 @@ def start_wiggle_shell() -> None:
     # Create/Use an existing DBMS
     while True:
         dbms_file_path = select_dbms()
-        print(f"Using {dbms_file_path}")
+        print(f"Using {dbms_file_path}\n")
         break
 
     # Interact with the DB
     while True:
-        query_string = input(f"Please enter a query (q) to exit{INPUT_PROMPT_SPACING}")
-        print(query_string)
+        query_string = input(f"Please enter a query (q to exit){INPUT_PROMPT_SPACING}")
+        print(query_string, "\n")
 
         if query_string == "q":
             print("Good Bye!")

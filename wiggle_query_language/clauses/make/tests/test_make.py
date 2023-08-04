@@ -141,16 +141,16 @@ class TestWqlMake:
         "test_make_stmt, expected_value, exception",
         [
             pytest.param(
-                ["MAKE (n:Person)"], None, does_not_raise(), id="EXP PASS: No params"
+                ["MAKE (n:Person);"], None, does_not_raise(), id="EXP PASS: No params"
             ),
             pytest.param(
-                ["MAKE (n:Person{first_name:'Harry'})"],
+                ["MAKE (n:Person{first_name:'Harry'});"],
                 None,
                 does_not_raise(),
                 id="EXP PASS: One params",
             ),
             pytest.param(
-                ["MAKE (n:Person{first_name:'Harry', last_name:'Watkinson'})"],
+                ["MAKE (n:Person{first_name:'Harry', last_name:'Watkinson'});"],
                 None,
                 pytest.raises(MakeParamSyntaxError),
                 id="EXP EXEC: Miss match 2 colons 1 pipe",

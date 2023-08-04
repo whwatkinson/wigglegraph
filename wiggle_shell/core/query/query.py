@@ -34,7 +34,19 @@ def execute_query(raw_query: RawQuery) -> None:
     return None
 
 
+def valid_query(query_string) -> bool:
+    valid_query_set = {"make", "find", "adjust", "criteria", "Report"}
+    query_string_set = set(query_string.lower().split(" "))
+
+    return bool(valid_query_set.intersection(query_string_set))
+
+
 def query(query_string: str) -> None:
+
+    if not valid_query(query_string):
+        # todo make this an exception
+        print("Please enter a valid query..\n")
+        return None
 
     raw_query = parse_query_string(query_string)
 
@@ -49,6 +61,6 @@ if __name__ == "__main__":
     with open(sample_query_fp, "r") as file:
         qry = file.read()
 
-    # qry = "MAKE (n:NodeLabel)-[r:REL]->(n:NodeLabel);"
+    qry = "MAKE (n:Person);MAKE (n:Person);"
 
     print(parse_query_string(qry))
