@@ -1,0 +1,2 @@
+FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+REPORT wn(p), wn(q);
