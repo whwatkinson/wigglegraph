@@ -95,6 +95,28 @@ class TestWqlMake:
             test = extract_all_make_statements(test_query)
             assert test == expected_output
 
+    @pytest.mark.xfail
+    @pytest.mark.parametrize(
+        "test_query, expected_output, exception",
+        [
+            pytest.param(
+                "MAKE (:NodeLabel)-[:]->(:NodeLabel), (:NodeLabel2)-[:]->(:NodeLabel2);",
+                [
+                    "MAKE (:NodeLabel)-[:]->(:NodeLabel), (:NodeLabel2)-[:]->(:NodeLabel2);"
+                ],
+                does_not_raise(),
+                id="EXP PASS: Simple Case",
+            ),
+        ],
+    )
+    def test_extract_all_make_statements__more_pattern_matching(
+        self, test_query: str, expected_output: list[str], exception
+    ) -> None:
+
+        with exception:
+            test = extract_all_make_statements(test_query)
+            assert test == expected_output
+
     @pytest.mark.parametrize(
         "test_make_stmt, expected_value, exception",
         [

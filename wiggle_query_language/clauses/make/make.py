@@ -3,7 +3,7 @@ from typing import Optional
 from exceptions.wql.make import MakeClauseSyntaxError, MakeParamSyntaxError
 from models.wql.raw_query import RawMake
 from wiggle_query_language.clauses.make.make_patterns import (
-    MAKE_STATEMENT_ALL,
+    MAKE_STATEMENT_ALL_V2,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX,
 )
@@ -60,7 +60,9 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     """
 
     # todo maybe do this with just pydantic
-    if make_matches := MAKE_STATEMENT_ALL.findall(query_string):
+    # USE search and then groupasdict
+
+    if make_matches := MAKE_STATEMENT_ALL_V2.findall(query_string):
         return make_matches
 
     check_make_clause_syntax(query_string)
