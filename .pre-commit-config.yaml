@@ -17,15 +17,15 @@ repos:
     hooks:
     -   id: flake8
         args: ["-j8", "--ignore=E501"]
-#
--   repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
-    hooks:
-        - id: isort
-          args: [ "--multi-line=5", "--line-length=120", "--use-parentheses", "--filter-files" ]
-          exclude: "migrations"
-          stages: [ commit ]
-    name: isort (python)
+
+#-   repo: https://github.com/PyCQA/isort
+#    rev: 5.12.0
+#    hooks:
+#    -   id: isort
+#        args: [ "--multi-line=5", "--line-length=120", "--use-parentheses", "--filter-files" ]
+#        exclude: "migrations"
+#        stages: [ commit ]
+
 #
 #-   repo: https://github.com/pre-commit/mirrors-mypy
 #    rev: v1.4.1
