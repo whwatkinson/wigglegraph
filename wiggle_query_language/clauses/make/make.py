@@ -85,3 +85,28 @@ def extract_make_statement_from_query(query_string: str) -> Optional[list[RawMak
         return [RawMake(statement=stmt) for stmt in matches_validated]
     else:
         return None
+
+
+"""
+
+
+MAKE (e : NodeLabel ) -[ F : REL ]-> ( foo : NodeLabel ), (:NodeLabel2)-[:]->(:NodeLabel2);
+MAKE (:NodeLabel)-[F:REL]->(foo:NodeLabel), (:NodeLabel2)-[:]->(:NodeLabel2);
+MAKE (:NodeLabel)-[:]->(foo:NodeLabel), (:NodeLabel2)-[:]->(:NodeLabel2);
+MAKE (:NodeLabel)-[:]->(foo:NodeLabel);
+
+MAKE (:NodeLabel{})-[:]->(foo:NodeLabel {} );
+MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel {} );
+MAKE (:NodeLabel{int: 1, str: '2'})-[:]->(foo:NodeLabel {} );
+MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4"})-[:]->(foo:NodeLabel {} );
+MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14})-[:]->(foo:NodeLabel {} );
+MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[:]->(foo:NodeLabel {} );
+
+
+MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(foo:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );
+
+MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]-(foo2:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} )<-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]-(foo3:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );
+
+
+
+"""
