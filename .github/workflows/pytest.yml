@@ -34,4 +34,4 @@ jobs:
 
       - name: Run Coverage
         run: |
-          ./run_coverage.sh
+          bash run_coverage.sh
