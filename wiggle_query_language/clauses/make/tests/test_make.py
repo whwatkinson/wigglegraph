@@ -96,7 +96,6 @@ class TestWqlMake:
     def test_extract_all_make_statements__basic_pattern_matching(
         self, test_query: str, expected_output: list[str], exception
     ) -> None:
-
         with exception:
             test = extract_all_make_statements(test_query)
             assert test == expected_output
@@ -139,7 +138,6 @@ class TestWqlMake:
     def test_check_make_syntax(
         self, test_make_stmt: str, expected_value: None, exception
     ) -> None:
-
         with exception:
             check_make_clause_syntax(test_make_stmt)
 
@@ -214,7 +212,6 @@ class TestWqlMake:
         expected_value: dict,
         exception: [Union.raises, Generator],
     ) -> None:
-
         with exception:
             test = build_parsed_make(test_make_stmt)
 
@@ -249,7 +246,6 @@ class TestWqlMake:
     def test_extract_make_statement_from_query(
         self, test_make_stmt: str, expected_value: None, exception
     ) -> None:
-
         with exception:
             test = parse_make_statement_from_query_string(test_make_stmt)
             assert len(test) == 1

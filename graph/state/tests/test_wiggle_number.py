@@ -6,7 +6,6 @@ from testing import WIGGLE_NUMBER_TEST_FILE_PATH
 
 class TestWiggleNumber:
     def test_get_get_current_wiggle_number(self, clear_wiggle_number_test) -> None:
-
         test = get_current_wiggle_number(WIGGLE_NUMBER_TEST_FILE_PATH)
 
         assert test == 0
@@ -15,7 +14,6 @@ class TestWiggleNumber:
     def test_update_wiggle_number(
         self, calls: int, expected_result: int, clear_wiggle_number_test
     ) -> None:
-
         wiggle_number = get_current_wiggle_number(WIGGLE_NUMBER_TEST_FILE_PATH)
 
         for _ in range(calls):

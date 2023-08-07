@@ -18,13 +18,11 @@ def check_make_params(make_matches: list[str]) -> None:
     """
 
     for stmt in make_matches:
-
         if not (param_string := MAKE_STATEMENT_CHECK_PARAMS_SYNTAX.findall(stmt)):
             continue
 
         # TODO remove double loop, most of the time will be one match..
         for param_match in param_string:
-
             exp_param_count = param_match.count(",") + 1
             colon_count = param_match.count(":")
 

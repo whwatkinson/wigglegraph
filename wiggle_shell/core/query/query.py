@@ -29,7 +29,6 @@ def handle_make(raw_query_make: list[ParsedMake]):
 
 
 def execute_query(raw_query: ParsedQuery) -> None:
-
     if raw_query_make := raw_query.make:
         handle_make(raw_query_make)
 
@@ -44,7 +43,6 @@ def valid_query(query_string) -> bool:
 
 
 def query(query_string: str) -> None:
-
     if not valid_query(query_string):
         # todo make this an exception
         print("Please enter a valid query..\n")

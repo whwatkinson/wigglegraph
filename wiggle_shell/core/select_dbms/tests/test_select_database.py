@@ -9,7 +9,6 @@ from wiggle_shell.core.select_dbms import create_new_database, get_existing_db_f
 
 class TestSelectDatabase:
     def test_create_new_database(self, setup_databases: Generator) -> None:
-
         dbms_name = "foo2"
         # Check that the db does not exit
 
