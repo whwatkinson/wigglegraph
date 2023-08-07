@@ -2,11 +2,11 @@ from typing import Optional
 
 from exceptions.wql.make import MakeClauseSyntaxError, MakeParamSyntaxError
 from models.wql.parsed_query import ParsedMake
-from wiggle_query_language.clauses.make.make_patterns import (
+from wiggle_query_language.clauses.regexes.make import (
     MAKE_STATEMENT_ALL,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX,
-    PARAMS_PATTERN,
+    NODES_RELS_PATTERN,
 )
 
 
@@ -59,9 +59,6 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     :return: A list of MAKE statements.
     """
 
-    # todo maybe do this with just pydantic
-    # USE search and then groupasdict
-
     if make_matches := [x.group() for x in MAKE_STATEMENT_ALL.finditer(query_string)]:
         return make_matches
 
@@ -71,8 +68,14 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
 
 
 def build_parsed_make(statement: str) -> ParsedMake:
-    parsed_pattern_dict = [x.groupdict() for x in PARAMS_PATTERN.finditer(statement)]
-    # parsed_pattern_list
+    """
+
+    :param statement:
+    :return:
+    """
+    parsed_pattern_dict = [
+        x.groupdict() for x in NODES_RELS_PATTERN.finditer(statement)
+    ]
 
     parsed_make = ParsedMake(
         raw_statement=statement, parsed_pattern_list=parsed_pattern_dict
@@ -99,6 +102,6 @@ def extract_make_statement_from_query(query_string: str) -> Optional[list[Parsed
 
 
 if __name__ == "__main__":
-    qs = """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]-(foo2:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} ) <-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]- (foo3:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );"""
+    qs = """CREATE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]-(foo2:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} ) <-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]- (foo3:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );"""
     s = extract_make_statement_from_query(qs)
     a = 1

@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 from models.wql.enums.clauses import Clause
-from wiggle_query_language.clauses.make.make_patterns import MAKE_STATEMENT_ALL
+from wiggle_query_language.clauses.regexes.make import MAKE_STATEMENT_ALL
 
 
 class Node(BaseModel):

@@ -1,6 +1,3 @@
-from contextlib import contextmanager
-from typing import Generator
-
 import pytest
 
 from exceptions.wql.make import MakeClauseSyntaxError, MakeParamSyntaxError
@@ -8,12 +5,9 @@ from wiggle_query_language.clauses.make.make import (
     extract_all_make_statements,
     check_make_clause_syntax,
     check_make_params,
+    build_parsed_make,
 )
-
-
-@contextmanager
-def does_not_raise() -> Generator:
-    yield None
+from testing.test_helpers import does_not_raise
 
 
 class TestWqlMake:
@@ -201,3 +195,18 @@ class TestWqlMake:
     ) -> None:
         with exception:
             check_make_params(test_make_stmt)
+
+    @pytest.mark.parametrize(
+        "test_make_stmt, expected_value, exception",
+        [
+            pytest.param(
+                "MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);", {}, does_not_raise()
+            )
+        ],
+    )
+    def test_build_parsed_make(
+        self, test_make_stmt: str, expected_value: None, exception
+    ) -> None:
+
+        with exception:
+            _ = build_parsed_make(test_make_stmt)
