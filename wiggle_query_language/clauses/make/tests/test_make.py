@@ -85,6 +85,15 @@ class TestWqlMake:
                 does_not_raise(),
                 id="EXP PASS: Multi Stage Query",
             ),
+            pytest.param(
+                """
+                MAKE (:NodeLabel);
+                MAKE (:NodeLabel);
+                """,
+                ["MAKE (:NodeLabel);", "MAKE (:NodeLabel);"],
+                does_not_raise(),
+                id="EXP PASS: Simple Case",
+            ),
         ],
     )
     def test_extract_all_make_statements__basic_pattern_matching(
@@ -174,8 +183,16 @@ class TestWqlMake:
             pytest.param(
                 ["MAKE (n:Person{first_name:'Harry', last_name:'Watkinson'});"],
                 None,
+                does_not_raise(),
+                id="EXP PASS: 1 comma",
+            ),
+            pytest.param(
+                [
+                    """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(foo:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );"""
+                ],
+                None,
                 pytest.raises(MakeParamSyntaxError),
-                id="EXP EXEC: Miss match 2 colons 1 pipe",
+                id="EXP PASS: 1 comma",
             ),
         ],
     )

@@ -1,17 +1,13 @@
 from re import compile, IGNORECASE
 
 # MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel);
-MAKE_STATEMENT_ALL = compile(
-    r"\s*(?P<make_stmt_all>MAKE\s*\(.+\);)\s*", flags=IGNORECASE
-)
+MAKE_STATEMENT_ALL = compile(r"(?P<make_stmt_all>MAKE\s*\(.+\);)", flags=IGNORECASE)
 
 NODE_PATTERN = compile(r"\s*\w*\s*:\s*\w+\s*", flags=IGNORECASE)
 REL_PATTERN = compile(r"", flags=IGNORECASE)
-PARAMS_PATTERN = compile(r"", flags=IGNORECASE)
 
-
-MAKE_STATEMENT_ALL_V2 = compile(
-    r"(?P<left>\(\s*\w*\s*:\s*\w+\s*(?P<left_props>[{}\w:\s,'\".\[\]]+)?\s*\))(?P<rel>\s*<?-\[\s*\w*\s*:\s*\w*\s*(?P<rel_props>[{}\w:\s,'\".\[\]]+)?\s*]->?\s*)?(?P<middle>\(\s*\w*\s*:\s*\w+\s*(?P<middle_props>[{}\w:\s,'\".\[\]]+)?\s*\)?)(?P<re2l>\s*<?-\[\s*\w*\s*:\s*\w*\s*(?P<rel_2_props>[{}\w:\s,'\".\[\]]+)?\s*]->?\s*)?(?P<right2>\(\s*\w*\s*:\s*\w+\s*(?P<right_props>[{}\w:\s,'\".\[\]]+)?\s*\)?)?",
+PARAMS_PATTERN = compile(
+    r"(?P<left_node>\(\s*(?P<left_node_handle>\w*)\s*:\s*(?P<left_node_label>\w+)\s*(?P<left_node_props>[{}\w:\s,'\".\[\]]+)?\s*\))\s*(?P<rel_left_middle><?-\[\s*(?P<rel_left_middle_handle>\w*)\s*:\s*(?P<rel_left_middle_label>\w*)\s*(?P<rel_lm_props>[{}\w:\s,'\".\[\]]+)?\s*]->?)?\s*(?P<middle_node>\(\s*(?P<middle_node_handle>\w*)\s*:\s*(?P<middle_node_label>\w+)\s*(?P<middle_node_props>[{}\w:\s,'\".\[\]]+)?\s*\)?)\s*(?P<rel_middle_right><?-\[\s*(?P<rel_middle_right_handle>\w*)\s*:\s*(?P<rel_middle_right_label>\w*)\s*(?P<rel_mr_props>[{}\w:\s,'\".\[\]]+)?\s*]->?)?\s*(?P<right_node>\(\s*(?P<right_node_handle>\w*)\s*:\s*(?P<right_node_label>\w+)\s*(?P<right_node_props>[{}\w:\s,'\".\[\]]+)?\s*\)?)?",
     flags=IGNORECASE,
 )
 
