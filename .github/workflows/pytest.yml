@@ -31,3 +31,7 @@ jobs:
       - name: Run Tests
         run: |
           pytest .
+
+      - name: Run Coverage
+        run: |
+          ./run_coverage.sh
