@@ -3,11 +3,8 @@ from typing import Generator
 
 import pytest
 
-from wiggle_shell.core.select_dbms import (
-    create_new_database,
-    get_existing_db_file_path,
-)
 from testing import TEST_DBMS_FOLDER_PATH
+from wiggle_shell.core.select_dbms import create_new_database, get_existing_db_file_path
 
 
 class TestSelectDatabase:

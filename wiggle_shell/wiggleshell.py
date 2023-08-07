@@ -1,5 +1,5 @@
-from core.select_dbms.select_dbms import select_dbms
 from core.query.query import query
+from core.select_dbms.select_dbms import select_dbms
 
 from wiggle_shell import INPUT_PROMPT_SPACING
 

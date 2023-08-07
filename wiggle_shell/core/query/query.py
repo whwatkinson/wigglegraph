@@ -1,7 +1,7 @@
 from pathlib import Path
 
+from models.wql.parsed_query import ParsedMake, ParsedQuery
 from project_root import get_project_root
-from models.wql.parsed_query import ParsedQuery, ParsedMake
 from wiggle_query_language.clauses.make.make import (
     parse_make_statement_from_query_string,
 )

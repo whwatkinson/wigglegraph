@@ -4,9 +4,9 @@ import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
 from wiggle_shell.core.select_dbms import (
-    list_existing_dbms,
-    delete_dbms,
     create_new_database,
+    delete_dbms,
+    list_existing_dbms,
 )
 
 

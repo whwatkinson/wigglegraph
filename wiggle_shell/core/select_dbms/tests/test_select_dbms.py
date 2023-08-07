@@ -2,14 +2,14 @@ from typing import Generator
 
 import pytest
 
-from wiggle_shell.core.select_dbms import (
-    get_and_display_available_dbms,
-    list_existing_dbms,
-    create_new_database,
-    get_new_dbms_file_paths,
-    get_existing_dbms_file_paths,
-)
 from testing import TEST_DBMS_FOLDER_PATH
+from wiggle_shell.core.select_dbms import (
+    create_new_database,
+    get_and_display_available_dbms,
+    get_existing_dbms_file_paths,
+    get_new_dbms_file_paths,
+    list_existing_dbms,
+)
 
 
 class TestSelectDatabase:

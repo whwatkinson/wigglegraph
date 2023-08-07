@@ -1,4 +1,4 @@
-from re import compile, IGNORECASE
+from re import IGNORECASE, compile
 
 
 def get_node_pattern_regex(node_name: str) -> str:

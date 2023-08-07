@@ -1,14 +1,16 @@
+from typing import Generator, Union
+
 import pytest
 
 from exceptions.wql.make import MakeClauseSyntaxError, MakeParamSyntaxError
+from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.make import (
-    extract_all_make_statements,
+    build_parsed_make,
     check_make_clause_syntax,
     check_make_params,
-    build_parsed_make,
+    extract_all_make_statements,
     parse_make_statement_from_query_string,
 )
-from testing.test_helpers import does_not_raise
 
 
 class TestWqlMake:
@@ -207,7 +209,10 @@ class TestWqlMake:
         ],
     )
     def test_build_parsed_make(
-        self, test_make_stmt: str, expected_value: dict, exception
+        self,
+        test_make_stmt: str,
+        expected_value: dict,
+        exception: [Union.raises, Generator],
     ) -> None:
 
         with exception:
