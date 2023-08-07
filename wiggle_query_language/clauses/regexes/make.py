@@ -24,7 +24,7 @@ MAKE_STATEMENT_ALL = compile(r"(?P<make_stmt_all>MAKE\s*\(.+\);)", flags=IGNOREC
 
 
 NODES_RELS_PATTERN = compile(
-    rf"{get_pattern_regex}",
+    rf"{get_pattern_regex()}",
     flags=IGNORECASE,
 )
 

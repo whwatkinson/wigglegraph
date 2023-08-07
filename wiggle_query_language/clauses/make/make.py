@@ -60,6 +60,8 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     """
 
     if make_matches := [x.group() for x in MAKE_STATEMENT_ALL.finditer(query_string)]:
+        # TODO check for directed relationships
+        # TODO check that rels are uppercase
         return make_matches
 
     check_make_clause_syntax(query_string)
@@ -69,9 +71,9 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
 
 def build_parsed_make(statement: str) -> ParsedMake:
     """
-
-    :param statement:
-    :return:
+    Handles building of the ParsedMake.
+    :param statement: The raw make statement.
+    :return: A ParsedMake Object.
     """
     parsed_pattern_dict = [
         x.groupdict() for x in NODES_RELS_PATTERN.finditer(statement)
@@ -84,7 +86,9 @@ def build_parsed_make(statement: str) -> ParsedMake:
     return parsed_make
 
 
-def extract_make_statement_from_query(query_string: str) -> Optional[list[ParsedMake]]:
+def parse_make_statement_from_query_string(
+    query_string: str,
+) -> Optional[list[ParsedMake]]:
     """
     Extracts the MAKE statement from the query body.
     :param query_string: The raw query.
@@ -102,6 +106,6 @@ def extract_make_statement_from_query(query_string: str) -> Optional[list[Parsed
 
 
 if __name__ == "__main__":
-    qs = """CREATE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]-(foo2:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} ) <-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]- (foo3:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );"""
-    s = extract_make_statement_from_query(qs)
+    qs = "MAKE (:NodeLabel{int: 1, str: '2'})-[:]->(foo:NodeLabel);"
+    s = parse_make_statement_from_query_string(qs)
     a = 1

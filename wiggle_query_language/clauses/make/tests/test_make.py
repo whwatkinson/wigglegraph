@@ -6,6 +6,7 @@ from wiggle_query_language.clauses.make.make import (
     check_make_clause_syntax,
     check_make_params,
     build_parsed_make,
+    parse_make_statement_from_query_string,
 )
 from testing.test_helpers import does_not_raise
 
@@ -200,13 +201,72 @@ class TestWqlMake:
         "test_make_stmt, expected_value, exception",
         [
             pytest.param(
-                "MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);", {}, does_not_raise()
-            )
+                "MAKE (:NodeLabel)-[:]->(:NodeLabel);",
+                {"left_node_label": "NodeLabel", "middle_node_label": "NodeLabel"},
+                does_not_raise(),
+                id="EXP PASS: Simple case",
+            ),
+            pytest.param(
+                "MAKE (foo:NodeLabel{int: 1, str: '2'})-[:]->(foo2:NodeLabel);",
+                {
+                    "left_node_handle": "foo",
+                    "left_node_props": "{int: 1, str: '2'}",
+                    "middle_node_handle": "foo2",
+                },
+                does_not_raise(),
+                id="EXP PASS: NodeHandles, NodeLabels and NodeParams",
+            ),
+            pytest.param(
+                """MAKE (:NodeLabel)-[r:REL{float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(:NodeLabel);""",
+                {
+                    "left_middle_rel_handle": "r",
+                    "left_middle_rel_label": "REL",
+                    "left_middle_rel_props": """{float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                },
+                does_not_raise(),
+                id="EXP PASS: RelHandles, RelLabels and RelParams",
+            ),
         ],
     )
     def test_build_parsed_make(
+        self, test_make_stmt: str, expected_value: dict, exception
+    ) -> None:
+
+        with exception:
+            test = build_parsed_make(test_make_stmt)
+
+            test_parsed_make = test.parsed_pattern_list[0]
+
+            for test_key, test_value in expected_value.items():
+                assert getattr(test_parsed_make, test_key) == test_value
+
+    @pytest.mark.parametrize(
+        "test_make_stmt, expected_value, exception",
+        [
+            pytest.param(
+                "MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
+                1,
+                does_not_raise(),
+                id="EXP PASS: Simple case",
+            ),
+            pytest.param(
+                "FIND (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
+                0,
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: Not a MAKE stmt",
+            ),
+            pytest.param(
+                "MAEK (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
+                0,
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: MAKE clause sp error",
+            ),
+        ],
+    )
+    def test_extract_make_statement_from_query(
         self, test_make_stmt: str, expected_value: None, exception
     ) -> None:
 
         with exception:
-            _ = build_parsed_make(test_make_stmt)
+            test = parse_make_statement_from_query_string(test_make_stmt)
+            assert len(test) == 1

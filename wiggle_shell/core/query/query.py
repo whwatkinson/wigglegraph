@@ -2,7 +2,9 @@ from pathlib import Path
 
 from project_root import get_project_root
 from models.wql.parsed_query import ParsedQuery, ParsedMake
-from wiggle_query_language.clauses.make.make import extract_make_statement_from_query
+from wiggle_query_language.clauses.make.make import (
+    parse_make_statement_from_query_string,
+)
 
 
 def parse_query_string(query_string: str) -> ParsedQuery:
@@ -12,7 +14,7 @@ def parse_query_string(query_string: str) -> ParsedQuery:
     :return:
     """
 
-    make = extract_make_statement_from_query(query_string)
+    make = parse_make_statement_from_query_string(query_string)
     find = None
     criteria = None
     report = None
@@ -61,4 +63,6 @@ if __name__ == "__main__":
     with open(sample_query_fp, "r") as file:
         qry = file.read()
 
-    print(parse_query_string(qry))
+    qry = "MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);"
+    pq = parse_query_string(qry)
+    print(pq)
