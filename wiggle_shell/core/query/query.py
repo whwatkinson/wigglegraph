@@ -55,12 +55,10 @@ def query(query_string: str) -> None:
 
 if __name__ == "__main__":
     sample_query_fp = Path(
-        f"{get_project_root()}/wiggle_query_language/example_queries/make.wql"
+        f"{get_project_root()}/wiggle_query_language/example_queries/make_long.wql"
     )
 
     with open(sample_query_fp, "r") as file:
         qry = file.read()
-
-    qry = "MAKE (n:Person);MAKE (n:Person);"
 
     print(parse_query_string(qry))

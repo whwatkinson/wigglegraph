@@ -6,23 +6,36 @@ from models.wql.enums.clauses import Clause
 from wiggle_query_language.clauses.make.make_patterns import MAKE_STATEMENT_ALL
 
 
+class Node(BaseModel):
+    node_handle: Optional[str]
+    node_label: Optional[str]
+    node_props: Optional[str]
+
+
+class MakeRel(BaseModel):
+    rel_handle: Optional[str]
+    rel_label: Optional[str]
+    rel_props: Optional[str]
+
+
 class ParsedPattern(BaseModel):
+    # TODO simplify this with the above
     left_node: Optional[str]
     left_node_handle: Optional[str]
     left_node_label: Optional[str]
     left_node_props: Optional[str]
-    rel_left_middle: Optional[str]
-    rel_left_middle_handle: Optional[str]
-    rel_left_middle_label: Optional[str]
-    rel_lm_props: Optional[str]
+    left_middle_rel: Optional[str]
+    left_middle_rel_handle: Optional[str]
+    left_middle_rel_label: Optional[str]
+    left_middle_rel_props: Optional[str]
     middle_node: Optional[str]
     middle_node_handle: Optional[str]
     middle_node_label: Optional[str]
     middle_node_props: Optional[str]
-    rel_middle_right: Optional[str]
-    rel_middle_right_handle: Optional[str]
-    rel_middle_right_label: Optional[str]
-    rel_mr_props: Optional[str]
+    middle_right_rel: Optional[str]
+    middle_right_rel_handle: Optional[str]
+    middle_right_rel_label: Optional[str]
+    middle_right_rel_props: Optional[str]
     right_node: Optional[str]
     right_node_handle: Optional[str]
     right_node_label: Optional[str]
