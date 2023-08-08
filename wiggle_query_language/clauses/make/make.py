@@ -104,6 +104,7 @@ def parse_make_statement_from_query_string(
 
 
 if __name__ == "__main__":
-    qs = "MAKE (:NodeLabel{int: 1, str: '2'})-[:]->(foo:NodeLabel);"
+    qs = """MAKE (:NodeLabel)-[r:REL{float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(:NodeLabel);
+    """
     s = parse_make_statement_from_query_string(qs)
     a = 1

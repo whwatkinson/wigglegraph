@@ -3,7 +3,7 @@ from typing import Generator
 import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
-from wiggle_shell.core.select_dbms import (
+from wiggle_shell.core.select_dbms.select_dbms import (
     create_new_database,
     delete_dbms,
     list_existing_dbms,

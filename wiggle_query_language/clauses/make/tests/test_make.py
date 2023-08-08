@@ -1,5 +1,3 @@
-from typing import Generator, Union
-
 import pytest
 
 from exceptions.wql.make import MakeClauseSyntaxError, MakeParamSyntaxError
@@ -207,10 +205,7 @@ class TestWqlMake:
         ],
     )
     def test_build_parsed_make(
-        self,
-        test_make_stmt: str,
-        expected_value: dict,
-        exception: [Union.raises, Generator],
+        self, test_make_stmt: str, expected_value: dict, exception
     ) -> None:
         with exception:
             test = build_parsed_make(test_make_stmt)

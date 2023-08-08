@@ -6,10 +6,13 @@ from typing import Optional
 
 from models.wigshell.dbms import DbmsFilePath
 from wiggle_shell import DBMS_FOLDER, INPUT_PROMPT_SPACING
-from wiggle_shell.core.select_dbms import (
+from wiggle_shell.core.select_dbms.select_database import (
     create_new_database,
-    create_new_wiggle_number_file,
     get_existing_db_file_path,
+)
+
+from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
+    create_new_wiggle_number_file,
     get_existing_wn_file_path,
 )
 
