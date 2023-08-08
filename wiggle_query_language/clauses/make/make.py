@@ -91,7 +91,7 @@ def check_relationships(make_matches: list[str]) -> bool:
     :return: The
     """
 
-    if False:
+    if not make_matches:
         raise MakeNonDirectedRelationshipError
 
     return True
