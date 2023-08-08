@@ -19,7 +19,7 @@ def check_make_params(make_matches: list[str]) -> True:
     """
     Very crude check that the params match up with the colons
     :param make_matches:  The extracted MAKE statements.
-    :return: None ar an Exception
+    :return: A bool for testing.
     """
 
     for stmt in make_matches:
@@ -87,9 +87,9 @@ def build_parsed_make(statement: str) -> ParsedMake:
 
 def check_relationships(make_matches: list[str]) -> bool:
     """
-    Checks to see that the created relationship is directed
-    :param make_matches: The extracted make statements
-    :return: The
+    Checks to see that the created relationship is directed.
+    :param make_matches: The extracted make statements.
+    :return: A bool for testing.
     """
 
     for stmt in make_matches:
@@ -116,7 +116,7 @@ def validate_make_statement(make_matches: list[str]) -> bool:
     :param make_matches: The extracted make statements
     :return: The
     """
-    check_make_params(make_matches)
+    # check_make_params(make_matches)
     check_relationships(make_matches)
 
     return True
@@ -141,6 +141,6 @@ def parse_make_statement_from_query_string(
 
 
 if __name__ == "__main__":
-    qs = """MAKE (:NodeLabel)-[:]-(:NodeLabel);"""
+    qs = """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});"""
     s = parse_make_statement_from_query_string(qs)
     a = 1

@@ -1,28 +1,16 @@
 from re import IGNORECASE, compile
 
-
-def get_node_pattern_regex(node_name: str) -> str:
-    return rf"\s*(?P<{node_name}_node>\(\s*(?P<{node_name}_node_handle>\w*)\s*:\s*(?P<{node_name}_node_label>\w+)\s*(?P<{node_name}_node_props>[{{}}\w:\s,'\".\[\]]+)?\s*\)\s*)"
-
-
-def get_rel_pattern_regex(rel_name: str) -> str:
-    return rf"\s*(?P<{rel_name}_rel><?-\[\s*(?P<{rel_name}_rel_handle>\w*)\s*:\s*(?P<{rel_name}_rel_label>\w*)\s*(?P<{rel_name}_rel_props>[{{}}\w:\s,'\".\[\]]+)?\s*]->?\s*)"
-
-
-def get_nodes_rels_pattern_regex() -> str:
-    left_node_regex = get_node_pattern_regex("left")
-    left_middle_rel_regex = get_rel_pattern_regex("left_middle")
-    middle_node_regex = get_node_pattern_regex("middle")
-    middle_right_rel_regex = get_rel_pattern_regex("middle_right")
-    right_node_regex = get_node_pattern_regex("right")
-
-    return rf"{left_node_regex}?{left_middle_rel_regex}?{middle_node_regex}?{middle_right_rel_regex}?{right_node_regex}?"
+from wiggle_query_language.clauses.regexes.helpers import (
+    get_nodes_rels_pattern_regex,
+    # get_params_regex,
+)
 
 
 # MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel);
 MAKE_STATEMENT_ALL = compile(r"(?P<make_stmt_all>MAKE\s*\(.+\);)", flags=IGNORECASE)
 
 
+# (left:NodeLabel)-[r:LM]->(middle:NodeLabel)-[r2:MR]->(right:NodeLabel);
 NODES_RELS_PATTERN = compile(
     rf"{get_nodes_rels_pattern_regex()}",
     flags=IGNORECASE,
@@ -39,6 +27,8 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
     flags=IGNORECASE,
 )
 
+# <-[*:*]->
+# TODO replace this with the get_params_regex
 RELATIONSHIP_DIR_CHECK = compile(
     r"<?-\[\s*\w*\s*:\s*\w*\s*[{}\w:\s,'\".\[\]]*\s*]->?", flags=IGNORECASE
 )

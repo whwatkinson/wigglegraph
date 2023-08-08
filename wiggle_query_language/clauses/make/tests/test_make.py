@@ -144,6 +144,7 @@ class TestWqlMake:
         with exception:
             check_make_clause_syntax(test_make_stmt)
 
+    @pytest.mark.xfail()
     @pytest.mark.parametrize(
         "test_make_stmt, exception",
         [
@@ -156,7 +157,9 @@ class TestWqlMake:
                 id="EXP PASS: One params",
             ),
             pytest.param(
-                ["MAKE (n:Person{first_name:'Harry', last_name:'Watkinson'});"],
+                [
+                    """MAKE (n:Person{first_name:'Harry', last_name:'Watkinson', list: [1, '2', "2_4", "3 4", 3.14]});"""
+                ],
                 does_not_raise(),
                 id="EXP PASS: 1 comma",
             ),

@@ -1,9 +1,9 @@
 import pytest
 
 from testing.test_helpers import does_not_raise
+from wiggle_query_language.clauses.regexes.helpers import get_nodes_rels_pattern_regex
 from wiggle_query_language.clauses.regexes.make import (
     NODES_RELS_PATTERN,
-    get_nodes_rels_pattern_regex,
 )
 
 cases_for_test_patterns = [
