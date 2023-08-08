@@ -39,6 +39,9 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
     flags=IGNORECASE,
 )
 
+RELATIONSHIP_DIR_CHECK = compile(
+    r"<?-\[\s*\w*\s*:\s*\w*\s*[{}\w:\s,'\".\[\]]*\s*]->?", flags=IGNORECASE
+)
 
 if __name__ == "__main__":
     print(get_nodes_rels_pattern_regex())

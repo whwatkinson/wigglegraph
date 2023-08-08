@@ -257,12 +257,32 @@ class TestWqlMake:
             pytest.param(
                 ["MAKE (:NodeLabel)-[:]->(:NodeLabel);"],
                 does_not_raise(),
-                id="EXP PASS: No errors",
+                id="EXP PASS: Double node with one relationship",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel)-[:]->(:NodeLabel)-[:]->(:NodeLabel);"],
+                does_not_raise(),
+                id="EXP PASS: Triple node with two relationships, ltr",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel)-[:]->(:NodeLabel)<-[:]-(:NodeLabel);"],
+                does_not_raise(),
+                id="EXP PASS: Triple node with two relationships, both pointing to middle",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel)-[:]-(:NodeLabel);"],
                 pytest.raises(MakeNonDirectedRelationshipError),
                 id="EXP EXEC: Non directed single relationship",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel)<-[:]->(:NodeLabel);"],
+                pytest.raises(MakeNonDirectedRelationshipError),
+                id="EXP EXEC: Rel is pointing both ways",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel)-[:]->(:NodeLabel)-[:]-(:NodeLabel);"],
+                pytest.raises(MakeNonDirectedRelationshipError),
+                id="EXP EXEC: Triple node with two relationships, one not directed",
             ),
         ],
     )

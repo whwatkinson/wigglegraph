@@ -11,6 +11,7 @@ from wiggle_query_language.clauses.regexes.make import (
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX,
     NODES_RELS_PATTERN,
+    RELATIONSHIP_DIR_CHECK,
 )
 
 
@@ -91,8 +92,20 @@ def check_relationships(make_matches: list[str]) -> bool:
     :return: The
     """
 
-    if not make_matches:
-        raise MakeNonDirectedRelationshipError
+    for stmt in make_matches:
+        rels = RELATIONSHIP_DIR_CHECK.findall(stmt)
+
+        for rel in rels:
+            if "<" in rel and ">" in rel:
+                raise MakeNonDirectedRelationshipError(
+                    "Relationships must be unidirectional"
+                )
+            if "<" not in rel and ">" not in rel:
+                raise MakeNonDirectedRelationshipError(
+                    "Relationships must be singly directed"
+                )
+
+            continue
 
     return True
 
@@ -128,6 +141,6 @@ def parse_make_statement_from_query_string(
 
 
 if __name__ == "__main__":
-    qs = """MAKE (:LeftNodeLabel1);"""
+    qs = """MAKE (:NodeLabel)-[:]-(:NodeLabel);"""
     s = parse_make_statement_from_query_string(qs)
     a = 1
