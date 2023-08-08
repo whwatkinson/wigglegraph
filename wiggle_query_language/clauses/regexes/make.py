@@ -2,7 +2,7 @@ from re import IGNORECASE, compile
 
 from wiggle_query_language.clauses.regexes.helpers import (
     get_nodes_rels_pattern_regex,
-    # get_params_regex,
+    get_params_regex,
 )
 
 
@@ -22,8 +22,9 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX = compile(
 )
 
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
+
 MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
-    r"{\s*(?P<params>[\w:'\"\s|.,\-\[\]]+)\s*}",
+    rf"{{\s*{get_params_regex('params')}\s*}}",
     flags=IGNORECASE,
 )
 

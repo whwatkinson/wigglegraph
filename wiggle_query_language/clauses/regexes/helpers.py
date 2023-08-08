@@ -4,7 +4,6 @@ def get_params_regex(name: str) -> str:
 
 def get_node_pattern_regex(node_name: str) -> str:
     node_params_regex = get_params_regex(f"{node_name}_node_props")
-
     return rf"\s*(?P<{node_name}_node>\(\s*(?P<{node_name}_node_handle>\w*)\s*:\s*(?P<{node_name}_node_label>\w+)\s*{node_params_regex}?\s*\)\s*)"
 
 
