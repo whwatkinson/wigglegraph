@@ -1,6 +1,10 @@
 from typing import Optional
 
-from exceptions.wql.make import MakeClauseSyntaxError, MakeParamSyntaxError
+from exceptions.wql.make import (
+    MakeClauseSyntaxError,
+    MakeParamSyntaxError,
+    MakeNonDirectedRelationshipError,
+)
 from models.wql.parsed_query import ParsedMake
 from wiggle_query_language.clauses.regexes.make import (
     MAKE_STATEMENT_ALL,
@@ -10,7 +14,7 @@ from wiggle_query_language.clauses.regexes.make import (
 )
 
 
-def check_make_params(make_matches: list[str]) -> None:
+def check_make_params(make_matches: list[str]) -> True:
     """
     Very crude check that the params match up with the colons
     :param make_matches:  The extracted MAKE statements.
@@ -29,7 +33,7 @@ def check_make_params(make_matches: list[str]) -> None:
             if exp_param_count != colon_count:
                 raise MakeParamSyntaxError(f"SyntaxError: {stmt} missing : or |")
 
-    return None
+    return True
 
 
 def check_make_clause_syntax(query_string: str) -> None:
@@ -45,8 +49,6 @@ def check_make_clause_syntax(query_string: str) -> None:
                 f"SyntaxError: {match} was not recognised did you mean MAKE?"
             )
 
-    check_make_params(matches)
-
     return None
 
 
@@ -58,8 +60,6 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     """
 
     if make_matches := [x.group() for x in MAKE_STATEMENT_ALL.finditer(query_string)]:
-        # TODO check for directed relationships
-        # TODO check that rels are uppercase
         return make_matches
 
     check_make_clause_syntax(query_string)
@@ -84,6 +84,31 @@ def build_parsed_make(statement: str) -> ParsedMake:
     return parsed_make
 
 
+def check_relationships(make_matches: list[str]) -> bool:
+    """
+    Checks to see that the created relationship is directed
+    :param make_matches: The extracted make statements
+    :return: The
+    """
+
+    if False:
+        raise MakeNonDirectedRelationshipError
+
+    return True
+
+
+def validate_make_statement(make_matches: list[str]) -> bool:
+    """
+    Handles the validation for the make statement
+    :param make_matches: The extracted make statements
+    :return: The
+    """
+    check_make_params(make_matches)
+    check_relationships(make_matches)
+
+    return True
+
+
 def parse_make_statement_from_query_string(
     query_string: str,
 ) -> Optional[list[ParsedMake]]:
@@ -92,13 +117,12 @@ def parse_make_statement_from_query_string(
     :param query_string: The raw query.
     :return: A list of MAKE statements.
     """
-
     make_matches = extract_all_make_statements(query_string)
-
-    matches_validated = make_matches
+    if not validate_make_statement(make_matches):
+        raise Exception("make_matches says no")
 
     if make_matches:
-        return [build_parsed_make(statement=stmt) for stmt in matches_validated]
+        return [build_parsed_make(statement=stmt) for stmt in make_matches]
     else:
         return None
 

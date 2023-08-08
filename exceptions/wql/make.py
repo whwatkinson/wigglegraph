@@ -7,3 +7,7 @@ class MakeClauseSyntaxError(WqlException):
 
 class MakeParamSyntaxError(WqlException):
     pass
+
+
+class MakeNonDirectedRelationshipError(WqlException):
+    pass

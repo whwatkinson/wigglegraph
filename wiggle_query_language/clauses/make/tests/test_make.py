@@ -1,11 +1,16 @@
 import pytest
 
-from exceptions.wql.make import MakeClauseSyntaxError, MakeParamSyntaxError
+from exceptions.wql.make import (
+    MakeClauseSyntaxError,
+    MakeParamSyntaxError,
+    MakeNonDirectedRelationshipError,
+)
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.make import (
     build_parsed_make,
     check_make_clause_syntax,
     check_make_params,
+    check_relationships,
     extract_all_make_statements,
     parse_make_statement_from_query_string,
 )
@@ -140,20 +145,18 @@ class TestWqlMake:
             check_make_clause_syntax(test_make_stmt)
 
     @pytest.mark.parametrize(
-        "test_make_stmt, expected_value, exception",
+        "test_make_stmt, exception",
         [
             pytest.param(
-                ["MAKE (n:Person);"], None, does_not_raise(), id="EXP PASS: No params"
+                ["MAKE (n:Person);"], does_not_raise(), id="EXP PASS: No params"
             ),
             pytest.param(
                 ["MAKE (n:Person{first_name:'Harry'});"],
-                None,
                 does_not_raise(),
                 id="EXP PASS: One params",
             ),
             pytest.param(
                 ["MAKE (n:Person{first_name:'Harry', last_name:'Watkinson'});"],
-                None,
                 does_not_raise(),
                 id="EXP PASS: 1 comma",
             ),
@@ -161,17 +164,15 @@ class TestWqlMake:
                 [
                     """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(foo:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );"""
                 ],
-                None,
                 pytest.raises(MakeParamSyntaxError),
                 id="EXP PASS: 1 comma",
             ),
         ],
     )
-    def test_check_make_params(
-        self, test_make_stmt: list[str], expected_value: None, exception
-    ) -> None:
+    def test_check_make_params(self, test_make_stmt: list[str], exception) -> None:
         with exception:
-            check_make_params(test_make_stmt)
+            test = check_make_params(test_make_stmt)
+            assert test is True
 
     @pytest.mark.parametrize(
         "test_make_stmt, expected_value, exception",
@@ -244,3 +245,28 @@ class TestWqlMake:
         with exception:
             test = parse_make_statement_from_query_string(test_make_stmt)
             assert len(test) == 1
+
+    @pytest.mark.parametrize(
+        "test_make_matches, exception",
+        [
+            pytest.param(
+                ["MAKE (:NodeLabel);"],
+                does_not_raise(),
+                id="EXP PASS: No relationship",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel)-[:]->(:NodeLabel);"],
+                does_not_raise(),
+                id="EXP PASS: No errors",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel)-[:]-(:NodeLabel);"],
+                pytest.raises(MakeNonDirectedRelationshipError),
+                id="EXP EXEC: Non directed single relationship",
+            ),
+        ],
+    )
+    def test_check_relationship(self, test_make_matches: list[str], exception) -> None:
+        with exception:
+            test = check_relationships(test_make_matches)
+            assert test is True
