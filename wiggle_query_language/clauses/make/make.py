@@ -74,7 +74,7 @@ def build_parsed_make(statement: str) -> ParsedMake:
     :return: A ParsedMake Object.
     """
     parsed_pattern_dict = [
-        x.groupdict() for x in NODES_RELS_PATTERN.finditer(statement)
+        x.groupdict() for x in NODES_RELS_PATTERN.finditer(statement) if x.group()
     ]
 
     parsed_make = ParsedMake(
@@ -104,7 +104,6 @@ def parse_make_statement_from_query_string(
 
 
 if __name__ == "__main__":
-    qs = """MAKE (:NodeLabel)-[r:REL{float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(:NodeLabel);
-    """
+    qs = """MAKE (:LeftNodeLabel1);"""
     s = parse_make_statement_from_query_string(qs)
     a = 1

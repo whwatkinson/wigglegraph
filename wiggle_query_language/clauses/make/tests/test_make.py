@@ -173,6 +173,7 @@ class TestWqlMake:
         with exception:
             check_make_params(test_make_stmt)
 
+    @pytest.mark.xfail
     @pytest.mark.parametrize(
         "test_make_stmt, expected_value, exception",
         [

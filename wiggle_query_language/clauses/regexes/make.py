@@ -16,7 +16,7 @@ def get_nodes_rels_pattern_regex() -> str:
     middle_right_rel_regex = get_rel_pattern_regex("middle_right")
     right_node_regex = get_node_pattern_regex("right")
 
-    return rf"{left_node_regex}?{left_middle_rel_regex}?{middle_node_regex}?{middle_right_rel_regex}?{right_node_regex}"
+    return rf"{left_node_regex}?{left_middle_rel_regex}?{middle_node_regex}?{middle_right_rel_regex}?{right_node_regex}?"
 
 
 # MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel);
@@ -42,3 +42,8 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
 
 if __name__ == "__main__":
     print(get_nodes_rels_pattern_regex())
+
+    stmt = """MAKE (left_node_handle1:LeftNodeLabel1{int: 1}), (left_node_handle2:LeftNodeLabel2{int: 1}), (left_node_handle3:LeftNodeLabel3{int: 1});"""
+    foo = [x.groupdict() for x in NODES_RELS_PATTERN.finditer(stmt) if x.group()]
+
+    a = 1
