@@ -24,14 +24,14 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX = compile(
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
 
 MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
-    rf"{{\s*{get_params_regex('params')}\s*}}",
+    rf"\s*{get_params_regex()}\s*",
     flags=IGNORECASE,
 )
 
 # <-[*:*]->
 # TODO replace this with the get_params_regex
 RELATIONSHIP_DIR_CHECK = compile(
-    r"<?-\[\s*\w*\s*:\s*\w*\s*[{}\w:\s,'\".\[\]]*\s*]->?", flags=IGNORECASE
+    rf"<?-\[\s*\w*\s*:\s*\w*\s*{get_params_regex()}->?", flags=IGNORECASE
 )
 
 if __name__ == "__main__":
