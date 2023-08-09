@@ -24,7 +24,7 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX = compile(
 
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
 MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
-    r"(?P<all_props>{{[\w:\s,'\"\.\[\]]+}})",
+    r"(?P<all_props>{[\w:\s,'\"\.\[\]]+})",
     flags=IGNORECASE,
 )
 
