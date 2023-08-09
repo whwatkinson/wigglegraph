@@ -86,7 +86,8 @@ def check_relationships(make_matches: list[str]) -> bool:
 
     for stmt in make_matches:
         rels = RELATIONSHIP_DIR_CHECK_REGEX.findall(stmt)
-
+        # TODO -[]->  ------[]---->, longer rels support
+        # TODO ENFORCE UPPER CASE RELLABEL
         for rel in rels:
             if "<" in rel and ">" in rel:
                 raise MakeNonDirectedRelationshipError(

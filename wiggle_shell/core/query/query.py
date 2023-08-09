@@ -36,7 +36,8 @@ def execute_query(raw_query: ParsedQuery) -> None:
 
 
 def valid_query(query_string) -> bool:
-    valid_query_set = {"make", "find", "adjust", "criteria", "report"}
+    # todo WITH
+    valid_query_set = {"make", "find", "adjust", "criteria", "report", "using"}
     query_string_set = set(query_string.lower().split(" "))
 
     return bool(valid_query_set.intersection(query_string_set))
@@ -61,6 +62,6 @@ if __name__ == "__main__":
     with open(sample_query_fp, "r") as file:
         qry = file.read()
 
-    qry = "MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel*);"
+    qry = """MAKE (:NodeLabel{int: 1})-[rel1:REL{str: '2'}]->(:NodeLable{str2:"2_4"})<-[rel2:REL2{float: 3.14}]-(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]}});"""
     pq = parse_query_string(qry)
     print(pq)
