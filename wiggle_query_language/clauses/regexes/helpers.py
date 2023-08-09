@@ -1,5 +1,9 @@
+# TODO test for extra chars
+EXTRA_ALLOWED_CHARS = "@$"
+
+
 def get_all_params_regex() -> str:
-    return r"[{}\w:\s,'\"\.\[\]]+"
+    return rf"[{{}}\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+"
 
 
 def get_handle_label_regex(name: str) -> str:

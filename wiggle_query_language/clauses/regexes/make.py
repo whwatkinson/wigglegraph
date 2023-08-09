@@ -3,6 +3,7 @@ from re import IGNORECASE, compile
 from wiggle_query_language.clauses.regexes.helpers import (
     get_nodes_rels_pattern_regex,
     get_all_params_regex,
+    EXTRA_ALLOWED_CHARS,
 )
 
 # TODO EACH REGEX ONE TEST
@@ -24,7 +25,7 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX = compile(
 
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
 MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
-    r"(?P<all_props>{[\w:\s,'\"\.\[\]]+})",
+    rf"(?P<all_props>{{[\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+}})",
     flags=IGNORECASE,
 )
 
