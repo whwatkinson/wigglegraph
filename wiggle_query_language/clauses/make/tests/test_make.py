@@ -13,6 +13,7 @@ from wiggle_query_language.clauses.make.make import (
     check_relationships,
     extract_all_make_statements,
     parse_make_statement_from_query_string,
+    check_illegal_characters,
 )
 
 
@@ -144,7 +145,7 @@ class TestWqlMake:
         with exception:
             check_make_clause_syntax(test_make_stmt)
 
-    @pytest.mark.xfail()
+    # @pytest.mark.xfail()
     @pytest.mark.parametrize(
         "test_make_stmt, exception",
         [
@@ -165,10 +166,10 @@ class TestWqlMake:
             ),
             pytest.param(
                 [
-                    """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[r:REL{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(foo:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );"""
+                    """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4" 3.14]});"""
                 ],
                 pytest.raises(MakeParamSyntaxError),
-                id="EXP PASS: 1 comma",
+                id="EXP EXEC: Missing comma in param list",
             ),
         ],
     )
@@ -293,3 +294,11 @@ class TestWqlMake:
         with exception:
             test = check_relationships(test_make_matches)
             assert test is True
+
+    @pytest.mark.xfail
+    def test_check_illegal_characters(
+        self, test_make_matches: list[str], exception
+    ) -> None:
+        with exception:
+            check_illegal_characters(test_make_matches)
+            assert False
