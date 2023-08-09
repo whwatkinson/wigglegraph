@@ -2,7 +2,7 @@ from exceptions.wql.make import (
     MakeClauseSyntaxError,
     MakeParamSyntaxError,
     MakeNonDirectedRelationshipError,
-    MakeIllegalCharacter,
+    MakeIllegalCharacterError,
 )
 from wiggle_query_language.clauses.regexes.make import (
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX,
@@ -23,7 +23,9 @@ def check_param_formatting(params_string: str) -> bool:
     exp_param_count = params_string.count(",") + 1
     colon_count = params_string.count(":")
     if exp_param_count != colon_count:
-        raise MakeParamSyntaxError(f"SyntaxError: {params_string} missing : or ,")
+        raise MakeParamSyntaxError(
+            message=f"SyntaxError: {params_string} missing : or ,"
+        )
 
     return True
 
@@ -53,7 +55,7 @@ def check_make_params(make_matches: list[str]) -> True:
                         eval(params_list)
                     except SyntaxError:
                         raise MakeParamSyntaxError(
-                            f"SyntaxError: {params_lists} missing a comma?"
+                            message=f"SyntaxError: {params_lists} missing a comma?"
                         )
 
     return True
@@ -69,7 +71,7 @@ def check_make_clause_syntax(query_string: str) -> bool:
     if matches := MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX.findall(query_string):
         for match in matches:
             raise MakeClauseSyntaxError(
-                f"SyntaxError: {match} was not recognised did you mean MAKE?"
+                message=f"SyntaxError: {match} was not recognised did you mean MAKE?"
             )
 
     return True
@@ -88,11 +90,11 @@ def check_relationships(make_matches: list[str]) -> bool:
         for rel in rels:
             if "<" in rel and ">" in rel:
                 raise MakeNonDirectedRelationshipError(
-                    "Relationships must be unidirectional"
+                    message="Relationships must be unidirectional"
                 )
             if "<" not in rel and ">" not in rel:
                 raise MakeNonDirectedRelationshipError(
-                    "Relationships must be singly directed"
+                    message="Relationships must be singly directed"
                 )
 
             continue
@@ -108,7 +110,7 @@ def check_illegal_characters(make_matches: list[str]) -> bool:
     """
     for stmt in make_matches:
         if match := ILLEGAL_CHARS_REGEX.search(stmt):
-            raise MakeIllegalCharacter(f"{match.group()} is not allowed")
+            raise MakeIllegalCharacterError(message=f"{match.group()} is not allowed")
 
     return True
 

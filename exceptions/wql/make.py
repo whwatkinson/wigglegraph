@@ -1,17 +1,17 @@
-from exceptions.wql.wqlbase import WqlException
+from exceptions.wiggle_base_exception import WiggleGraphBaseException
 
 
-class MakeClauseSyntaxError(WqlException):
+class MakeClauseSyntaxError(WiggleGraphBaseException):
     pass
 
 
-class MakeParamSyntaxError(WqlException):
+class MakeParamSyntaxError(WiggleGraphBaseException):
     pass
 
 
-class MakeNonDirectedRelationshipError(WqlException):
+class MakeNonDirectedRelationshipError(WiggleGraphBaseException):
     pass
 
 
-class MakeIllegalCharacter(WqlException):
+class MakeIllegalCharacterError(WiggleGraphBaseException):
     pass

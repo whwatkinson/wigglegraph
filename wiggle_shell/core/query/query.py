@@ -45,7 +45,7 @@ def valid_query(query_string) -> bool:
 def query(query_string: str) -> None:
     if not valid_query(query_string) and False:
         # todo make this an exception
-        print("Please enter a valid query..\n")
+        print("Query must contain MAKE, FIND, ADJUST, CRITERIA, REPORT\n")
         return None
 
     raw_query = parse_query_string(query_string)

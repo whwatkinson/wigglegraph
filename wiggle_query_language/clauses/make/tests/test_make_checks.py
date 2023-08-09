@@ -4,7 +4,7 @@ from exceptions.wql.make import (
     MakeClauseSyntaxError,
     MakeParamSyntaxError,
     MakeNonDirectedRelationshipError,
-    MakeIllegalCharacter,
+    MakeIllegalCharacterError,
 )
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.make_checks import (
@@ -150,29 +150,29 @@ class TestWqlMake:
             ),
             pytest.param(
                 ["MAKE (:NodeLabel*);"],
-                pytest.raises(MakeIllegalCharacter),
+                pytest.raises(MakeIllegalCharacterError),
                 id="EXP EXEC: Illegal char *",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel#);"],
-                pytest.raises(MakeIllegalCharacter),
+                pytest.raises(MakeIllegalCharacterError),
                 id="EXP EXEC: Illegal char #",
             ),
             pytest.param(
                 ["""MAKE (:NodeLabel{ int: 1 , str: '2', st%r2:"2_4"});"""],
-                pytest.raises(MakeIllegalCharacter),
+                pytest.raises(MakeIllegalCharacterError),
                 id="EXP EXEC: Illegal char %",
             ),
             pytest.param(
                 [
                     """MAKE (left_node_handle:LeftNodeLabel{int: 1}) -[:]-> (middle_node_label:&MiddleNodeLabel) -[:]->(right_node_label:RightNodeLabel);"""
                 ],
-                pytest.raises(MakeIllegalCharacter),
+                pytest.raises(MakeIllegalCharacterError),
                 id="EXP EXEC: Illegal char &",
             ),
             pytest.param(
                 ["""MAKE (:NodeLabel{ int: 1 , str: '$2', str2:"2_4"});"""],
-                pytest.raises(MakeIllegalCharacter),
+                pytest.raises(MakeIllegalCharacterError),
                 id="EXP EXEC: Illegal char $",
             ),
         ],

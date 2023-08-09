@@ -1,7 +1,5 @@
-from exceptions.exception_base import WiggleGraphBaseException
+from exceptions.wiggle_base_exception import WiggleGraphBaseException
 
 
 class NodeExistsError(WiggleGraphBaseException):
-    def __init__(self, message: str):
-        self.message = message
-        super().__init__(message)
+    pass
