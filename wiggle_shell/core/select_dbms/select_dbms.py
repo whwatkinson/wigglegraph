@@ -72,7 +72,7 @@ def create_new_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
         new_db_name = input(f"Please enter a new db name:{INPUT_PROMPT_SPACING}")
         try:
             return get_new_dbms_file_paths(
-                new_db_name=new_db_name, path_to_dbms_dir=path_to_dbms_dir
+                new_dbms_name=new_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
         except ValueError:
             print(f"{new_db_name} is already taken, please choose another name.")
