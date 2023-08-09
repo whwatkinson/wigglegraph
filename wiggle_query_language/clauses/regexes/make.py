@@ -2,7 +2,7 @@ from re import IGNORECASE, compile
 
 from wiggle_query_language.clauses.regexes.helpers import (
     get_nodes_rels_pattern_regex,
-    get_params_regex,
+    get_all_params_regex,
 )
 
 
@@ -24,14 +24,14 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX = compile(
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
 
 MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
-    rf"\s*{get_params_regex()}\s*",
+    rf"\s*{get_all_params_regex()}\s*",
     flags=IGNORECASE,
 )
 
 # <-[*:*]->
 # TODO replace this with the get_params_regex
 RELATIONSHIP_DIR_CHECK = compile(
-    rf"<?-\[\s*\w*\s*:\s*\w*\s*{get_params_regex()}->?", flags=IGNORECASE
+    rf"<?-\[\s*\w*\s*:\s*\w*\s*{get_all_params_regex()}->?", flags=IGNORECASE
 )
 
 if __name__ == "__main__":
