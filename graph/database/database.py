@@ -20,7 +20,6 @@ def load_database(file_path: str) -> dict:
 
 
 def add_item_to_database(file_path: str, item: dict):
-
     database = load_database(file_path)
 
     for wiggle_number, _ in item.items():

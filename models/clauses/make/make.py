@@ -13,6 +13,5 @@ class MakeNodeParsed(BaseModel):
 
 
 class MakeStatementParsed(BaseModel):
-
     left_node: MakeNodeParsed
     right_node: Optional[MakeNodeParsed]
