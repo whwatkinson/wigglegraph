@@ -2,11 +2,11 @@ from typing import Generator
 
 import pytest
 
+from testing import TEST_DBMS_FOLDER_PATH
 from wiggle_shell.core.select_dbms import (
     create_new_wiggle_number_file,
     get_existing_wn_file_path,
 )
-from testing import TEST_DBMS_FOLDER_PATH
 
 
 class TestSelectDatabase:

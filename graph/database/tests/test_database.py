@@ -2,14 +2,13 @@ from typing import Generator
 
 import pytest
 
-from graph.database.database import add_item_to_database, load_database
 from exceptions.database import NodeExistsError
+from graph.database.database import add_item_to_database, load_database
 from testing import DATABASE_TEST_FILE_PATH
 
 
 class TestDataBase:
     def test_database(self, clear_database_test: Generator) -> None:
-
         # Check the db is empty
         test = load_database(file_path=DATABASE_TEST_FILE_PATH)
 

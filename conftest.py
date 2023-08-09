@@ -17,7 +17,6 @@ def clear_database_test() -> Generator:
 
 @pytest.fixture
 def clear_wiggle_number_test() -> Generator:
-
     with open(WIGGLE_NUMBER_TEST_FILE_PATH, "w") as file_handle:
         file_handle.write("0")
 
@@ -29,7 +28,6 @@ def clear_wiggle_number_test() -> Generator:
 
 @pytest.fixture
 def clear_dbms_test() -> Generator:
-
     wipe_database(DATABASE_TEST_FILE_PATH, im_sure=True)
     with open(WIGGLE_NUMBER_TEST_FILE_PATH, "w") as file_handle:
         file_handle.write("0")

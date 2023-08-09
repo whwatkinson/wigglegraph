@@ -1,0 +1,1 @@
+MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel);

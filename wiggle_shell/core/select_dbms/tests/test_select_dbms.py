@@ -2,14 +2,14 @@ from typing import Generator
 
 import pytest
 
-from wiggle_shell.core.select_dbms import (
-    get_and_display_available_dbms,
-    list_existing_dbms,
-    create_new_database,
-    get_new_dbms_file_paths,
-    get_existing_dbms_file_paths,
-)
 from testing import TEST_DBMS_FOLDER_PATH
+from wiggle_shell.core.select_dbms import (
+    create_new_database,
+    get_and_display_available_dbms,
+    get_existing_dbms_file_paths,
+    get_new_dbms_file_paths,
+    list_existing_dbms,
+)
 
 
 class TestSelectDatabase:
@@ -27,7 +27,6 @@ class TestSelectDatabase:
         assert test["B"] == "test"
 
     def test_create_new_database(self, setup_databases: Generator) -> None:
-
         dbms_name = "foo2"
         # Check that the db does not exit
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
@@ -56,7 +55,6 @@ class TestSelectDatabase:
         assert dbms_name in test
 
     def test_get_new_dbms_file_paths(self, setup_databases: Generator) -> None:
-
         new_dbms_name = "test_foo"
         test = get_new_dbms_file_paths(new_dbms_name, TEST_DBMS_FOLDER_PATH)
 

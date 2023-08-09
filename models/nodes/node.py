@@ -23,5 +23,4 @@ class Node(BaseModel):
         return f"{self.node_label}: {self.wn}"
 
     def export_node(self) -> dict:
-
         return {self.wn: self.dict()}
