@@ -1,5 +1,7 @@
 # Make
 
+INSERT MAKE PIC HERE:
+
 The MAKE clause of WQL.
 
 ## Introduction
