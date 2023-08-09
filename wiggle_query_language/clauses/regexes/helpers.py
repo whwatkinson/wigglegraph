@@ -1,5 +1,5 @@
 def get_params_regex() -> str:
-    return r"[{}\w:\s,'\".\[\]]+"
+    return r"[{}\w:\s,'\"\.\[\]]+"
 
 
 def get_node_pattern_regex(node_name: str) -> str:
