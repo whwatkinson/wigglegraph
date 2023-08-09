@@ -119,6 +119,11 @@ class TestWqlMake:
                 id="EXP EXEC: Non directed single relationship",
             ),
             pytest.param(
+                ["MAKE (:NodeLabel)-[]-(:NodeLabel);"],
+                pytest.raises(MakeNonDirectedRelationshipError),
+                id="EXP EXEC: Non directed single relationship, no colon",
+            ),
+            pytest.param(
                 ["MAKE (:NodeLabel)<-[:]->(:NodeLabel);"],
                 pytest.raises(MakeNonDirectedRelationshipError),
                 id="EXP EXEC: Rel is pointing both ways",

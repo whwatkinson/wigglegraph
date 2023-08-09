@@ -31,7 +31,8 @@ def start_wiggle_shell() -> None:
 
         try:
             query(query_string)
-        except Exception:
+        except Exception as e:
+            print(e)
             continue
 
 
