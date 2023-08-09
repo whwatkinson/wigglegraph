@@ -4,6 +4,7 @@ from exceptions.wql.make import (
     MakeClauseSyntaxError,
     MakeParamSyntaxError,
     MakeNonDirectedRelationshipError,
+    MakeIllegalCharacter,
 )
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.make import (
@@ -295,10 +296,46 @@ class TestWqlMake:
             test = check_relationships(test_make_matches)
             assert test is True
 
-    @pytest.mark.xfail
+    @pytest.mark.parametrize(
+        "test_make_matches, exception",
+        [
+            pytest.param(
+                ["MAKE (:NodeLabel);"],
+                does_not_raise(),
+                id="EXP PASS: No relationship",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel*);"],
+                pytest.raises(MakeIllegalCharacter),
+                id="EXP EXEC: Illegal char *",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel#);"],
+                pytest.raises(MakeIllegalCharacter),
+                id="EXP EXEC: Illegal char #",
+            ),
+            pytest.param(
+                ["""MAKE (:NodeLabel{ int: 1 , str: '2', st%r2:"2_4"});"""],
+                pytest.raises(MakeIllegalCharacter),
+                id="EXP EXEC: Illegal char %",
+            ),
+            pytest.param(
+                [
+                    """MAKE (left_node_handle:LeftNodeLabel{int: 1}) -[:]-> (middle_node_label:&MiddleNodeLabel) -[:]->(right_node_label:RightNodeLabel);"""
+                ],
+                pytest.raises(MakeIllegalCharacter),
+                id="EXP EXEC: Illegal char &",
+            ),
+            pytest.param(
+                ["""MAKE (:NodeLabel{ int: 1 , str: '$2', str2:"2_4"});"""],
+                pytest.raises(MakeIllegalCharacter),
+                id="EXP EXEC: Illegal char $",
+            ),
+        ],
+    )
     def test_check_illegal_characters(
         self, test_make_matches: list[str], exception
     ) -> None:
         with exception:
             check_illegal_characters(test_make_matches)
-            assert False
+            assert True

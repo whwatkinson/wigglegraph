@@ -1,5 +1,6 @@
 # TODO test for extra chars
-EXTRA_ALLOWED_CHARS = "@$"
+EXTRA_ALLOWED_CHARS = "@"
+ILLEGAL_CHARS = "#%&*$"
 
 
 def get_all_params_regex() -> str:

@@ -11,3 +11,7 @@ class MakeParamSyntaxError(WqlException):
 
 class MakeNonDirectedRelationshipError(WqlException):
     pass
+
+
+class MakeIllegalCharacter(WqlException):
+    pass

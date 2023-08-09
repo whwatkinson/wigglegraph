@@ -4,15 +4,17 @@ from exceptions.wql.make import (
     MakeClauseSyntaxError,
     MakeParamSyntaxError,
     MakeNonDirectedRelationshipError,
+    MakeIllegalCharacter,
 )
 from models.wql.parsed_query import ParsedMake
 from wiggle_query_language.clauses.regexes.make import (
-    MAKE_STATEMENT_ALL,
+    MAKE_STATEMENT_ALL_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX,
-    NODES_RELS_PATTERN,
-    RELATIONSHIP_DIR_CHECK,
+    NODES_RELS_PATTERN_REGEX,
+    RELATIONSHIP_DIR_CHECK_REGEX,
     PARAM_LIST_VALUE,
+    ILLEGAL_CHARS_REGEX,
 )
 
 
@@ -85,7 +87,9 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     :return: A list of MAKE statements.
     """
 
-    if make_matches := [x.group() for x in MAKE_STATEMENT_ALL.finditer(query_string)]:
+    if make_matches := [
+        x.group() for x in MAKE_STATEMENT_ALL_REGEX.finditer(query_string)
+    ]:
         return make_matches
 
     check_make_clause_syntax(query_string)
@@ -100,7 +104,7 @@ def build_parsed_make(statement: str) -> ParsedMake:
     :return: A ParsedMake Object.
     """
     parsed_pattern_dict = [
-        x.groupdict() for x in NODES_RELS_PATTERN.finditer(statement) if x.group()
+        x.groupdict() for x in NODES_RELS_PATTERN_REGEX.finditer(statement) if x.group()
     ]
 
     parsed_make = ParsedMake(
@@ -118,7 +122,7 @@ def check_relationships(make_matches: list[str]) -> bool:
     """
 
     for stmt in make_matches:
-        rels = RELATIONSHIP_DIR_CHECK.findall(stmt)
+        rels = RELATIONSHIP_DIR_CHECK_REGEX.findall(stmt)
 
         for rel in rels:
             if "<" in rel and ">" in rel:
@@ -136,7 +140,11 @@ def check_relationships(make_matches: list[str]) -> bool:
 
 
 def check_illegal_characters(make_matches: list[str]) -> bool:
-    pass
+    for stmt in make_matches:
+        if match := ILLEGAL_CHARS_REGEX.search(stmt):
+            raise MakeIllegalCharacter(f"{match.group()} is not allowed")
+
+    return True
 
 
 def validate_make_statement(make_matches: list[str]) -> bool:

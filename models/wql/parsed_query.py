@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 from models.wql.enums.clauses import Clause
-from wiggle_query_language.clauses.regexes.make import MAKE_STATEMENT_ALL
+from wiggle_query_language.clauses.regexes.make import MAKE_STATEMENT_ALL_REGEX
 
 
 class Node(BaseModel):
@@ -43,7 +43,7 @@ class ParsedPattern(BaseModel):
 
 
 class ParsedMake(BaseModel):
-    raw_statement: str = Field(regex=MAKE_STATEMENT_ALL.pattern)
+    raw_statement: str = Field(regex=MAKE_STATEMENT_ALL_REGEX.pattern)
     clause: Clause = Clause.MAKE
     parsed_pattern_list: list[ParsedPattern]
 
