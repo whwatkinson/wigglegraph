@@ -142,6 +142,12 @@ class TestMakeRePatterns:
                 id="EXP PASS: 1 Match",
             ),
             pytest.param(
+                """MAKE (:NodeLabel)----[]---(foo:NodeLabel);""",
+                ["----[]---"],
+                does_not_raise(),
+                id="EXP PASS: 1 Match, long rel not symmetrical",
+            ),
+            pytest.param(
                 """MAKE (:NodeLabel)<-[f:FOO]->(foo:NodeLabel);""",
                 ["<-[f:FOO]->"],
                 does_not_raise(),

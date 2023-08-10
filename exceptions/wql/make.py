@@ -15,3 +15,7 @@ class MakeNonDirectedRelationshipError(WiggleGraphBaseException):
 
 class MakeIllegalCharacterError(WiggleGraphBaseException):
     pass
+
+
+class MakeRelationshipNameSyntaxError(WiggleGraphBaseException):
+    pass
