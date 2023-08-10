@@ -7,7 +7,6 @@ from wiggle_query_language.clauses.regexes.helpers import (
     ILLEGAL_CHARS,
 )
 
-# TODO EACH REGEX ONE TEST
 
 # MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel);
 MAKE_STATEMENT_ALL_REGEX = compile(
