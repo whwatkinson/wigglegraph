@@ -125,11 +125,6 @@ class TestWqlMake:
                 id="EXP EXEC: Non directed single relationship",
             ),
             pytest.param(
-                ["MAKE (:NodeLabel)-[:rel]->(:NodeLabel);"],
-                pytest.raises(MakeRelationshipNameSyntaxError),
-                id="EXP EXEC: lowercase rel name",
-            ),
-            pytest.param(
                 ["MAKE (:NodeLabel)-[]-(:NodeLabel);"],
                 pytest.raises(MakeNonDirectedRelationshipError),
                 id="EXP EXEC: Non directed single relationship, no colon",
@@ -143,6 +138,11 @@ class TestWqlMake:
                 ["MAKE (:NodeLabel)-[:]->(:NodeLabel)-[:]-(:NodeLabel);"],
                 pytest.raises(MakeNonDirectedRelationshipError),
                 id="EXP EXEC: Triple node with two relationships, one not directed",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel)-[:rel]->(:NodeLabel);"],
+                pytest.raises(MakeRelationshipNameSyntaxError),
+                id="EXP EXEC: lowercase rel name",
             ),
         ],
     )

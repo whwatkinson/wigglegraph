@@ -3,6 +3,7 @@ from exceptions.wql.make import (
     MakeParamSyntaxError,
     MakeNonDirectedRelationshipError,
     MakeIllegalCharacterError,
+    # MakeRelationshipNameSyntaxError,
 )
 from wiggle_query_language.clauses.regexes.make_patterns import (
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
@@ -126,3 +127,15 @@ def validate_make_statement(make_matches: list[str]) -> bool:
     check_relationships(make_matches)
 
     return True
+
+
+if __name__ == "__main__":
+    test_stmt_list = ["""MAKE (:NodeLabel)---[f:REL]--->(foo:NodeLabel);"""]
+
+    a = [
+        x.groupdict()
+        for x in RELATIONSHIP_DIR_CHECK_REGEX.finditer(test_stmt_list[0])
+        if x.group()
+    ]
+    b = RELATIONSHIP_DIR_CHECK_REGEX.findall(test_stmt_list[0])
+    foo = check_relationships(test_stmt_list)
