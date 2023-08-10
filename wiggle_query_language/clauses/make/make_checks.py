@@ -8,7 +8,7 @@ from wiggle_query_language.clauses.regexes.make_patterns import (
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
     RELATIONSHIP_DIR_CHECK_REGEX,
-    PARAM_LIST_VALUE,
+    PARAM_LIST_VALUE_REGEX,
     ILLEGAL_CHARS_REGEX,
 )
 
@@ -44,11 +44,11 @@ def check_make_params(make_matches: list[str]) -> True:
         # TODO remove double loop, most of the time will be one match..
         for param_match in param_string:
             # remove the list from the params
-            params_sans_list = PARAM_LIST_VALUE.sub("", param_match)
+            params_sans_list = PARAM_LIST_VALUE_REGEX.sub("", param_match)
             check_param_formatting(params_sans_list)
 
             # check list
-            if params_lists := PARAM_LIST_VALUE.findall(param_match):
+            if params_lists := PARAM_LIST_VALUE_REGEX.findall(param_match):
                 for params_list in params_lists:
                     try:
                         # TODO remove this..

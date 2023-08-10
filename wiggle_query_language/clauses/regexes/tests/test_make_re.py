@@ -15,6 +15,8 @@ from wiggle_query_language.clauses.regexes.make_patterns import (
     RELATIONSHIP_DIR_CHECK_REGEX,
     NOT_LIST_KEY_VALUE_REGEX,
     LIST_KEY_VALUE_REGEX,
+    PARAM_LIST_VALUE_REGEX,
+    ILLEGAL_CHARS_REGEX,
 )
 
 
@@ -202,10 +204,50 @@ class TestMakeRePatterns:
             test = LIST_KEY_VALUE_REGEX.findall(test_pattern)
             assert test == expected_result
 
-    @pytest.mark.xfail
-    def test_param_list_value(self) -> None:
-        pass
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                ['[1, \'2\', "2_4", "3 4", 3.14]'],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                """{int: 1, str: '2', str2:"2_4", float: 3.14]}""",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_param_list_value_regex(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = PARAM_LIST_VALUE_REGEX.findall(test_pattern)
+            assert test == expected_result
 
-    @pytest.mark.xfail
-    def test_illegal_chars_regex(self) -> None:
-        pass
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                """MAKE (:NodeLabel$)-[#:%]->(foo:NodeLabel*);""",
+                ["$", "#", "%", "*"],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                """MAKE (:NodeLabel)-[:]->(foo:NodeLabel);""",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_illegal_chars_regex(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = ILLEGAL_CHARS_REGEX.findall(test_pattern)
+            assert test == expected_result

@@ -48,7 +48,7 @@ LIST_KEY_VALUE_REGEX = compile(
 )
 
 # [1, '2', "2_4", "3 4", 3.14]
-PARAM_LIST_VALUE = compile(r"(?P<list_value>\[[\w,\s'\"\.\]]+)", flags=IGNORECASE)
+PARAM_LIST_VALUE_REGEX = compile(r"(?P<list_value>\[[\w,\s'\"\.\]]+)", flags=IGNORECASE)
 
 # #%&*
 ILLEGAL_CHARS_REGEX = compile(rf"[{ILLEGAL_CHARS}]", flags=IGNORECASE)
