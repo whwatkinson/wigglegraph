@@ -135,6 +135,35 @@ cases_for_test_nodes_rel_pattern = [
         id="EXP PASS: Double Node, no rel name",
     ),
     pytest.param(
+        "MAKE (left_node_handle:LeftNodeLabel) ---[:]---> (middle_node_label:MiddleNodeLabel);",
+        [
+            {
+                "left_node": "(left_node_handle:LeftNodeLabel) ",
+                "left_node_handle": "left_node_handle",
+                "left_node_label": "LeftNodeLabel",
+                "left_node_props": None,
+                "left_middle_rel": "---[:]---> ",
+                "left_middle_rel_handle": "",
+                "left_middle_rel_label": "",
+                "left_middle_rel_props": None,
+                "middle_node": "(middle_node_label:MiddleNodeLabel)",
+                "middle_node_handle": "middle_node_label",
+                "middle_node_label": "MiddleNodeLabel",
+                "middle_node_props": None,
+                "middle_right_rel": None,
+                "middle_right_rel_handle": None,
+                "middle_right_rel_label": None,
+                "middle_right_rel_props": None,
+                "right_node": None,
+                "right_node_handle": None,
+                "right_node_label": None,
+                "right_node_props": None,
+            }
+        ],
+        does_not_raise(),
+        id="EXP PASS: Double Node, long rel dashes",
+    ),
+    pytest.param(
         """MAKE (left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:"2_4")-[:]->(middle_node_label:MiddleNodeLabel { float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});""",
         [
             {

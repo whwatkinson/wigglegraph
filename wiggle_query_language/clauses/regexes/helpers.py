@@ -31,7 +31,7 @@ def get_rel_pattern_regex(rel_name: str) -> str:
     :param rel_name: The name of the Rel.
     :return: A regex expression.
     """
-    return rf"\s*(?P<{rel_name}_rel><?-\[\s*(?P<{rel_name}_rel_handle>\w*)\s*:\s*(?P<{rel_name}_rel_label>\w*)\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]->?\s*)"
+    return rf"\s*(?P<{rel_name}_rel><?-*\[\s*(?P<{rel_name}_rel_handle>\w*)\s*:\s*(?P<{rel_name}_rel_label>\w*)\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]-*>?\s*)"
 
 
 def get_nodes_rels_pattern_regex() -> str:

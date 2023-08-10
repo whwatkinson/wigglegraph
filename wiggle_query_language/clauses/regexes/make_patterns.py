@@ -33,7 +33,7 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
 
 # <-[*:*]->
 RELATIONSHIP_DIR_CHECK_REGEX = compile(
-    rf"<?-\[\s*\w*\s*:?\s*\w*\s*{get_all_params_regex()}->?", flags=IGNORECASE
+    rf"<?-*\[\s*\w*\s*:?\s*\w*\s*{get_all_params_regex()}-*>?", flags=IGNORECASE
 )
 
 # foo: 1, bar: "2"
