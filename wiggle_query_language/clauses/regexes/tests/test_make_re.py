@@ -1,12 +1,15 @@
+from typing import Optional
+
 import pytest
 
-# from testing.test_helpers import does_not_raise
+from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.regexes.tests.cases_for_test_re import (
     cases_for_test_nodes_rel_pattern,
 )
 from wiggle_query_language.clauses.regexes.helpers import get_nodes_rels_pattern_regex
 from wiggle_query_language.clauses.regexes.make import (
     NODES_RELS_PATTERN_REGEX,
+    MAKE_STATEMENT_ALL_REGEX,
 )
 
 
@@ -32,8 +35,33 @@ class TestMakeRePatterns:
 
         assert test == expected_result
 
-    def test_make_statement_all_regex(self) -> None:
-        pass
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                "MAKE (:NodeLabel{})-[:]->(foo:NodeLabel {} );",
+                ["MAKE (:NodeLabel{})-[:]->(foo:NodeLabel {} );"],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                "FIND (:NodeLabel{})-[:]->(foo:NodeLabel {} );",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_make_statement_all_regex(
+        self,
+        test_pattern: str,
+        expected_result: Optional[list[str]],
+        exception,
+    ) -> None:
+        with exception:
+            test = MAKE_STATEMENT_ALL_REGEX.findall(test_pattern)
+
+            assert test == expected_result
 
     @pytest.mark.xfail
     def test_make_statement_check_clause_syntax(self) -> None:
