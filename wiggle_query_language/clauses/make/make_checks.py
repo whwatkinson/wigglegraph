@@ -3,7 +3,7 @@ from exceptions.wql.make import (
     MakeParamSyntaxError,
     MakeNonDirectedRelationshipError,
     MakeIllegalCharacterError,
-    # MakeRelationshipNameSyntaxError,
+    MakeRelationshipNameSyntaxError,
 )
 from wiggle_query_language.clauses.regexes.make_patterns import (
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
@@ -86,16 +86,24 @@ def check_relationships(make_matches: list[str]) -> bool:
     """
 
     for stmt in make_matches:
-        rels = RELATIONSHIP_DIR_CHECK_REGEX.findall(stmt)
-        # TODO ENFORCE UPPER CASE RELLABEL
-        for rel in rels:
-            if "<" in rel and ">" in rel:
+        if not (rels_matches := RELATIONSHIP_DIR_CHECK_REGEX.findall(stmt)):
+            return True
+        for rel in rels_matches:
+            rel_pattern: str = rel[0]
+            rel_name: str = rel[1]
+
+            if "<" in rel_pattern and ">" in rel_pattern:
                 raise MakeNonDirectedRelationshipError(
                     message="Relationships must be unidirectional"
                 )
-            if "<" not in rel and ">" not in rel:
+            if "<" not in rel_pattern and ">" not in rel_pattern:
                 raise MakeNonDirectedRelationshipError(
                     message="Relationships must be singly directed"
+                )
+
+            if not rel_name.isupper() and rel_name:
+                raise MakeRelationshipNameSyntaxError(
+                    f"Relationship names must be upper case: {rel_name} -> {rel_name.upper()}"
                 )
 
             continue
@@ -130,7 +138,7 @@ def validate_make_statement(make_matches: list[str]) -> bool:
 
 
 if __name__ == "__main__":
-    test_stmt_list = ["""MAKE (:NodeLabel)---[f:REL]--->(foo:NodeLabel);"""]
+    test_stmt_list = ["""MAKE (:NodeLabel)---[]--->(foo:NodeLabel);"""]
 
     a = [
         x.groupdict()

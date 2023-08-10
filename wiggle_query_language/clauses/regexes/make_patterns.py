@@ -36,6 +36,18 @@ RELATIONSHIP_DIR_CHECK_REGEX = compile(
     rf"<?-*\[\s*\w*\s*:?\s*\w*\s*{get_all_params_regex()}-*>?", flags=IGNORECASE
 )
 
+RELATIONSHIP_DIR_CHECK_REGEX = compile(
+    r"(?P<foo><?-*\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*[{}\w:\s,'\"\.\[\]@]+-*>?)",
+    flags=IGNORECASE,
+)
+
+
+RELATIONSHIP_DIR_CHECK_REGEX = compile(
+    rf"(?P<foo><?-*\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*{get_all_params_regex()}-*>?)",
+    flags=IGNORECASE,
+)
+
+
 # foo: 1, bar: "2"
 NOT_LIST_KEY_VALUE_REGEX = compile(
     r"(?P<param_name>[\w]+)\s*:\s*(?P<param_value>[\w'\"\.]+)", flags=IGNORECASE

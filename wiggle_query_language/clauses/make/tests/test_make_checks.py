@@ -105,11 +105,6 @@ class TestWqlMake:
                 id="EXP PASS: Double node with one relationship",
             ),
             pytest.param(
-                ["MAKE (:NodeLabel)--[:rel]-->(:NodeLabel);"],
-                does_not_raise(),
-                id="EXP PASS: Double node with long relationship",
-            ),
-            pytest.param(
                 ["MAKE (:NodeLabel)-[:]->(:NodeLabel)-[:]->(:NodeLabel);"],
                 does_not_raise(),
                 id="EXP PASS: Triple node with two relationships, ltr",
@@ -143,6 +138,11 @@ class TestWqlMake:
                 ["MAKE (:NodeLabel)-[:rel]->(:NodeLabel);"],
                 pytest.raises(MakeRelationshipNameSyntaxError),
                 id="EXP EXEC: lowercase rel name",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel)--[:rel]-->(:NodeLabel);"],
+                pytest.raises(MakeRelationshipNameSyntaxError),
+                id="EXP EXEC: Double node with long relationship, lowercase rel name",
             ),
         ],
     )

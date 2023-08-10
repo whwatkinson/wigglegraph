@@ -125,31 +125,31 @@ class TestMakeRePatterns:
         [
             pytest.param(
                 """MAKE (:NodeLabel)-[f:REL]->(foo:NodeLabel);""",
-                ["-[f:REL]->"],
+                [("-[f:REL]->", "REL")],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
             ),
             pytest.param(
                 """MAKE (:NodeLabel)---[f:REL]--->(foo:NodeLabel);""",
-                ["---[f:REL]--->"],
+                [("---[f:REL]--->", "REL")],
                 does_not_raise(),
                 id="EXP PASS: 1 Match, long rel",
             ),
             pytest.param(
                 """MAKE (:NodeLabel)-[]-(foo:NodeLabel);""",
-                ["-[]-"],
+                [("-[]-", "")],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
             ),
             pytest.param(
                 """MAKE (:NodeLabel)----[]---(foo:NodeLabel);""",
-                ["----[]---"],
+                [("----[]---", "")],
                 does_not_raise(),
                 id="EXP PASS: 1 Match, long rel not symmetrical",
             ),
             pytest.param(
                 """MAKE (:NodeLabel)<-[f:FOO]->(foo:NodeLabel);""",
-                ["<-[f:FOO]->"],
+                [("<-[f:FOO]->", "FOO")],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
             ),
