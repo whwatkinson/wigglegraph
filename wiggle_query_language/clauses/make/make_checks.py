@@ -4,9 +4,9 @@ from exceptions.wql.make import (
     MakeNonDirectedRelationshipError,
     MakeIllegalCharacterError,
 )
-from wiggle_query_language.clauses.regexes.make import (
-    MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX,
-    MAKE_STATEMENT_CHECK_PARAMS_SYNTAX,
+from wiggle_query_language.clauses.regexes.make_patterns import (
+    MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
+    MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
     RELATIONSHIP_DIR_CHECK_REGEX,
     PARAM_LIST_VALUE,
     ILLEGAL_CHARS_REGEX,
@@ -38,7 +38,7 @@ def check_make_params(make_matches: list[str]) -> True:
     """
 
     for stmt in make_matches:
-        if not (param_string := MAKE_STATEMENT_CHECK_PARAMS_SYNTAX.findall(stmt)):
+        if not (param_string := MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX.findall(stmt)):
             continue
 
         # TODO remove double loop, most of the time will be one match..
@@ -68,7 +68,7 @@ def check_make_clause_syntax(query_string: str) -> bool:
     :return: True or raises and exception.
     """
 
-    if matches := MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX.findall(query_string):
+    if matches := MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX.findall(query_string):
         for match in matches:
             raise MakeClauseSyntaxError(
                 message=f"SyntaxError: {match} was not recognised did you mean MAKE?"

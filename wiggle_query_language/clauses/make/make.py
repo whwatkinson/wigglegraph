@@ -1,7 +1,7 @@
 from typing import Optional
 
 from models.wql.parsed_query import ParsedMake
-from wiggle_query_language.clauses.regexes.make import (
+from wiggle_query_language.clauses.regexes.make_patterns import (
     MAKE_STATEMENT_ALL_REGEX,
     NODES_RELS_PATTERN_REGEX,
 )

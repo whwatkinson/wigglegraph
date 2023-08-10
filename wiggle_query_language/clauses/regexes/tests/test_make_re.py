@@ -7,9 +7,14 @@ from wiggle_query_language.clauses.regexes.tests.cases_for_test_re import (
     cases_for_test_nodes_rel_pattern,
 )
 from wiggle_query_language.clauses.regexes.helpers import get_nodes_rels_pattern_regex
-from wiggle_query_language.clauses.regexes.make import (
+from wiggle_query_language.clauses.regexes.make_patterns import (
     NODES_RELS_PATTERN_REGEX,
     MAKE_STATEMENT_ALL_REGEX,
+    MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
+    MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
+    RELATIONSHIP_DIR_CHECK_REGEX,
+    NOT_LIST_KEY_VALUE_REGEX,
+    LIST_KEY_VALUE_REGEX,
 )
 
 
@@ -63,25 +68,139 @@ class TestMakeRePatterns:
 
             assert test == expected_result
 
-    @pytest.mark.xfail
-    def test_make_statement_check_clause_syntax(self) -> None:
-        pass
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                "AKE (:NodeLabel{})-[:]->(foo:NodeLabel {} );",
+                ["AKE"],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                "REPORT (:NodeLabel{})-[:]->(foo:NodeLabel {} );",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_make_statement_check_clause_syntax_regex(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX.findall(test_pattern)
+            assert test == expected_result
 
-    @pytest.mark.xfail
-    def test_make_statement_check_params_syntax(self) -> None:
-        pass
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});""",
+                [
+                    """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}"""
+                ],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                "REPORT (:NodeLabel);",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_make_statement_check_params_syntax(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX.findall(test_pattern)
+            assert test == expected_result
 
-    @pytest.mark.xfail
-    def test_relationship_dir_check_regex(self) -> None:
-        pass
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                """MAKE (:NodeLabel)-[f:REL]->(foo:NodeLabel);""",
+                ["-[f:REL]->"],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                """MAKE (:NodeLabel)-[]-(foo:NodeLabel);""",
+                ["-[]-"],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                """MAKE (:NodeLabel)<-[f:FOO]->(foo:NodeLabel);""",
+                ["<-[f:FOO]->"],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                "REPORT (:NodeLabel);",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_relationship_dir_check_regex(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = RELATIONSHIP_DIR_CHECK_REGEX.findall(test_pattern)
+            assert test == expected_result
 
-    @pytest.mark.xfail
-    def test_key_value_regex(self) -> None:
-        pass
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                [("int", "1"), ("str", "'2'"), ("str2", '"2_4"'), ("float", "3.14")],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                """{list: [1, '2', "2_4", "3 4", 3.14]}""",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_not_list_key_value_regex(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = NOT_LIST_KEY_VALUE_REGEX.findall(test_pattern)
+            assert test == expected_result
 
-    @pytest.mark.xfail
-    def test_list_key_value_regex(self) -> None:
-        pass
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                [("list", '[1, \'2\', "2_4", "3 4", 3.14]')],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                """{int: 1, str: '2', str2:"2_4", float: 3.14]}""",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_list_key_value_regex(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = LIST_KEY_VALUE_REGEX.findall(test_pattern)
+            assert test == expected_result
 
     @pytest.mark.xfail
     def test_param_list_value(self) -> None:

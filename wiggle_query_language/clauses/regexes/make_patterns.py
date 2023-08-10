@@ -22,12 +22,12 @@ NODES_RELS_PATTERN_REGEX = compile(
 )
 
 # AKME (node1:NodeLabel);
-MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX = compile(
+MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX = compile(
     r"\s?(?P<make_syntax_error>[adeijklmnorswz]{3,6})\s?\(", flags=IGNORECASE
 )
 
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
-MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
+MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
     rf"(?P<all_props>{{[\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+}})",
     flags=IGNORECASE,
 )
@@ -38,8 +38,8 @@ RELATIONSHIP_DIR_CHECK_REGEX = compile(
 )
 
 # foo: 1, bar: "2"
-KEY_VALUE_REGEX = compile(
-    r"(?P<param_name>[\w]+)\s*:\s*(?P<param_value>[\w'\"\.\[\]]+)", flags=IGNORECASE
+NOT_LIST_KEY_VALUE_REGEX = compile(
+    r"(?P<param_name>[\w]+)\s*:\s*(?P<param_value>[\w'\"\.]+)", flags=IGNORECASE
 )
 
 # baz: [1, 2, 3, 4]
