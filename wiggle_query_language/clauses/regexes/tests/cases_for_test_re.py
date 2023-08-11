@@ -164,7 +164,7 @@ cases_for_test_nodes_rel_pattern = [
         id="EXP PASS: Double Node, long rel dashes",
     ),
     pytest.param(
-        """MAKE (left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:"2_4")-[:]->(middle_node_label:MiddleNodeLabel { float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});""",
+        """MAKE (left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:"2_4")-[:]->(middle_node_label:MiddleNodeLabel { float: 3.14, list: [1, '2', "2_4", "3 4", 3.14], email: "harry@wg.net"});""",
         [
             {
                 "left_node": "(left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:\"2_4\")",
@@ -175,10 +175,10 @@ cases_for_test_nodes_rel_pattern = [
                 "left_middle_rel_handle": "",
                 "left_middle_rel_label": "",
                 "left_middle_rel_props": None,
-                "middle_node": '(middle_node_label:MiddleNodeLabel { float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]})',
+                "middle_node": '(middle_node_label:MiddleNodeLabel { float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14], email: "harry@wg.net"})',
                 "middle_node_handle": "middle_node_label",
                 "middle_node_label": "MiddleNodeLabel",
-                "middle_node_props": '{ float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]}',
+                "middle_node_props": '{ float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14], email: "harry@wg.net"}',
                 "middle_right_rel": None,
                 "middle_right_rel_handle": None,
                 "middle_right_rel_label": None,
