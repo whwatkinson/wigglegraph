@@ -2,7 +2,7 @@ from typing import Generator
 
 import pytest
 
-from exceptions.database import NodeExistsError
+from exceptions.wql.database import NodeExistsError
 from wiggle_query_language.graph.database.database import (
     add_item_to_database,
     load_database,

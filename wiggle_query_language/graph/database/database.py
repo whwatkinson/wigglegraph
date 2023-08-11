@@ -1,17 +1,17 @@
 from json import dump, load
 from json.decoder import JSONDecodeError
 
-from exceptions.database import NodeExistsError
+from exceptions.wql.database import NodeExistsError
 from graph_logger.graph_logger import graph_logger
 from testing import DATABASE_TEST_FILE_PATH
 
 
 def load_database(file_path: str) -> dict:
-    graph_logger.info("Atempting to loading database")
+    graph_logger.info("Attempting to loading database")
     try:
         with open(file_path, "r") as file_handle:
             database = load(file_handle)
-            graph_logger.info("Succesfully loaded database")
+            graph_logger.info("Successfully loaded database")
             return database
 
     except JSONDecodeError:
@@ -22,10 +22,11 @@ def load_database(file_path: str) -> dict:
 def add_item_to_database(file_path: str, item: dict):
     database = load_database(file_path)
 
+    # todo o(n) -> o(1)
     for wiggle_number, _ in item.items():
         if str(wiggle_number) in database.keys():
             raise NodeExistsError(
-                message=f"Node {wiggle_number} already exisits did you mean to update"
+                message=f"Node {wiggle_number} already exists did you mean to update"
             )
 
     database.update(item)
