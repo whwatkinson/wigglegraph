@@ -53,7 +53,9 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
             # Left Node
             if parsed_pattern.left_node:
                 left_node = NodePre(
-                    wn=current_wiggle_number, node_label=parsed_pattern.left_node_label
+                    wn=current_wiggle_number,
+                    node_label=parsed_pattern.left_node_label,
+                    handle=parsed_pattern.left_node_handle,
                 )
                 make_pre.left_node = left_node
                 current_wiggle_number += 1
@@ -63,6 +65,7 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
                 middle_node = NodePre(
                     wn=current_wiggle_number,
                     node_label=parsed_pattern.middle_node_label,
+                    handle=parsed_pattern.middle_node_handle,
                 )
                 make_pre.middle_node = middle_node
                 current_wiggle_number += 1
@@ -70,7 +73,9 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
             # Right Node
             if parsed_pattern.right_node:
                 right_node = NodePre(
-                    wn=current_wiggle_number, node_label=parsed_pattern.right_node_label
+                    wn=current_wiggle_number,
+                    node_label=parsed_pattern.right_node_label,
+                    handle=parsed_pattern.right_node_handle,
                 )
                 make_pre.right_node = right_node
                 current_wiggle_number += 1
@@ -80,15 +85,19 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
                 left_middle_relationship = RelationshipPre(
                     wn=current_wiggle_number,
                     rel_name=parsed_pattern.left_middle_rel_label,
+                    handle=parsed_pattern.left_middle_rel_handle,
                 )
                 make_pre.left_middle_relationship = left_middle_relationship
+                make_pre.left_middle_relationship.props_str = (
+                    parsed_pattern.left_middle_rel_props
+                )
 
                 lm_rel_dir = relationship_is_left_to_right(left_middle_rel)
 
                 if lm_rel_dir:
-                    make_pre.left_node.rel_to = make_pre.middle_node.wn
+                    make_pre.left_node.wn_of_rel_to = make_pre.middle_node.wn
                 else:
-                    make_pre.middle_node.rel_to = make_pre.left_node.wn
+                    make_pre.middle_node.wn_of_rel_to = make_pre.left_node.wn
 
                 current_wiggle_number += 1
 
@@ -97,14 +106,18 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
                 middle_right_relationship = RelationshipPre(
                     wn=current_wiggle_number,
                     rel_name=parsed_pattern.left_middle_rel_label,
+                    handle=parsed_pattern.middle_right_rel_handle,
                 )
                 make_pre.middle_right_relationship = middle_right_relationship
+                make_pre.middle_right_relationship.props_str = (
+                    parsed_pattern.middle_right_rel_props
+                )
 
                 lm_rel_dir = relationship_is_left_to_right(right_middle_rel)
                 if lm_rel_dir:
-                    make_pre.middle_node.rel_to = make_pre.right_node.wn
+                    make_pre.middle_node.wn_of_rel_to = make_pre.right_node.wn
                 else:
-                    make_pre.right_node.rel_to = make_pre.middle_node.wn
+                    make_pre.right_node.wn_of_rel_to = make_pre.middle_node.wn
 
                 current_wiggle_number += 1
 

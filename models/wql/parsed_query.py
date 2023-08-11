@@ -18,6 +18,9 @@ class Rel(BaseModel):
     rel_props: Optional[str]
 
 
+# TODO make sure that all the handles are unique
+
+
 class ParsedPattern(BaseModel):
     left_node: Optional[str]
     left_node_handle: Optional[str]

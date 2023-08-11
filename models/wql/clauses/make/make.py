@@ -6,12 +6,16 @@ from pydantic import BaseModel
 class NodePre(BaseModel):
     wn: int
     node_label: str
-    rel_to: int = None
+    handle: Optional[str]
+    wn_of_rel_to: Optional[int]
+    props_str: Optional[str]
 
 
 class RelationshipPre(BaseModel):
     wn: int
     rel_name: str
+    handle: Optional[str]
+    props_str: Optional[str]
 
 
 class MakePre(BaseModel):
