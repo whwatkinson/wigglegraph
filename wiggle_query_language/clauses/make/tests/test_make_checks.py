@@ -115,6 +115,13 @@ class TestWqlMake:
                 id="EXP PASS: Triple node with two relationships, both pointing to middle",
             ),
             pytest.param(
+                [
+                    """"MAKE (:NodeLabel{int: 1})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"})<-[rel2:REL2{float: 3.14}]-(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]}});"""
+                ],
+                does_not_raise(),
+                id="EXP EXEC: Triple node with two relationships ltr and rtl.",
+            ),
+            pytest.param(
                 ["MAKE (:NodeLabel)-[:]-(:NodeLabel);"],
                 pytest.raises(MakeNonDirectedRelationshipError),
                 id="EXP EXEC: Non directed single relationship",
