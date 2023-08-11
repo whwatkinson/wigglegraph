@@ -6,18 +6,26 @@ from models.wql import (
     NodePre,
     RelationshipPre,
     MakePre,
+    WiggleGraphMetalData,
 )
-from models.wigshell import DbmsFilePath
+from models.wigsh import DbmsFilePath
 
 from wiggle_query_language.graph.state.wiggle_number import get_current_wiggle_number
 
 
 def make_node(node_pre: NodePre) -> Node:
-    return Node(wn=node_pre.wn, node_label=node_pre.node_label)
+    node_metadata = WiggleGraphMetalData(wn=node_pre.wn)
+    return Node(node_metadata=node_metadata, node_label=node_pre.node_label)
 
 
 def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
-    return Relationship(wn=relationship_pre.wn, rel_name=relationship_pre.rel_name)
+    rel_metadata = WiggleGraphMetalData(wn=relationship_pre.wn)
+    return Relationship(
+        rel_metadata=rel_metadata,
+        relationship_name=relationship_pre.rel_name,
+        wn_from_node=0,
+        wn_to_node=1,
+    )
 
 
 def commit(

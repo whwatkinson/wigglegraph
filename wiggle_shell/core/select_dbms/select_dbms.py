@@ -4,7 +4,7 @@ from pathlib import Path
 from string import ascii_uppercase
 from typing import Optional
 
-from models.wigshell import DbmsFilePath
+from models.wigsh import DbmsFilePath
 from wiggle_shell import DBMS_FOLDER, INPUT_PROMPT_SPACING
 from wiggle_shell.core.select_dbms.select_database import (
     create_new_database,

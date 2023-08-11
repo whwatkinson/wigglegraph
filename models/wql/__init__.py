@@ -1,5 +1,6 @@
-from models.wql.node import Node
-from models.wql.relationship import Relationship
+from models.wql.data.wg_metadata import WiggleGraphMetalData
+from models.wql.data.node import Node
+from models.wql.data.relationship import Relationship
 from models.wql.parsed_query import ParsedMake, ParsedPattern, ParsedQuery
 from models.wql.enums.clauses import Clause
 from models.wql.clauses.make.make import MakePre, NodePre, RelationshipPre
@@ -14,4 +15,5 @@ __all__ = [
     "ParsedMake",
     "ParsedPattern",
     "ParsedQuery",
+    "WiggleGraphMetalData",
 ]
