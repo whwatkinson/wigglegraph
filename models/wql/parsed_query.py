@@ -12,14 +12,13 @@ class Node(BaseModel):
     node_props: Optional[str]
 
 
-class MakeRel(BaseModel):
+class Rel(BaseModel):
     rel_handle: Optional[str]
     rel_label: Optional[str]
     rel_props: Optional[str]
 
 
 class ParsedPattern(BaseModel):
-    # TODO simplify this with the above
     left_node: Optional[str]
     left_node_handle: Optional[str]
     left_node_label: Optional[str]

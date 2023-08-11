@@ -23,7 +23,6 @@ def add_item_to_database(file_path: str, item: dict):
     database = load_database(file_path)
 
     for wiggle_number, _ in item.items():
-        # todo check agaisnts wiggle number state
         if str(wiggle_number) in database.keys():
             raise NodeExistsError(
                 message=f"Node {wiggle_number} already exisits did you mean to update"
@@ -40,7 +39,6 @@ def add_item_to_database(file_path: str, item: dict):
 def add_item_to_database_append(file_path: str, item: dict):
     wiggle_number = None
     for key in item:
-        # todo check agaisnts wiggle number state
         wiggle_number = key
         if str(wiggle_number) in {1, 2, 3}:
             raise NodeExistsError(

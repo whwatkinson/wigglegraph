@@ -14,11 +14,6 @@ def get_handle_label_regex(name: str, required_char: str = "+") -> str:
     return rf"(?P<{name}_handle>\w*)\s*:\s*(?P<{name}_label>\w{required_char})"
 
 
-def get_node_rel_body_regex(name: str, required_char: str = "+") -> str:
-    handle_label_regex = get_handle_label_regex(name, required_char)
-    return rf"{handle_label_regex}\s*(?P<{name}_node_props>{get_all_params_regex()})"
-
-
 def get_node_pattern_regex(node_name: str) -> str:
     """
     Generates the regex patten for a Node
