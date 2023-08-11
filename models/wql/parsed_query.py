@@ -68,7 +68,7 @@ class ParsedMake(BaseModel):
 
 
 class ParsedQuery(BaseModel):
-    make: Optional[list[ParsedMake]]
-    find: Optional[dict] = None
-    criteria: Optional[dict] = None
-    report: Optional[dict] = None
+    make_parsed: Optional[list[ParsedMake]]
+    find_parsed: Optional[dict] = None
+    criteria_parsed: Optional[dict] = None
+    report_parsed: Optional[dict] = None
