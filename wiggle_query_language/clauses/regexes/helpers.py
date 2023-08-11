@@ -10,9 +10,13 @@ def get_all_params_regex() -> str:
     return rf"[{{}}\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+"
 
 
-def get_handle_label_regex(name: str) -> str:
-    # TODO factor out handle:label
-    return rf"(?P<{name}_handle>\w*)\s*:\s*(?P<{name}_label>\w+)"
+def get_handle_label_regex(name: str, required_char: str = "+") -> str:
+    return rf"(?P<{name}_handle>\w*)\s*:\s*(?P<{name}_label>\w{required_char})"
+
+
+def get_node_rel_body_regex(name: str, required_char: str = "+") -> str:
+    handle_label_regex = get_handle_label_regex(name, required_char)
+    return rf"{handle_label_regex}\s*(?P<{name}_node_props>{get_all_params_regex()})"
 
 
 def get_node_pattern_regex(node_name: str) -> str:
@@ -21,7 +25,9 @@ def get_node_pattern_regex(node_name: str) -> str:
     :param node_name: The name of the Node.
     :return: A regex expression.
     """
-    return rf"\s*(?P<{node_name}_node>\(\s*(?P<{node_name}_node_handle>\w*)\s*:\s*(?P<{node_name}_node_label>\w+)\s*(?P<{node_name}_node_props>{get_all_params_regex()})?\s*\)\s*)"
+
+    handle_label_regex = get_handle_label_regex(f"{node_name}_node")
+    return rf"\s*(?P<{node_name}_node>\(\s*{handle_label_regex}\s*(?P<{node_name}_node_props>{get_all_params_regex()})?\s*\)\s*)"
 
 
 def get_rel_pattern_regex(rel_name: str) -> str:
@@ -30,7 +36,8 @@ def get_rel_pattern_regex(rel_name: str) -> str:
     :param rel_name: The name of the Rel.
     :return: A regex expression.
     """
-    return rf"\s*(?P<{rel_name}_rel><?-*\[\s*(?P<{rel_name}_rel_handle>\w*)\s*:\s*(?P<{rel_name}_rel_label>\w*)\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]-*>?\s*)"
+    handle_label_regex = get_handle_label_regex(f"{rel_name}_rel", "*")
+    return rf"\s*(?P<{rel_name}_rel><?-*\[\s*{handle_label_regex}\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]-*>?\s*)"
 
 
 def get_nodes_rels_pattern_regex() -> str:

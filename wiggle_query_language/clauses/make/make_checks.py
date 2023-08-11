@@ -52,7 +52,6 @@ def check_make_params(make_matches: list[str]) -> True:
             if params_lists := PARAM_LIST_VALUE_REGEX.findall(param_match):
                 for params_list in params_lists:
                     try:
-                        # TODO remove this..
                         eval(params_list)
                     except SyntaxError:
                         raise MakeParamSyntaxError(
