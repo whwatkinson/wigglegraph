@@ -7,7 +7,6 @@ from wiggle_query_language.clauses.regexes.helpers import (
     ILLEGAL_CHARS,
 )
 
-# TODO EACH REGEX ONE TEST
 
 # MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel);
 MAKE_STATEMENT_ALL_REGEX = compile(
@@ -22,24 +21,36 @@ NODES_RELS_PATTERN_REGEX = compile(
 )
 
 # AKME (node1:NodeLabel);
-MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX = compile(
+MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX = compile(
     r"\s?(?P<make_syntax_error>[adeijklmnorswz]{3,6})\s?\(", flags=IGNORECASE
 )
 
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
-MAKE_STATEMENT_CHECK_PARAMS_SYNTAX = compile(
+MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
     rf"(?P<all_props>{{[\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+}})",
     flags=IGNORECASE,
 )
 
 # <-[*:*]->
 RELATIONSHIP_DIR_CHECK_REGEX = compile(
-    rf"<?-\[\s*\w*\s*:\s*\w*\s*{get_all_params_regex()}->?", flags=IGNORECASE
+    rf"<?-*\[\s*\w*\s*:?\s*\w*\s*{get_all_params_regex()}-*>?", flags=IGNORECASE
 )
 
+RELATIONSHIP_DIR_CHECK_REGEX = compile(
+    r"(?P<foo><?-*\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*[{}\w:\s,'\"\.\[\]@]+-*>?)",
+    flags=IGNORECASE,
+)
+
+
+RELATIONSHIP_DIR_CHECK_REGEX = compile(
+    rf"(?P<foo><?-+\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*{get_all_params_regex()}-+>?)",
+    flags=IGNORECASE,
+)
+
+
 # foo: 1, bar: "2"
-KEY_VALUE_REGEX = compile(
-    r"(?P<param_name>[\w]+)\s*:\s*(?P<param_value>[\w'\"\.\[\]]+)", flags=IGNORECASE
+NOT_LIST_KEY_VALUE_REGEX = compile(
+    r"(?P<param_name>[\w]+)\s*:\s*(?P<param_value>[\w'\"\.]+)", flags=IGNORECASE
 )
 
 # baz: [1, 2, 3, 4]
@@ -48,7 +59,7 @@ LIST_KEY_VALUE_REGEX = compile(
 )
 
 # [1, '2', "2_4", "3 4", 3.14]
-PARAM_LIST_VALUE = compile(r"(?P<list_value>\[[\w,\s'\"\.\]]+)", flags=IGNORECASE)
+PARAM_LIST_VALUE_REGEX = compile(r"(?P<list_value>\[[\w,\s'\"\.\]]+)", flags=IGNORECASE)
 
 # #%&*
 ILLEGAL_CHARS_REGEX = compile(rf"[{ILLEGAL_CHARS}]", flags=IGNORECASE)
