@@ -4,7 +4,7 @@ from exceptions.wql.make import (
     MakeClauseSyntaxError,
 )
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.make.make import (
+from wiggle_query_language.clauses.make.parse_make import (
     build_parsed_make,
     extract_all_make_statements,
     parse_make_statement_from_query_string,

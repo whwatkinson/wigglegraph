@@ -4,7 +4,7 @@ from pathlib import Path
 from exceptions.wiggleshell.query import NotAValidQueryError
 from models.wql.parsed_query import ParsedMake, ParsedQuery
 from project_root import get_project_root
-from wiggle_query_language.clauses.make.make import (
+from wiggle_query_language.clauses.make.parse_make import (
     parse_make_statement_from_query_string,
 )
 
