@@ -6,11 +6,11 @@ from testing import WIGGLE_NUMBER_TEST_FILE_PATH
 
 def get_current_wiggle_number(file_path: Path) -> int:
     """
-    Gets the current Wiggle number, which is the next available.
-    :param file_path: The file path to the Wiggle number state file
+    Gets the current WiggleNumber, which is the next available.
+    :param file_path: The filepath to the Wiggle number file
     :return: The Current Wiggle number
     """
-    graph_logger.debug("Attempting getting Wiggle number")
+    graph_logger.debug("Attempting getting WiggleNumber")
     with open(file_path, "r") as file_handle:
         wiggle_number_string = file_handle.read()
 
@@ -18,6 +18,8 @@ def get_current_wiggle_number(file_path: Path) -> int:
         graph_logger.debug("Wiggle number found, casting to int")
         wiggle_number = int(wiggle_number_string)
     else:
+        # TODO find a better solution
+        raise Exception("HOLD FIRE on overwriting the issue!")
         graph_logger.info("Wiggle number not set retuning 0")
         wiggle_number = 0
     graph_logger.info(f"Successfully got Wiggle number was {wiggle_number}")
@@ -26,16 +28,16 @@ def get_current_wiggle_number(file_path: Path) -> int:
 
 def update_wiggle_number(file_path: Path, new_wiggle_number: int) -> int:
     """
-    Updates the Wiggle state file to the next available number
-    :param file_path: The file path to the Wiggle number state file
+    Updates the WiggleNumber file to the next available number.
+    :param file_path: The file path to the Wiggle number file.
     :param new_wiggle_number: The Current Wiggle number
     :return: The Wiggle number
     """
 
-    graph_logger.debug("Updating state for wiggle number")
+    graph_logger.debug("Updating state for WiggleNumber")
     with open(file_path, "w") as file_handle:
         file_handle.write(str(new_wiggle_number))
-    graph_logger.debug("Successfully updated state for Wiggle number")
+    graph_logger.debug("Successfully updated state for WiggleNumber")
     return new_wiggle_number
 
 

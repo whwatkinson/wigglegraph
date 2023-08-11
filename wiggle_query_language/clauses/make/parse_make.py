@@ -12,23 +12,6 @@ from wiggle_query_language.clauses.make.parse_make_checks import (
 )
 
 
-def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
-    """
-    Extracts the MAKE statement from the query body.
-    :param query_string: The raw query.
-    :return: A list of MAKE statements.
-    """
-
-    if make_matches := [
-        x.group() for x in MAKE_STATEMENT_ALL_REGEX.finditer(query_string)
-    ]:
-        return make_matches
-
-    check_make_clause_syntax(query_string)
-
-    return None
-
-
 def build_parsed_make(statement: str) -> ParsedMake:
     """
     Handles building of the ParsedMake.
@@ -44,6 +27,23 @@ def build_parsed_make(statement: str) -> ParsedMake:
     )
 
     return parsed_make
+
+
+def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
+    """
+    Extracts the MAKE statement from the query body.
+    :param query_string: The raw query.
+    :return: A list of MAKE statements.
+    """
+
+    if make_matches := [
+        x.group() for x in MAKE_STATEMENT_ALL_REGEX.finditer(query_string)
+    ]:
+        return make_matches
+
+    check_make_clause_syntax(query_string)
+
+    return None
 
 
 def parse_make_statement_from_query_string(
