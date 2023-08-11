@@ -24,7 +24,7 @@ def get_current_wiggle_number(file_path: str) -> int:
 
 def update_wiggle_number(file_path: str, new_wiggle_number: int) -> int:
     """
-    Updates the Wiggle state file to the next availble number
+    Updates the Wiggle state file to the next available number
     :param file_path: The file path to the Wiggle number state file
     :param new_wiggle_number: The Current Wiggle number
     :return: The Wiggle number
