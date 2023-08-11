@@ -67,7 +67,7 @@ def query(query_string: str, dbms_file_path: DbmsFilePath) -> bool:
 
 
 if __name__ == "__main__":
-    from testing import TEST_DBMS_FOLDER_PATH
+    from testing import TEST_DBMS
 
     sample_query_fp = Path(
         f"{get_project_root()}/wiggle_query_language/example_queries/make_long.wql"
@@ -78,4 +78,4 @@ if __name__ == "__main__":
 
     qry = """MAKE (:NodeLabel{int: 1})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"})<-[rel2:REL2{float: 3.14}]-(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]}});"""
 
-    query(qry, TEST_DBMS_FOLDER_PATH)
+    query(qry, TEST_DBMS)

@@ -1,8 +1,10 @@
+from pathlib import Path
+
 from graph_logger.graph_logger import graph_logger
 from testing import WIGGLE_NUMBER_TEST_FILE_PATH
 
 
-def get_current_wiggle_number(file_path: str) -> int:
+def get_current_wiggle_number(file_path: Path) -> int:
     """
     Gets the current Wiggle number, which is the next available.
     :param file_path: The file path to the Wiggle number state file
@@ -22,7 +24,7 @@ def get_current_wiggle_number(file_path: str) -> int:
     return wiggle_number
 
 
-def update_wiggle_number(file_path: str, new_wiggle_number: int) -> int:
+def update_wiggle_number(file_path: Path, new_wiggle_number: int) -> int:
     """
     Updates the Wiggle state file to the next available number
     :param file_path: The file path to the Wiggle number state file

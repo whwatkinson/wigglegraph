@@ -1,12 +1,13 @@
 from json import dump, load
 from json.decoder import JSONDecodeError
+from pathlib import Path
 
 from exceptions.wql.database import NodeExistsError
 from graph_logger.graph_logger import graph_logger
 from testing import DATABASE_TEST_FILE_PATH
 
 
-def load_database(file_path: str) -> dict:
+def load_database(file_path: Path) -> dict:
     graph_logger.info("Attempting to loading database")
     try:
         with open(file_path, "r") as file_handle:
@@ -19,7 +20,7 @@ def load_database(file_path: str) -> dict:
         return {}
 
 
-def add_item_to_database(file_path: str, item: dict):
+def add_item_to_database(file_path: Path, item: dict):
     database = load_database(file_path)
 
     # todo o(n) -> o(1)
@@ -37,7 +38,7 @@ def add_item_to_database(file_path: str, item: dict):
         graph_logger.info("Done")
 
 
-def add_item_to_database_append(file_path: str, item: dict):
+def add_item_to_database_append(file_path: Path, item: dict):
     wiggle_number = None
     for key in item:
         wiggle_number = key
@@ -52,7 +53,7 @@ def add_item_to_database_append(file_path: str, item: dict):
         graph_logger.info(f"Succesfully wrote Node {wiggle_number} to db")
 
 
-def wipe_database(file_path: str, im_sure: bool = False):
+def wipe_database(file_path: Path, im_sure: bool = False):
     if im_sure:
         graph_logger.info("Dropping database")
         with open(file_path, "w") as file_handle:

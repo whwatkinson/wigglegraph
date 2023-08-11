@@ -7,7 +7,9 @@ The MAKE clause of WQL.
 ## Introduction
 * The MAKE clause is how data is loaded onto the graph.
 * The user creates Nodes and Edges by expressing a pattern in the terminal.
-
+* Currently only support for creation of a maximum of three node and two relationships per MAKE statement. However, multiple make statements can be used
+    * Minimum pattern:  (**left**)
+    * Maximum pattern:  (**left**)-[**REL1**]->(**middle**)-[**REL2**]->(**right**)
 ## Aims
 * To be simple and intuitive to use, the language itself is declarative in nature.
 * To be informative to the User and provide helpful feed back to the User in the case of an Error.
@@ -54,7 +56,7 @@ The MAKE clause of WQL.
     * **RelProperties**: The data associated with this Rel type. Optional.
     * n.b notice a direction of the relationship, in this case left to right.
 
-## Examples
+## Examples:
 
 1. Creation of a single node with no properties
    - Use case: INSERT HERE
