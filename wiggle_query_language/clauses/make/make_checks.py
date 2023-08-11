@@ -93,11 +93,11 @@ def check_relationships(make_matches: list[str]) -> bool:
 
             if "<" in rel_pattern and ">" in rel_pattern:
                 raise MakeNonDirectedRelationshipError(
-                    message="Relationships must be unidirectional"
+                    message=f"Relationships must be unidirectional: {rel_pattern}"
                 )
             if "<" not in rel_pattern and ">" not in rel_pattern:
                 raise MakeNonDirectedRelationshipError(
-                    message="Relationships must be singly directed"
+                    message=f"Relationships must be singly directed: {rel_pattern}"
                 )
 
             if not rel_name.isupper() and rel_name:
