@@ -72,7 +72,7 @@ class TestWqlMake:
             ),
             pytest.param(
                 [
-                    """MAKE (n:Person{first_name:'Harry', last_name:'Watkinson', list: [1, '2', "2_4", "3 4", 3.14]});"""
+                    """MAKE (n:Person{first_name:'Harry', last_name:'Watkinson', bool: true, list: [1, '2', "2_4", "3 4", 3.14]});"""
                 ],
                 does_not_raise(),
                 id="EXP PASS: 1 comma",

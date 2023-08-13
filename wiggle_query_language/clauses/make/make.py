@@ -9,7 +9,7 @@ from models.wql import (
 )
 from models.wigsh import DbmsFilePath
 from wiggle_query_language.clauses.make.makepre import process_parsed_make_list
-from wiggle_query_language.clauses.make.parse_make.make_properties import (
+from wiggle_query_language.clauses.make.parse_make.parse_make_properties import (
     make_properties,
 )
 from wiggle_query_language.graph.state.wiggle_number import (
@@ -20,9 +20,9 @@ from wiggle_query_language.graph.state.wiggle_number import (
 
 def make_nodes(emit_node: EmitNodes) -> list[Node]:
     """
-
-    :param emit_node:
-    :return:
+    Handles the creation of the nodes.
+    :param emit_node: The pre-processed Node
+    :return: A list of Nodes for loading onto the graph.
     """
     # Will always be a left in a MAKE
     nodes = [make_node(emit_node.left)]
@@ -83,6 +83,13 @@ def add_nodes_to_graph(
     current_wiggle_number: int,
     dbms_file_path: DbmsFilePath,
 ) -> bool:
+    """
+    Adds the Nodes to the graph.
+    :param nodes_list: The list of constructed Nodes.
+    :param current_wiggle_number: The most recent WiggleNumber
+    :param dbms_file_path: The path to the DBMS.
+    :return: A bool
+    """
     # Add Nodes
 
     for batch in nodes_list:
@@ -96,11 +103,12 @@ def add_nodes_to_graph(
 
 def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bool:
     """
-
-    :param parsed_make_list:
-    :param dbms_file_path:
-    :return:
+    Handles the loading from stmt to putting data in the DB.
+    :param parsed_make_list: The list of parsed MAKE statements.
+    :param dbms_file_path: The path to the DBMS.
+    :return: A bool.
     """
+    # Get the next available WN
     current_wiggle_number = get_current_wiggle_number(
         dbms_file_path.wiggle_number_file_path
     )
@@ -110,10 +118,11 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bo
     )
 
     # create Nodes and Relationship
-    # print(emit_nodes_list)
+    # TODO one list
     nodes_list = [make_nodes(emit_nodes) for emit_nodes in emit_nodes_list]
     nodes_list_flat = [item for sublist in nodes_list for item in sublist]
-    # Commit if not errors
+
+    # Commit if only not errors
     add_nodes_to_graph(
         nodes_list=nodes_list_flat,
         current_wiggle_number=current_wiggle_number,

@@ -108,10 +108,10 @@ class TestWqlMake:
                 id="EXP PASS: Simple case",
             ),
             pytest.param(
-                "MAKE (foo:NodeLabel{int: 1, str: '2'})-[:]->(foo2:NodeLabel);",
+                "MAKE (foo:NodeLabel{int: 1, str: '2', bool: true})-[:]->(foo2:NodeLabel);",
                 {
                     "left_node_handle": "foo",
-                    "left_node_props": "{int: 1, str: '2'}",
+                    "left_node_props": "{int: 1, str: '2', bool: true}",
                     "middle_node_handle": "foo2",
                 },
                 does_not_raise(),

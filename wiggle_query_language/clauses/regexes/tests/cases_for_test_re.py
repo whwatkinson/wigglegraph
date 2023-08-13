@@ -193,13 +193,13 @@ cases_for_test_nodes_rel_pattern = [
         id="EXP PASS: Double Node with params",
     ),
     pytest.param(
-        """MAKE (left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rlm:RELLM{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );""",
+        """MAKE (left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]})-[rlm:RELLM{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );""",
         [
             {
-                "left_node": '(left_node_handle:LeftNodeLabel{int: 1, str: \'2\', str2:"2_4", float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]})',
+                "left_node": '(left_node_handle:LeftNodeLabel{int: 1, str: \'2\', str2:"2_4", float: 3.14, bool: true, list: [1, \'2\', "2_4", "3 4", 3.14]})',
                 "left_node_handle": "left_node_handle",
                 "left_node_label": "LeftNodeLabel",
-                "left_node_props": '{int: 1, str: \'2\', str2:"2_4", float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]}',
+                "left_node_props": '{int: 1, str: \'2\', str2:"2_4", float: 3.14, bool: true, list: [1, \'2\', "2_4", "3 4", 3.14]}',
                 "left_middle_rel": '-[rlm:RELLM{int: 1, str: \'2\', str2:"2_4", float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]}]->',
                 "left_middle_rel_handle": "rlm",
                 "left_middle_rel_label": "RELLM",
@@ -251,7 +251,7 @@ cases_for_test_nodes_rel_pattern = [
         id="EXP PASS: Three Node with rels not names",
     ),
     pytest.param(
-        """MAKE (left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[lm:RELLM{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]} );""",
+        """MAKE (left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[lm:RELLM{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]} );""",
         [
             {
                 "left_node": '(left_node_handle:LeftNodeLabel{int: 1, str: \'2\', str2:"2_4", float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]})',
@@ -270,10 +270,10 @@ cases_for_test_nodes_rel_pattern = [
                 "middle_right_rel_handle": "rmr",
                 "middle_right_rel_label": "RELMR",
                 "middle_right_rel_props": '{int: 1, str: \'2\', str2:"2_4", float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]}',
-                "right_node": '(right_node_label:RightNodeLabel {int: 1, str: \'2\', str2:"2_4", float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]} )',
+                "right_node": '(right_node_label:RightNodeLabel {int: 1, str: \'2\', str2:"2_4", float: 3.14, bool: true, list: [1, \'2\', "2_4", "3 4", 3.14]} )',
                 "right_node_handle": "right_node_label",
                 "right_node_label": "RightNodeLabel",
-                "right_node_props": '{int: 1, str: \'2\', str2:"2_4", float: 3.14, list: [1, \'2\', "2_4", "3 4", 3.14]} ',
+                "right_node_props": '{int: 1, str: \'2\', str2:"2_4", float: 3.14, bool: true, list: [1, \'2\', "2_4", "3 4", 3.14]} ',
             }
         ],
         does_not_raise(),
