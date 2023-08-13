@@ -210,6 +210,24 @@ class TestMakeRePatterns:
                 id="EXP PASS: 1 Match",
             ),
             pytest.param(
+                """{int: 1, str: '2', str2:"2_4", list: [1, '2', "2_4", "3 4", 3.14], float: 3.14, bool: true, list2: [1, '2', "2_4", "3 4", 3.14]}""",
+                [
+                    ("list", '[1, \'2\', "2_4", "3 4", 3.14]'),
+                    ("list2", """[1, '2', "2_4", "3 4", 3.14]"""),
+                ],
+                does_not_raise(),
+                id="EXP PASS: 2 Match, double list, separated by another prop",
+            ),
+            pytest.param(
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14],  list2: [1, '2', "2_4", "3 4", 3.14]}""",
+                [
+                    ("list", '[1, \'2\', "2_4", "3 4", 3.14]'),
+                    ("list2", """[1, '2', "2_4", "3 4", 3.14]"""),
+                ],
+                does_not_raise(),
+                id="EXP PASS: 2 Match, double list, next two each other",
+            ),
+            pytest.param(
                 """{int: 1, str: '2', str2:"2_4", float: 3.14]}""",
                 [],
                 does_not_raise(),
