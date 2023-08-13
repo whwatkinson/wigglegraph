@@ -19,3 +19,7 @@ class MakeIllegalCharacterError(WiggleGraphBaseException):
 
 class MakeRelationshipNameSyntaxError(WiggleGraphBaseException):
     pass
+
+
+class MakeIllegalNodePropertyType(WiggleGraphBaseException):
+    pass

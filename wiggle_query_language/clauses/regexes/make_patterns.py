@@ -42,16 +42,20 @@ RELATIONSHIP_DIR_CHECK_REGEX = compile(
 
 # foo: 1, bar: "2"
 NOT_LIST_KEY_VALUE_REGEX = compile(
-    r"(?P<param_name>\w+)\s*:\s*(?P<param_value>[\w'\"\.]+)", flags=IGNORECASE
+    rf"(?P<param_name>\w+)\s*:\s*(?P<param_value>[\w'\"\.{EXTRA_ALLOWED_CHARS}]+)",
+    flags=IGNORECASE,
 )
 
 # baz: [1, 2, 3, 4]
 LIST_KEY_VALUE_REGEX = compile(
-    r"(?P<list_name>[\w]+)\s*:\s*(?P<list_value>\[[\w,\s'\"\.]+])", flags=IGNORECASE
+    rf"(?P<list_name>[\w]+)\s*:\s*(?P<list_value>\[[\w,\s'\"\.{EXTRA_ALLOWED_CHARS}]+])",
+    flags=IGNORECASE,
 )
 
 # [1, '2', "2_4", "3 4", 3.14]
-PARAM_LIST_VALUE_REGEX = compile(r"(?P<list_value>\[[\w,\s'\"\.]+])", flags=IGNORECASE)
+PARAM_LIST_VALUE_REGEX = compile(
+    rf"(?P<list_value>\[[\w,\s'\"\.{EXTRA_ALLOWED_CHARS}]+])", flags=IGNORECASE
+)
 
 
 if __name__ == "__main__":
