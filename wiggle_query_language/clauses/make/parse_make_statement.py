@@ -6,7 +6,7 @@ from wiggle_query_language.clauses.regexes.make_patterns import (
     NODES_RELS_PATTERN_REGEX,
 )
 
-from wiggle_query_language.clauses.make.parse_make_checks import (
+from wiggle_query_language.clauses.make.parse_make_statement_checks import (
     validate_make_statement,
     check_make_clause_syntax,
 )

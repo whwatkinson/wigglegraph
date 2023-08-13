@@ -56,7 +56,7 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
 
 def commit(
     nodes_list: list[Node],
-    relationships_list: list[Relationship],
+    # relationships_list: list[Relationship],
     current_wiggle_number: int,
     dbms_file_path: DbmsFilePath,
 ) -> bool:

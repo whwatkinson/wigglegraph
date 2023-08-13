@@ -8,7 +8,7 @@ from exceptions.wql.make import (
     MakeRelationshipNameSyntaxError,
 )
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.make.parse_make_checks import (
+from wiggle_query_language.clauses.make.parse_make_statement_checks import (
     check_make_clause_syntax,
     check_make_params,
     check_relationships,

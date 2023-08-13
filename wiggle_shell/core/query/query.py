@@ -5,7 +5,7 @@ from exceptions.wiggleshell.query import NotAValidQueryError
 from models.wql import ParsedMake, ParsedQuery
 from models.wigsh import DbmsFilePath
 from project_root import get_project_root
-from wiggle_query_language.clauses.make.parse_make import (
+from wiggle_query_language.clauses.make.parse_make_statement import (
     parse_make_statement_from_query_string,
 )
 from wiggle_query_language.clauses.make import make
@@ -39,9 +39,9 @@ def handle_make(raw_query_make: list[ParsedMake], dbms_file_path: DbmsFilePath) 
     return True
 
 
-def execute_query(raw_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> None:
-    if raw_query_make := raw_query.make_parsed:
-        handle_make(raw_query_make, dbms_file_path)
+def execute_query(parsed_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> None:
+    if query_make := parsed_query.make_parsed:
+        handle_make(query_make, dbms_file_path)
 
     return None
 
