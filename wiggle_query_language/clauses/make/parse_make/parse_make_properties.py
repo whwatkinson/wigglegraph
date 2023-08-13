@@ -107,5 +107,5 @@
 # #
 #
 #
-# def make_properties(params_string: str) -> dict:
-#     return dict()
+def make_properties(params_string: str) -> dict:
+    return dict()
