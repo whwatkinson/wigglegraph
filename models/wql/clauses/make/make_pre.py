@@ -29,10 +29,6 @@ class EmitNodes(BaseModel):
     middle: Optional[EmitNode]
     right: Optional[EmitNode]
 
-    def nodes_from_creation(self) -> list[EmitNode]:
-        n = [x for x in [self.left, self.middle, self.right] if x]
-        return n
-
 
 class MakePre(BaseModel):
     left_node: Optional[NodePre]
@@ -41,12 +37,8 @@ class MakePre(BaseModel):
     left_middle_relationship: Optional[RelationshipPre]
     middle_right_relationship: Optional[RelationshipPre]
 
-    def get_node_rels(self, node: NodePre, relationship: RelationshipPre):
-        rel = relationship if relationship.wn_from_node == node.wn else None
-        return rel
-
     def emit_nodes(self) -> EmitNodes:
-        # TODO refactor this horrible mess, but it works :P
+        # TODO refactor this horrible mess, but it works for now... :P
 
         lm_rel = self.left_middle_relationship
         mr_rel = self.middle_right_relationship

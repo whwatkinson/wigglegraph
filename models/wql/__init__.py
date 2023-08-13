@@ -1,4 +1,4 @@
-from models.wql.data.wg_metadata import WiggleGraphMetalData
+from models.wql.data.wiggle_metadata import WiggleGraphMetalData
 from models.wql.data.node import Node
 from models.wql.data.relationship import Relationship
 from models.wql.parsed_query import ParsedMake, ParsedPattern, ParsedQuery

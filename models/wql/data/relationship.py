@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, root_validator
 
-from models.wql.data.wg_metadata import WiggleGraphMetalData
+from models.wql.data.wiggle_metadata import WiggleGraphMetalData
 from models.wql.data import TYPES_ALLOWED
 
 
@@ -16,7 +16,7 @@ class Relationship(BaseModel):
     rel_metadata: WiggleGraphMetalData
 
     # User defined
-    relationship_name: str = ""
+    relationship_name: Optional[str]
     wn_from_node: int
     wn_to_node: int
     properties: Optional[dict[str, TYPES_ALLOWED]] = None

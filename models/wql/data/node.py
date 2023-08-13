@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-from models.wql.data.wg_metadata import WiggleGraphMetalData
+from models.wql.data.wiggle_metadata import WiggleGraphMetalData
 from models.wql.data import TYPES_ALLOWED
 from models.wql.data.relationship import Relationship
 
