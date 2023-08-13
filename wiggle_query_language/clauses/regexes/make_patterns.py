@@ -25,6 +25,9 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX = compile(
     r"\s?(?P<make_syntax_error>[adeijklmnorswz]{3,6})\s?\(", flags=IGNORECASE
 )
 
+# #%&*
+ILLEGAL_CHARS_REGEX = compile(rf"[{ILLEGAL_CHARS}]", flags=IGNORECASE)
+
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
 MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
     rf"(?P<all_props>{{[\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+}})",
@@ -33,36 +36,22 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
 
 # <-[*:*]->
 RELATIONSHIP_DIR_CHECK_REGEX = compile(
-    rf"<?-*\[\s*\w*\s*:?\s*\w*\s*{get_all_params_regex()}-*>?", flags=IGNORECASE
-)
-
-RELATIONSHIP_DIR_CHECK_REGEX = compile(
-    r"(?P<foo><?-*\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*[{}\w:\s,'\"\.\[\]@]+-*>?)",
-    flags=IGNORECASE,
-)
-
-
-RELATIONSHIP_DIR_CHECK_REGEX = compile(
     rf"(?P<foo><?-+\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*{get_all_params_regex()}-+>?)",
     flags=IGNORECASE,
 )
 
-
 # foo: 1, bar: "2"
 NOT_LIST_KEY_VALUE_REGEX = compile(
-    r"(?P<param_name>[\w]+)\s*:\s*(?P<param_value>[\w'\"\.]+)", flags=IGNORECASE
+    r"(?P<param_name>\w+)\s*:\s*(?P<param_value>[\w'\"\.]+)", flags=IGNORECASE
 )
 
 # baz: [1, 2, 3, 4]
 LIST_KEY_VALUE_REGEX = compile(
-    r"(?P<list_name>[\w]+)\s*:\s*(?P<list_value>\[[\w,\s'\"\.\]]+)", flags=IGNORECASE
+    r"(?P<list_name>[\w]+)\s*:\s*(?P<list_value>\[[\w,\s'\"\.]+])", flags=IGNORECASE
 )
 
 # [1, '2', "2_4", "3 4", 3.14]
-PARAM_LIST_VALUE_REGEX = compile(r"(?P<list_value>\[[\w,\s'\"\.\]]+)", flags=IGNORECASE)
-
-# #%&*
-ILLEGAL_CHARS_REGEX = compile(rf"[{ILLEGAL_CHARS}]", flags=IGNORECASE)
+PARAM_LIST_VALUE_REGEX = compile(r"(?P<list_value>\[[\w,\s'\"\.]+])", flags=IGNORECASE)
 
 
 if __name__ == "__main__":

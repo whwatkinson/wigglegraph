@@ -8,7 +8,9 @@ from models.wql import (
     EmitNodes,
 )
 from models.wigsh import DbmsFilePath
-from wiggle_query_language.clauses.make.makepre import process_parsed_make_list
+from wiggle_query_language.clauses.make.transform.make_pre import (
+    process_parsed_make_list,
+)
 from wiggle_query_language.clauses.make.parse_make.parse_make_properties import (
     make_properties,
 )

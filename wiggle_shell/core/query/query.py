@@ -48,6 +48,8 @@ def valid_query(query_string) -> bool:
 
 
 def query(query_string: str, dbms_file_path: DbmsFilePath) -> bool:
+    # todo remove \n and split on :
+    # query_string.replace('\n', '').split(';')
     if not valid_query(query_string) and False:
         raise NotAValidQueryError(
             "Query must contain MAKE, FIND, ADJUST, CRITERIA, REPORT, USING\n"
