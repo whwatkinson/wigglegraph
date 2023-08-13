@@ -173,6 +173,7 @@ def select_dbms() -> DbmsFilePath:
     Select the DBMS to be used.
     :return: A filepath for both the db and wn.
     """
+    # TODO index.json and query_log
 
     db_choice = input(f"Use existing dbms (y/n):{INPUT_PROMPT_SPACING}")
     match db_choice:

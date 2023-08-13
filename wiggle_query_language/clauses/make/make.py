@@ -8,6 +8,7 @@ from models.wql import (
     MakePre,
     WiggleGraphMetalData,
     EmitNode,
+    EmitNodes,
 )
 from models.wigsh import DbmsFilePath
 
@@ -54,8 +55,8 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
 
 
 def commit(
-    nodes: list[Node],
-    relationships: list[Relationship],
+    nodes_list: list[Node],
+    relationships_list: list[Relationship],
     current_wiggle_number: int,
     dbms_file_path: DbmsFilePath,
 ) -> bool:
@@ -64,9 +65,7 @@ def commit(
     # Add Relationships
 
     # Update WiggleNumber
-    current_wiggle_number = update_wiggle_number(
-        dbms_file_path.wiggle_number_file_path, current_wiggle_number
-    )
+    update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)
 
     return True
 
@@ -86,12 +85,10 @@ def process_parsed_make(
     pass
 
 
-def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
-    current_wiggle_number = get_current_wiggle_number(
-        dbms_file_path.wiggle_number_file_path
-    )
-
-    make_pre_list = []
+def process_parsed_make_list(
+    parsed_make_list: list[ParsedMake], current_wiggle_number: int
+) -> tuple[int, list[EmitNodes]]:
+    emit_nodes_list = []
 
     for parsed_make in parsed_make_list:
         if parsed_make.clause is not Clause.MAKE:
@@ -178,10 +175,31 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
 
                 current_wiggle_number += 1
 
-            # Commit at the end.
-            # emp = make_pre.emit_nodes()
-            print(make_pre)
-            make_pre.emit_nodes()
-            make_pre_list.append(make_pre)
+            emit_nodes_pre = make_pre.emit_nodes()
+            emit_nodes_list.append(emit_nodes_pre)
 
-            # commit(nodes_list, relationships_list, current_wiggle_number)
+    return current_wiggle_number, emit_nodes_list
+
+
+def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
+    current_wiggle_number = get_current_wiggle_number(
+        dbms_file_path.wiggle_number_file_path
+    )
+    # create NodePre and RelationshipPre
+    emit_nodes_list = process_parsed_make_list(
+        parsed_make_list=parsed_make_list, current_wiggle_number=current_wiggle_number
+    )
+
+    # create Nodes and Relationship
+    print(emit_nodes_list)
+
+    nodes_list = []
+    # relationships_list = []
+
+    # Commit if not errors
+    commit(
+        nodes_list=nodes_list,
+        # relationships_list=relationships_list,
+        current_wiggle_number=current_wiggle_number,
+        dbms_file_path=dbms_file_path,
+    )

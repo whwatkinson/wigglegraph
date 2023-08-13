@@ -24,7 +24,7 @@ class EmitNode(BaseModel):
     relationship_pre: Optional[list[RelationshipPre]]
 
 
-class EmitNodesPre(BaseModel):
+class EmitNodes(BaseModel):
     left: EmitNode
     middle: Optional[EmitNode]
     right: Optional[EmitNode]
@@ -41,7 +41,7 @@ class MakePre(BaseModel):
         rel = relationship if relationship.wn_from_node == node.wn else None
         return rel
 
-    def emit_nodes(self) -> EmitNodesPre:
+    def emit_nodes(self) -> EmitNodes:
         # TODO refactor this horrible mess, but it works :P
 
         lm_rel = self.left_middle_relationship
@@ -75,4 +75,4 @@ class MakePre(BaseModel):
             ],
         )
 
-        return EmitNodesPre(left=left, middle=middle, right=right)
+        return EmitNodes(left=left, middle=middle, right=right)

@@ -8,14 +8,14 @@ from models.wql.clauses.make.make_pre import (
     NodePre,
     RelationshipPre,
     EmitNode,
-    EmitNodesPre,
+    EmitNodes,
 )
 
 __all__ = [
     "Clause",
     "NodePre",
     "EmitNode",
-    "EmitNodesPre",
+    "EmitNodes",
     "RelationshipPre",
     "MakePre",
     "Node",
