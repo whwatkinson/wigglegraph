@@ -2,10 +2,10 @@ from pathlib import Path
 
 
 from exceptions.wiggleshell.query import NotAValidQueryError
-from models.wql import ParsedMake, ParsedQuery
+from models.wql import ParsedQuery
 from models.wigsh import DbmsFilePath
 from project_root import get_project_root
-from wiggle_query_language.clauses.make.parse_make_statement import (
+from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
     parse_make_statement_from_query_string,
 )
 from wiggle_query_language.clauses.make import make
@@ -33,17 +33,11 @@ def parse_query_string(query_string: str) -> ParsedQuery:
     return query_parsed
 
 
-def handle_make(raw_query_make: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bool:
-    make(raw_query_make, dbms_file_path)
+def execute_query(parsed_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> bool:
+    if query_make := parsed_query.make_parsed:
+        make(query_make, dbms_file_path)
 
     return True
-
-
-def execute_query(parsed_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> None:
-    if query_make := parsed_query.make_parsed:
-        handle_make(query_make, dbms_file_path)
-
-    return None
 
 
 def valid_query(query_string) -> bool:
@@ -78,6 +72,10 @@ if __name__ == "__main__":
 
     qry = """
     MAKE (:NodeLabel{int: 1})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]}});
+    """
+
+    qry = """
+    MAKE (:NodeLabel{int: 1})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"});
     """
 
     # qry = """

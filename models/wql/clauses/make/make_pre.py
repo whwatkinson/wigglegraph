@@ -29,6 +29,10 @@ class EmitNodes(BaseModel):
     middle: Optional[EmitNode]
     right: Optional[EmitNode]
 
+    def nodes_from_creation(self) -> list[EmitNode]:
+        n = [x for x in [self.left, self.middle, self.right] if x]
+        return n
+
 
 class MakePre(BaseModel):
     left_node: Optional[NodePre]
@@ -47,32 +51,59 @@ class MakePre(BaseModel):
         lm_rel = self.left_middle_relationship
         mr_rel = self.middle_right_relationship
 
-        left_node_rels = [
-            rel
-            for rel in [lm_rel if lm_rel.wn_from_node == self.left_node.wn else None]
-            if rel
-        ]
+        if lm_rel:
+            left_node_rels = [
+                rel
+                for rel in [
+                    lm_rel if lm_rel.wn_from_node == self.left_node.wn else None
+                ]
+                if rel
+            ]
+        else:
+            left_node_rels = None
         left = EmitNode(node_pre=self.left_node, relationship_pre=left_node_rels)
-        middle = EmitNode(
-            node_pre=self.middle_node,
-            relationship_pre=[
-                rel
-                for rel in [
-                    lm_rel if lm_rel.wn_from_node == self.middle_node.wn else None,
-                    mr_rel if mr_rel.wn_from_node == self.middle_node.wn else None,
+
+        if self.middle_node:
+            if lm_rel:
+                lr = [
+                    rel
+                    for rel in [
+                        lm_rel if lm_rel.wn_from_node == self.middle_node.wn else None
+                    ]
+                    if rel
                 ]
-                if rel
-            ],
-        )
-        right = EmitNode(
-            node_pre=self.right_node,
-            relationship_pre=[
-                rel
-                for rel in [
-                    mr_rel if mr_rel.wn_from_node == self.right_node.wn else None,
+            else:
+                lr = []
+            if mr_rel:
+                rr = [
+                    rel
+                    for rel in [
+                        mr_rel if mr_rel.wn_from_node == self.middle_node.wn else None
+                    ]
+                    if rel
                 ]
-                if rel
-            ],
-        )
+            else:
+                rr = []
+
+            middle = EmitNode(
+                node_pre=self.middle_node,
+                relationship_pre=lr + rr,
+            )
+        else:
+            middle = None
+
+        if self.right_node:
+            right = EmitNode(
+                node_pre=self.right_node,
+                relationship_pre=[
+                    rel
+                    for rel in [
+                        mr_rel if mr_rel.wn_from_node == self.right_node.wn else None,
+                    ]
+                    if rel
+                ],
+            )
+        else:
+            right = None
 
         return EmitNodes(left=left, middle=middle, right=right)

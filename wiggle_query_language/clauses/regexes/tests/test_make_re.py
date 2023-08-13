@@ -6,7 +6,9 @@ from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.regexes.tests.cases_for_test_re import (
     cases_for_test_nodes_rel_pattern,
 )
-from wiggle_query_language.clauses.regexes.helpers import get_nodes_rels_pattern_regex
+from wiggle_query_language.clauses.regexes.make_patterns_helpers import (
+    get_nodes_rels_pattern_regex,
+)
 from wiggle_query_language.clauses.regexes.make_patterns import (
     NODES_RELS_PATTERN_REGEX,
     MAKE_STATEMENT_ALL_REGEX,
