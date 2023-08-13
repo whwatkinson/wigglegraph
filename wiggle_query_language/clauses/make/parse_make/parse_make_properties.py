@@ -49,6 +49,7 @@ def make_properties(params_string: str) -> dict:
 
     # TODO EXEC for multiple same named props
     # TODO EXEC for prop is None
+    # TODO tests for props
 
     return params_dict
 
@@ -62,12 +63,14 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
     :return: The correct data type
     """
     graph_logger.info(f"starting conversion of  string {value}")
+    # todo one line
     value = value.strip('"')
     value = value.strip("'")
 
     # bool
     if value in {"True", "False"}:
         found_bool = None
+        # todo bool is lowercase
         match value:
             case "False":
                 found_bool = False
@@ -122,6 +125,7 @@ def string_to_list_data_type(value: str) -> Union[float, int, str, list]:
     :return: The correct data type
     """
     graph_logger.info(f"starting conversion of  string {value}")
+    # todo one line
     value = value.strip('"')
     value = value.strip("'")
 
