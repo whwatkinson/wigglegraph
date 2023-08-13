@@ -7,6 +7,7 @@ from models.wql import (
     RelationshipPre,
     MakePre,
     WiggleGraphMetalData,
+    EmitNode,
 )
 from models.wigsh import DbmsFilePath
 
@@ -16,18 +17,39 @@ from wiggle_query_language.graph.state.wiggle_number import (
 )
 
 
-def make_node(node_pre: NodePre) -> Node:
+def make_node(emit_pre: EmitNode) -> Node:
+    node_pre = emit_pre.node_pre
     node_metadata = WiggleGraphMetalData(wn=node_pre.wn)
-    return Node(node_metadata=node_metadata, node_label=node_pre.node_label)
+    node_label = node_pre.node_label
+    properties = make_properties(node_pre.props_string)
+    relations = [
+        make_relationship(relationship_pre)
+        for relationship_pre in emit_pre.relationship_pre
+    ]
+
+    return Node(
+        node_metadata=node_metadata,
+        node_label=node_label,
+        properties=properties,
+        relations=relations,
+    )
+
+
+def make_properties(props_string: str) -> dict:
+    return dict()
 
 
 def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     rel_metadata = WiggleGraphMetalData(wn=relationship_pre.wn)
+
+    properties = make_properties(relationship_pre.props_string)
+
     return Relationship(
         rel_metadata=rel_metadata,
         relationship_name=relationship_pre.rel_name,
-        wn_from_node=0,
-        wn_to_node=1,
+        wn_from_node=relationship_pre.wn_from_node,
+        wn_to_node=relationship_pre.wn_to_node,
+        properties=properties,
     )
 
 
