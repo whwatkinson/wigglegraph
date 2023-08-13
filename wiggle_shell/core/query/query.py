@@ -80,6 +80,8 @@ if __name__ == "__main__":
     MAKE (:NodeLabel{int: 1})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"});
     """
 
+    qry = """MAKE (c:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list1: [1, '2', "2_4", "3 4", 3.14], foo: 1, list: [1, '2', "2_4", "3 4", 3.14]});"""
+
     # qry = """
     #     MAKE (:NodeLabel1), (:NodeLabel2);
     #     MAKE (:NodeLabel3);

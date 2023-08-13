@@ -42,13 +42,13 @@ RELATIONSHIP_DIR_CHECK_REGEX = compile(
 
 # foo: 1, bar: "2"
 NOT_LIST_KEY_VALUE_REGEX = compile(
-    rf"(?P<param_name>\w+)\s*:\s*(?P<param_value>[\w'\"\.{EXTRA_ALLOWED_CHARS}]+)",
+    rf"(?P<property_name>\w+)\s*:\s*(?P<property_value>[\w'\"\.{EXTRA_ALLOWED_CHARS}]+)",
     flags=IGNORECASE,
 )
 
 # baz: [1, 2, 3, 4]
 LIST_KEY_VALUE_REGEX = compile(
-    rf"(?P<list_name>[\w]+)\s*:\s*(?P<list_value>\[[\w,\s'\"\.{EXTRA_ALLOWED_CHARS}]+])",
+    rf"(?P<property_name>[\w]+)\s*:\s*(?P<property_value>\[[\w,\s'\"\.{EXTRA_ALLOWED_CHARS}]+])",
     flags=IGNORECASE,
 )
 

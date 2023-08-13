@@ -48,11 +48,14 @@ def make_node(emit_node: EmitNode) -> Node:
     node_metadata = WiggleGraphMetalData(wn=node_pre.wn)
     node_label = node_pre.node_label
     properties = make_properties(node_pre.props_string)
-    relations = [
-        make_relationship(relationship_pre)
-        for relationship_pre in emit_node.relationship_pre
-    ]
-
+    if emit_node.relationship_pre:
+        relations = [
+            make_relationship(relationship_pre)
+            for relationship_pre in emit_node.relationship_pre
+            if relationship_pre
+        ]
+    else:
+        relations = None
     return Node(
         node_metadata=node_metadata,
         node_label=node_label,
