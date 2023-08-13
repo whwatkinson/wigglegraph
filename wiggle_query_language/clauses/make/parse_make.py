@@ -41,6 +41,7 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     ]:
         return make_matches
 
+    # todo check for stmt syntax errors
     check_make_clause_syntax(query_string)
 
     return None

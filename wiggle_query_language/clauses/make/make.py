@@ -157,8 +157,9 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath):
                 current_wiggle_number += 1
 
             # Commit at the end.
-
+            # emp = make_pre.emit_nodes()
             print(make_pre)
+            make_pre.emit_nodes()
             make_pre_list.append(make_pre)
 
             # commit(nodes_list, relationships_list, current_wiggle_number)
