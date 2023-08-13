@@ -100,9 +100,9 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});""",
+                """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]});""",
                 [
-                    """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}"""
+                    """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}"""
                 ],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
@@ -174,8 +174,14 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
-                [("int", "1"), ("str", "'2'"), ("str2", '"2_4"'), ("float", "3.14")],
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                [
+                    ("int", "1"),
+                    ("str", "'2'"),
+                    ("str2", '"2_4"'),
+                    ("float", "3.14"),
+                    ("bool", "true"),
+                ],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
             ),
@@ -198,7 +204,7 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}""",
                 [("list", '[1, \'2\', "2_4", "3 4", 3.14]')],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
@@ -222,7 +228,7 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}""",
                 ['[1, \'2\', "2_4", "3 4", 3.14]'],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
