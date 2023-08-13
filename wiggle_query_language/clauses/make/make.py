@@ -5,6 +5,7 @@ from models.wql import (
     RelationshipPre,
     WiggleGraphMetalData,
     EmitNode,
+    EmitNodes,
 )
 from models.wigsh import DbmsFilePath
 from wiggle_query_language.clauses.make.makepre import process_parsed_make_list
@@ -17,19 +18,37 @@ from wiggle_query_language.graph.state.wiggle_number import (
 )
 
 
-def make_node(emit_pre: EmitNode) -> Node:
+def make_nodes(emit_node: EmitNodes) -> list[Node]:
+    """
+
+    :param emit_node:
+    :return:
+    """
+    # Will always be a left in a MAKE
+    nodes = [make_node(emit_node.left)]
+
+    if emit_node.middle:
+        nodes.append(make_node(emit_node.middle))
+
+    if emit_node.right:
+        nodes.append(make_node(emit_node.right))
+
+    return nodes
+
+
+def make_node(emit_node: EmitNode) -> Node:
     """
     Makes the Node object for a node.
-    :param emit_pre: The pre-processed node.
+    :param emit_node: The pre-processed node.
     :return: A WiggleGraph Node.
     """
-    node_pre = emit_pre.node_pre
+    node_pre = emit_node.node_pre
     node_metadata = WiggleGraphMetalData(wn=node_pre.wn)
     node_label = node_pre.node_label
     properties = make_properties(node_pre.props_string)
     relations = [
         make_relationship(relationship_pre)
-        for relationship_pre in emit_pre.relationship_pre
+        for relationship_pre in emit_node.relationship_pre
     ]
 
     return Node(
@@ -59,15 +78,15 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     )
 
 
-def add_nodes_tp_graph(
+def add_nodes_to_graph(
     nodes_list: list[Node],
-    # relationships_list: list[Relationship],
     current_wiggle_number: int,
     dbms_file_path: DbmsFilePath,
 ) -> bool:
     # Add Nodes
 
-    # nodes_to_add = [node.export_node() for node in nodes_list]
+    for batch in nodes_list:
+        pass
 
     # Update WiggleNumber
     update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)
@@ -92,12 +111,11 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bo
 
     # create Nodes and Relationship
     # print(emit_nodes_list)
-    nodes_list = []
-
+    nodes_list = [make_nodes(emit_nodes) for emit_nodes in emit_nodes_list]
+    nodes_list_flat = [item for sublist in nodes_list for item in sublist]
     # Commit if not errors
-    add_nodes_tp_graph(
-        nodes_list=nodes_list,
-        # relationships_list=relationships_list,
+    add_nodes_to_graph(
+        nodes_list=nodes_list_flat,
         current_wiggle_number=current_wiggle_number,
         dbms_file_path=dbms_file_path,
     )
