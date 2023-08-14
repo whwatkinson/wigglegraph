@@ -21,5 +21,5 @@ class MakeRelationshipNameSyntaxError(WiggleGraphBaseException):
     pass
 
 
-class MakeIllegalNodePropertyType(WiggleGraphBaseException):
+class MakeIllegalPropertyValue(WiggleGraphBaseException):
     pass

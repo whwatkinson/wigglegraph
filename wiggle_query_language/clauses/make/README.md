@@ -59,10 +59,10 @@ The MAKE clause of WQL.
     * n.b notice a direction of the relationship, in this case left to right.
 
 ### Node and Edge properties
-* Declared in curly brackets, nect to the NodelLabel/RelLabel:
+* Declared in curly brackets, next to the NodelLabel/RelLabel:
 
 ```
-{int: 1, none: null, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14], email: 'foo@bar.net
+{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]}
 ```
 
 

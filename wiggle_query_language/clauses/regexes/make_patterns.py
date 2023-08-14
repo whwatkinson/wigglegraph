@@ -46,6 +46,13 @@ NOT_LIST_KEY_VALUE_REGEX = compile(
     flags=IGNORECASE,
 )
 
+# int: 1, float: 3.14, bool: true, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [
+ALL_PARAMS_KEY_VALUE_REGEX = compile(
+    r"(?P<property_name>\w+)\s*:\s*(?P<property_value>(?P<none>null)|(?P<bool>true|false)|(?P<float>\d+\.\d+)|(?P<int>[0-9]+)|(?P<list>[\[])|(?P<string>[\w+\'\"@\.\s]+))",
+    flags=IGNORECASE,
+)
+
+
 # baz: [1, 2, 3, 4]
 LIST_KEY_VALUE_REGEX = compile(
     rf"(?P<property_name>[\w]+)\s*:\s*(?P<property_value>\[[\w,\s'\"\.{EXTRA_ALLOWED_CHARS}]+])",
