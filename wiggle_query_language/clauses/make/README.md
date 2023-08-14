@@ -51,12 +51,20 @@ The MAKE clause of WQL.
 * Within the square brackets there are three areas of interest:
   * NodelHandle, NodeLabel, and NodeProperties.
   * This takes the form of:
-    * (`foo`)-\[  **RelHandle**  :  **RELLABEL** **{RelProperties}**  \]->(`bar`)
+    * (`foo`)-\[  **RelHandle**  :  **RelLabel** **{RelProperties}**  \]->(`bar`)
     * In plain English: Create relationship between `foo` and `bar` with a relationship label of RelLabel the properties of RelLabel are RelProperties. RelHandle the is how you can reference it later on a with a USING.
     * **RelHandle**: This is the Rel I care about. Optional.
     * **RelLabel**: the type of Rel I want to create, must be uppercase. Optional
     * **RelProperties**: The data associated with this Rel type. Optional.
     * n.b notice a direction of the relationship, in this case left to right.
+
+### Node and Edge properties
+* Declared in curly brackets, nect to the NodelLabel/RelLabel:
+
+```
+{int: 1, none: null, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14], email: 'foo@bar.net
+```
+
 
 ## Examples:
 
