@@ -1,6 +1,6 @@
 from models.wql.data.wiggle_metadata import WiggleGraphMetalData
 from models.wql.data.node import Node
-from models.wql.data import TYPES_ALLOWED
+from models.wql.data import WG_ALLOWED_TYPES
 from models.wql.clauses.make.make_properties import (
     MakeProperty,
 )
@@ -17,7 +17,7 @@ from models.wql.clauses.make.make_pre import (
 
 __all__ = [
     "Clause",
-    "TYPES_ALLOWED",
+    "WG_ALLOWED_TYPES",
     "MakeProperty",
     "NodePre",
     "EmitNode",

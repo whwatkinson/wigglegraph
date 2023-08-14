@@ -4,7 +4,7 @@ from pydantic import BaseModel, root_validator
 
 from models.wql.data.wiggle_metadata import WiggleGraphMetalData
 
-# from models.wql.data import TYPES_ALLOWED
+# from models.wql.data import WG_ALLOWED_TYPES
 
 
 class Relationship(BaseModel):
@@ -14,13 +14,13 @@ class Relationship(BaseModel):
     """
 
     # Internal
-    rel_metadata: WiggleGraphMetalData
+    relationship_metadata: WiggleGraphMetalData
 
     # User defined
     relationship_name: Optional[str]
     wn_from_node: int
     wn_to_node: int
-    # Using TYPES_ALLOWED marshals the data incorrectly
+    # Using WG_ALLOWED_TYPES marshals the data incorrectly
     properties: Optional[dict[str, Any]] = None
 
     @property

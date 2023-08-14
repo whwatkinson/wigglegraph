@@ -1,7 +1,7 @@
 from ast import literal_eval
 from typing import Optional
 
-from models.wql import TYPES_ALLOWED, MakeProperty
+from models.wql import WG_ALLOWED_TYPES, MakeProperty
 from graph_logger.graph_logger import graph_logger
 from exceptions.wql.make import MakeIllegalPropertyValue
 from wiggle_query_language.clauses.regexes.make_patterns import (
@@ -50,7 +50,9 @@ def parse_primitive_properties(params_string: str) -> dict:
     return primitive_property_dictionary
 
 
-def handle_extracted_primitive_property(make_property: MakeProperty) -> TYPES_ALLOWED:
+def handle_extracted_primitive_property(
+    make_property: MakeProperty,
+) -> WG_ALLOWED_TYPES:
     extracted_property = make_property.yield_extracted_param()
 
     for property_type, extracted_property in extracted_property.items():
@@ -149,7 +151,7 @@ def handle_string_property(value: str) -> str:
     return found_str
 
 
-def handle_list_property(value_in: str) -> list[TYPES_ALLOWED]:
+def handle_list_property(value_in: str) -> list[WG_ALLOWED_TYPES]:
     # params validation happens in check_make_params
     value = value_in.replace("true", "True").replace("false", "False")
     try:

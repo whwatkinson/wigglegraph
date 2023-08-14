@@ -75,7 +75,7 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     properties = make_properties(relationship_pre.props_string)
 
     return Relationship(
-        rel_metadata=rel_metadata,
+        relationship_metadata=rel_metadata,
         relationship_name=relationship_pre.rel_name,
         wn_from_node=relationship_pre.wn_from_node,
         wn_to_node=relationship_pre.wn_to_node,
