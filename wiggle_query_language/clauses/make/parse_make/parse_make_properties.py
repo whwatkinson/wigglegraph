@@ -2,7 +2,6 @@ from ast import literal_eval
 from typing import Optional
 
 from models.wql import TYPES_ALLOWED, MakeListProperty, MakePrimitiveProperty
-
 from graph_logger.graph_logger import graph_logger
 from exceptions.wql.make import MakeIllegalPropertyValue
 from wiggle_query_language.clauses.regexes.make_patterns import (
@@ -44,7 +43,7 @@ def parse_primitive_properties(params_string: str) -> dict:
                     make_primitive_property
                 )
             except Exception:
-                raise Exception()
+                raise MakeIllegalPropertyValue()
             primitive_property_dictionary[
                 make_primitive_property.property_name
             ] = value_parsed
@@ -89,8 +88,12 @@ def handle_extracted_primitive_property(make_property: MakePrimitiveProperty):
 
 
 def handle_null_property(value: str) -> None:
-    if value != "null":
-        raise Exception()
+    value_stripped = value.strip()
+
+    if value_stripped != "null":
+        raise MakeIllegalPropertyValue(
+            f"Value be null: provided value was {value_stripped} "
+        )
 
     return None
 

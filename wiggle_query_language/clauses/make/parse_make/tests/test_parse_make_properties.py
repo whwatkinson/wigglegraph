@@ -1,6 +1,7 @@
 import pytest
 
 from testing.test_helpers import does_not_raise
+from exceptions.wql.make import MakeIllegalPropertyValue
 from wiggle_query_language.clauses.make.parse_make.parse_make_properties import (
     make_properties,
     handle_null_property,
@@ -148,7 +149,21 @@ class TestParseMakeProperties:
 
     @pytest.mark.parametrize(
         "test_wg_property, expected_value, exception",
-        [pytest.param("null", None, does_not_raise(), id="EXP PASS: Simple case")],
+        [
+            pytest.param("null", None, does_not_raise(), id="EXP PASS: Simple case"),
+            pytest.param(
+                " null ",
+                None,
+                does_not_raise(),
+                id="EXP PASS: Simple case, with spacing",
+            ),
+            pytest.param(
+                "None",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: Wrong parma value",
+            ),
+        ],
     )
     def test_handle_null_property(
         self, test_wg_property: str, expected_value: dict, exception
