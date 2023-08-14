@@ -221,7 +221,7 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                """{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]}""",
+                """{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net', pn: '+447541254566', list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net", "+447541254566"]}""",
                 [
                     ("int", "1", "", "", "", "1", "", ""),
                     ("float", "3.14", "", "", "3.14", "", "", ""),
@@ -232,14 +232,15 @@ class TestMakeRePatterns:
                     ("str2", '"2_4"', "", "", "", "", "", '"2_4"'),
                     ("str3", '"3 4 5"', "", "", "", "", "", '"3 4 5"'),
                     ("email", "'foo@bar.net'", "", "", "", "", "", "'foo@bar.net'"),
+                    ("pn", "'+447541254566'", "", "", "", "", "", "'+447541254566'"),
                     (
                         "list",
-                        '[1, 3.14, true, false, \'2\', "2_4", "3 4", "foo@bar.net"]',
+                        '[1, 3.14, true, false, \'2\', "2_4", "3 4", "foo@bar.net", "+447541254566"]',
                         "",
                         "",
                         "",
                         "",
-                        '[1, 3.14, true, false, \'2\', "2_4", "3 4", "foo@bar.net"]',
+                        '[1, 3.14, true, false, \'2\', "2_4", "3 4", "foo@bar.net", "+447541254566"]',
                         "",
                     ),
                 ],
