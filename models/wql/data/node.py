@@ -19,7 +19,7 @@ class Node(BaseModel):
 
     # User defined
     node_label: str
-    # Using types allowed marshals the data incorrectly
+    # Using TYPES_ALLOWED marshals the data incorrectly
     properties: Optional[dict[str, Any]] = None
     relations: Optional[list[Relationship]] = None
 
