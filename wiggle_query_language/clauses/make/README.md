@@ -7,7 +7,9 @@ The MAKE clause of WQL.
 ## Introduction
 * The MAKE clause is how data is loaded onto the graph.
 * The user creates Nodes and Edges by expressing a pattern in the terminal.
-
+* Currently only support for creation of a maximum of three node and two relationships per MAKE statement. However, multiple make statements can be used
+    * Minimum pattern:  (**left**)
+    * Maximum pattern:  (**left**)-[**REL1**]->(**middle**)-[**REL2**]->(**right**)
 ## Aims
 * To be simple and intuitive to use, the language itself is declarative in nature.
 * To be informative to the User and provide helpful feed back to the User in the case of an Error.
@@ -20,6 +22,8 @@ The MAKE clause of WQL.
 * Float
 * Integer
 * String
+* Boolean
+* NoneType
 
 ### Sub Node or Rel structures
 * A List of any combination of the above.
@@ -47,14 +51,22 @@ The MAKE clause of WQL.
 * Within the square brackets there are three areas of interest:
   * NodelHandle, NodeLabel, and NodeProperties.
   * This takes the form of:
-    * (`foo`)-\[  **RelHandle**  :  **RELLABEL** **{RelProperties}**  \]->(`bar`)
+    * (`foo`)-\[  **RelHandle**  :  **RelLabel** **{RelProperties}**  \]->(`bar`)
     * In plain English: Create relationship between `foo` and `bar` with a relationship label of RelLabel the properties of RelLabel are RelProperties. RelHandle the is how you can reference it later on a with a USING.
     * **RelHandle**: This is the Rel I care about. Optional.
     * **RelLabel**: the type of Rel I want to create, must be uppercase. Optional
     * **RelProperties**: The data associated with this Rel type. Optional.
     * n.b notice a direction of the relationship, in this case left to right.
 
-## Examples
+### Node and Edge properties
+* Declared in curly brackets, next to the NodelLabel/RelLabel:
+
+```
+{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]}
+```
+
+
+## Examples:
 
 1. Creation of a single node with no properties
    - Use case: INSERT HERE

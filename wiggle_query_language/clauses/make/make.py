@@ -1,70 +1,142 @@
-from typing import Optional
-
-from models.wql.parsed_query import ParsedMake
-from wiggle_query_language.clauses.regexes.make_patterns import (
-    MAKE_STATEMENT_ALL_REGEX,
-    NODES_RELS_PATTERN_REGEX,
+from models.wigsh import DbmsFilePath
+from models.wql import (
+    EmitNode,
+    EmitNodes,
+    Node,
+    ParsedMake,
+    Relationship,
+    RelationshipPre,
+    WiggleGraphMetalData,
+)
+from wiggle_query_language.clauses.make.parse_make.parse_make_properties import (
+    make_properties,
+)
+from wiggle_query_language.clauses.make.transform.make_pre import (
+    process_parsed_make_list,
+)
+from wiggle_query_language.graph.database.database import add_item_to_database
+from wiggle_query_language.graph.state.wiggle_number import (
+    get_current_wiggle_number,
+    update_wiggle_number,
 )
 
-from wiggle_query_language.clauses.make.make_checks import (
-    validate_make_statement,
-    check_make_clause_syntax,
-)
 
-
-def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
+def make_nodes(emit_node: EmitNodes) -> list[Node]:
     """
-    Extracts the MAKE statement from the query body.
-    :param query_string: The raw query.
-    :return: A list of MAKE statements.
+    Handles the creation of the nodes.
+    :param emit_node: The pre-processed Node
+    :return: A list of Nodes for loading onto the graph.
     """
+    # Will always be a left in a MAKE
+    nodes = [make_node(emit_node.left)]
 
-    if make_matches := [
-        x.group() for x in MAKE_STATEMENT_ALL_REGEX.finditer(query_string)
-    ]:
-        return make_matches
+    if emit_node.middle:
+        nodes.append(make_node(emit_node.middle))
 
-    check_make_clause_syntax(query_string)
+    if emit_node.right:
+        nodes.append(make_node(emit_node.right))
 
-    return None
+    return nodes
 
 
-def build_parsed_make(statement: str) -> ParsedMake:
+def make_node(emit_node: EmitNode) -> Node:
     """
-    Handles building of the ParsedMake.
-    :param statement: The raw make statement.
-    :return: A ParsedMake Object.
+    Makes the Node object for a node.
+    :param emit_node: The pre-processed node.
+    :return: A WiggleGraph Node.
     """
-    parsed_pattern_dict = [
-        x.groupdict() for x in NODES_RELS_PATTERN_REGEX.finditer(statement) if x.group()
-    ]
-
-    parsed_make = ParsedMake(
-        raw_statement=statement, parsed_pattern_list=parsed_pattern_dict
+    node_pre = emit_node.node_pre
+    node_metadata = WiggleGraphMetalData(wn=node_pre.wn)
+    node_label = node_pre.node_label
+    properties = make_properties(node_pre.props_string)
+    if emit_node.relationship_pre:
+        relations = [
+            make_relationship(relationship_pre)
+            for relationship_pre in emit_node.relationship_pre
+            if relationship_pre
+        ]
+    else:
+        relations = None
+    return Node(
+        node_metadata=node_metadata,
+        node_label=node_label,
+        properties=properties,
+        relations=relations,
     )
 
-    return parsed_make
 
-
-def parse_make_statement_from_query_string(
-    query_string: str,
-) -> Optional[list[ParsedMake]]:
+def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     """
-    Extracts the MAKE statement from the query body.
-    :param query_string: The raw query.
-    :return: A list of MAKE statements.
+    Makes the relationship object for a node.
+    :param relationship_pre: The pre-processed Relationship
+    :return: A WiggleGraph Relationship.
     """
-    make_matches = extract_all_make_statements(query_string)
-    if not validate_make_statement(make_matches):
-        raise Exception("make_matches says no")
+    rel_metadata = WiggleGraphMetalData(wn=relationship_pre.wn)
 
-    if make_matches:
-        return [build_parsed_make(statement=stmt) for stmt in make_matches]
-    else:
-        return None
+    properties = make_properties(relationship_pre.props_string)
+
+    return Relationship(
+        relationship_metadata=rel_metadata,
+        relationship_name=relationship_pre.rel_name,
+        wn_from_node=relationship_pre.wn_from_node,
+        wn_to_node=relationship_pre.wn_to_node,
+        properties=properties,
+    )
 
 
-if __name__ == "__main__":
-    qs = """"MAKE (left_node_handle:LeftNodeLabel { int: 1   , str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});"""
-    s = parse_make_statement_from_query_string(qs)
-    a = 1
+def add_nodes_to_graph(
+    nodes_list: list[Node],
+    current_wiggle_number: int,
+    dbms_file_path: DbmsFilePath,
+) -> bool:
+    """
+    Adds the Nodes to the graph.
+    :param nodes_list: The list of constructed Nodes.
+    :param current_wiggle_number: The most recent WiggleNumber.
+    :param dbms_file_path: The path to the DBMS.
+    :return: A bool.
+    """
+    # Add Nodes
+
+    nodes_dict_list = [node.export_node() for node in nodes_list]
+    data_to_add_dict = {
+        node_wn: value for node in nodes_dict_list for node_wn, value in node.items()
+    }
+
+    add_item_to_database(dbms_file_path.database_file_path, data_to_add_dict)
+
+    # Update WiggleNumber
+    update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)
+
+    return True
+
+
+def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bool:
+    """
+    Handles the loading from stmt to putting data in the DB.
+    :param parsed_make_list: The list of parsed MAKE statements.
+    :param dbms_file_path: The path to the DBMS.
+    :return: A bool.
+    """
+    # Get the next available WN
+    current_wiggle_number = get_current_wiggle_number(
+        dbms_file_path.wiggle_number_file_path
+    )
+    # create NodePre and RelationshipPre
+    current_wiggle_number, emit_nodes_list = process_parsed_make_list(
+        parsed_make_list=parsed_make_list, current_wiggle_number=current_wiggle_number
+    )
+
+    # create Nodes and Relationship
+    # TODO one list
+    nodes_list = [make_nodes(emit_nodes) for emit_nodes in emit_nodes_list]
+    nodes_list_flat = [item for sublist in nodes_list for item in sublist]
+
+    # Commit if only not errors
+    add_nodes_to_graph(
+        nodes_list=nodes_list_flat,
+        current_wiggle_number=current_wiggle_number,
+        dbms_file_path=dbms_file_path,
+    )
+
+    return True

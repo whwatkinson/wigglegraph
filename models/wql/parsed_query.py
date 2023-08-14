@@ -18,6 +18,9 @@ class Rel(BaseModel):
     rel_props: Optional[str]
 
 
+# TODO make sure that all the handles are unique
+
+
 class ParsedPattern(BaseModel):
     left_node: Optional[str]
     left_node_handle: Optional[str]
@@ -40,6 +43,26 @@ class ParsedPattern(BaseModel):
     right_node_label: Optional[str]
     right_node_props: Optional[str]
 
+    @property
+    def number_of_nodes(self) -> int:
+        """
+        Number of nodes in this ParsedPattern.
+        :return: An integer.
+        """
+
+        return bool(self.left_node) + bool(self.middle_node) + bool(self.right_node)
+
+    @property
+    def number_of_relationships(self) -> int:
+        """
+        Number of relationships in this ParsedPattern.
+        :return: An integer.
+        """
+        return bool(self.left_middle_rel) + bool(self.middle_right_rel)
+
+    def __repr__(self) -> str:
+        return f"|{self.__class__.__name__}| Nodes: {self.number_of_nodes}, Rels: {self.number_of_relationships}"
+
 
 class ParsedMake(BaseModel):
     raw_statement: str = Field(regex=MAKE_STATEMENT_ALL_REGEX.pattern)
@@ -48,7 +71,7 @@ class ParsedMake(BaseModel):
 
 
 class ParsedQuery(BaseModel):
-    make: Optional[list[ParsedMake]]
-    find: Optional[dict] = None
-    criteria: Optional[dict] = None
-    report: Optional[dict] = None
+    make_parsed: Optional[list[ParsedMake]]
+    find_parsed: Optional[dict] = None
+    criteria_parsed: Optional[dict] = None
+    report_parsed: Optional[dict] = None

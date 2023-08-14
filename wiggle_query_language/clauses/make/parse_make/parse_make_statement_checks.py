@@ -1,16 +1,16 @@
 from exceptions.wql.make import (
     MakeClauseSyntaxError,
-    MakeParamSyntaxError,
-    MakeNonDirectedRelationshipError,
     MakeIllegalCharacterError,
+    MakeNonDirectedRelationshipError,
+    MakeParamSyntaxError,
     MakeRelationshipNameSyntaxError,
 )
 from wiggle_query_language.clauses.regexes.make_patterns import (
+    ILLEGAL_CHARS_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
-    RELATIONSHIP_DIR_CHECK_REGEX,
     PARAM_LIST_VALUE_REGEX,
-    ILLEGAL_CHARS_REGEX,
+    RELATIONSHIP_DIR_CHECK_REGEX,
 )
 
 
@@ -43,7 +43,11 @@ def check_make_params(make_matches: list[str]) -> True:
             continue
 
         # TODO remove double loop, most of the time will be one match..
-        for param_match in param_string:
+        for param_match_in in param_string:
+            # TODO replace PARAM_LIST_VALUE_REGEX with ALL_PARAMS_KEY_VALUE_REGEX
+            param_match = param_match_in.replace("true", "True").replace(
+                "false", "False"
+            )
             # remove the list from the params
             params_sans_list = PARAM_LIST_VALUE_REGEX.sub("", param_match)
             check_param_formatting(params_sans_list)

@@ -2,17 +2,17 @@ import pytest
 
 from exceptions.wql.make import (
     MakeClauseSyntaxError,
-    MakeParamSyntaxError,
-    MakeNonDirectedRelationshipError,
     MakeIllegalCharacterError,
+    MakeNonDirectedRelationshipError,
+    MakeParamSyntaxError,
     MakeRelationshipNameSyntaxError,
 )
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.make.make_checks import (
+from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
+    check_illegal_characters,
     check_make_clause_syntax,
     check_make_params,
     check_relationships,
-    check_illegal_characters,
 )
 
 
@@ -72,7 +72,7 @@ class TestWqlMake:
             ),
             pytest.param(
                 [
-                    """MAKE (n:Person{first_name:'Harry', last_name:'Watkinson', list: [1, '2', "2_4", "3 4", 3.14]});"""
+                    """MAKE (n:Person{first_name:'Harry', last_name:'Watkinson', bool: true, list: [1, '2', "2_4", "3 4", 3.14]});"""
                 ],
                 does_not_raise(),
                 id="EXP PASS: 1 comma",

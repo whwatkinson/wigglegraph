@@ -1,10 +1,8 @@
 import pytest
 
-from exceptions.wql.make import (
-    MakeClauseSyntaxError,
-)
+from exceptions.wql.make import MakeClauseSyntaxError
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.make.make import (
+from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
     build_parsed_make,
     extract_all_make_statements,
     parse_make_statement_from_query_string,
@@ -108,21 +106,21 @@ class TestWqlMake:
                 id="EXP PASS: Simple case",
             ),
             pytest.param(
-                "MAKE (foo:NodeLabel{int: 1, str: '2'})-[:]->(foo2:NodeLabel);",
+                "MAKE (foo:NodeLabel{int: 1, str: '2', none: null, bool: true})-[:]->(foo2:NodeLabel);",
                 {
                     "left_node_handle": "foo",
-                    "left_node_props": "{int: 1, str: '2'}",
+                    "left_node_props": "{int: 1, str: '2', none: null, bool: true}",
                     "middle_node_handle": "foo2",
                 },
                 does_not_raise(),
                 id="EXP PASS: NodeHandles, NodeLabels and NodeParams",
             ),
             pytest.param(
-                """MAKE (:NodeLabel)-[r:REL{float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(:NodeLabel);""",
+                """MAKE (:NodeLabel)-[r:REL{float: 3.14, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]->(:NodeLabel);""",
                 {
                     "left_middle_rel_handle": "r",
                     "left_middle_rel_label": "REL",
-                    "left_middle_rel_props": """{float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                    "left_middle_rel_props": """{float: 3.14, none: null, list: [1, '2', "2_4", "3 4", 3.14]}""",
                 },
                 does_not_raise(),
                 id="EXP PASS: RelHandles, RelLabels and RelParams",

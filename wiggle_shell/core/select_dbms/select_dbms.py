@@ -4,13 +4,12 @@ from pathlib import Path
 from string import ascii_uppercase
 from typing import Optional
 
-from models.wigshell.dbms import DbmsFilePath
+from models.wigsh import DbmsFilePath
 from wiggle_shell import DBMS_FOLDER, INPUT_PROMPT_SPACING
 from wiggle_shell.core.select_dbms.select_database import (
     create_new_database,
     get_existing_db_file_path,
 )
-
 from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
     create_new_wiggle_number_file,
     get_existing_wn_file_path,
@@ -173,6 +172,7 @@ def select_dbms() -> DbmsFilePath:
     Select the DBMS to be used.
     :return: A filepath for both the db and wn.
     """
+    # TODO index.json and query_log
 
     db_choice = input(f"Use existing dbms (y/n):{INPUT_PROMPT_SPACING}")
     match db_choice:

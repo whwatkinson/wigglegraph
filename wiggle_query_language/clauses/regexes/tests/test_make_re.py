@@ -3,20 +3,20 @@ from typing import Optional
 import pytest
 
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.regexes.tests.cases_for_test_re import (
-    cases_for_test_nodes_rel_pattern,
-)
-from wiggle_query_language.clauses.regexes.helpers import get_nodes_rels_pattern_regex
 from wiggle_query_language.clauses.regexes.make_patterns import (
-    NODES_RELS_PATTERN_REGEX,
+    ILLEGAL_CHARS_REGEX,
     MAKE_STATEMENT_ALL_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
-    RELATIONSHIP_DIR_CHECK_REGEX,
-    NOT_LIST_KEY_VALUE_REGEX,
-    LIST_KEY_VALUE_REGEX,
+    NODES_RELS_PATTERN_REGEX,
     PARAM_LIST_VALUE_REGEX,
-    ILLEGAL_CHARS_REGEX,
+    RELATIONSHIP_DIR_CHECK_REGEX,
+)
+from wiggle_query_language.clauses.regexes.make_patterns_helpers import (
+    get_nodes_rels_pattern_regex,
+)
+from wiggle_query_language.clauses.regexes.tests.cases_for_test_re import (
+    cases_for_test_nodes_rel_pattern,
 )
 
 
@@ -98,9 +98,9 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});""",
+                """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]});""",
                 [
-                    """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}"""
+                    """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}"""
                 ],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
@@ -172,61 +172,13 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
-                [("int", "1"), ("str", "'2'"), ("str2", '"2_4"'), ("float", "3.14")],
-                does_not_raise(),
-                id="EXP PASS: 1 Match",
-            ),
-            pytest.param(
-                """{list: [1, '2', "2_4", "3 4", 3.14]}""",
-                [],
-                does_not_raise(),
-                id="EXP PASS: No Match",
-            ),
-        ],
-    )
-    def test_not_list_key_value_regex(
-        self, test_pattern: str, expected_result: Optional[list[str]], exception
-    ) -> None:
-        with exception:
-            test = NOT_LIST_KEY_VALUE_REGEX.findall(test_pattern)
-            assert test == expected_result
-
-    @pytest.mark.parametrize(
-        "test_pattern, expected_result, exception",
-        [
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
-                [("list", '[1, \'2\', "2_4", "3 4", 3.14]')],
-                does_not_raise(),
-                id="EXP PASS: 1 Match",
-            ),
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14]}""",
-                [],
-                does_not_raise(),
-                id="EXP PASS: No Match",
-            ),
-        ],
-    )
-    def test_list_key_value_regex(
-        self, test_pattern: str, expected_result: Optional[list[str]], exception
-    ) -> None:
-        with exception:
-            test = LIST_KEY_VALUE_REGEX.findall(test_pattern)
-            assert test == expected_result
-
-    @pytest.mark.parametrize(
-        "test_pattern, expected_result, exception",
-        [
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]}""",
                 ['[1, \'2\', "2_4", "3 4", 3.14]'],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
             ),
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14]}""",
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, none: null, bool: false]}""",
                 [],
                 does_not_raise(),
                 id="EXP PASS: No Match",

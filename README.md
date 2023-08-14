@@ -11,3 +11,9 @@ Welcome to WiggleGraph.
 ## Data structures
 - In a Graph database, date is represented as Nodes and Edges.
 - This representation makes it easy to express and explore complex relationships between data points.
+
+
+## To run:
+foo
+bar
+baz
