@@ -17,38 +17,50 @@ def make_properties(params_string: str) -> Optional[dict]:
     :param params_string: The raw params string
     :return: A parsed dictionary with correct data types
     """
-    property_dictionary = dict()
 
     if not params_string:
         return None
 
-    # Handle non list properties
+    # Handle primitive properties first
+    primitive_property_dictionary = parse_primitive_properties(params_string)
+
+    # Then attempt the list
+    list_property_dictionary = parse_list_property(params_string)
+
+    return primitive_property_dictionary | list_property_dictionary
+
+
+def parse_primitive_properties(params_string: str) -> dict:
+    primitive_property_dictionary = dict()
     if props_primitive := ALL_PARAMS_KEY_VALUE_REGEX.finditer(params_string):
         for match in props_primitive:
-            property_name = match.group("property_name")
-            property_value = match.group("property_value")
-            if property_value.strip() == "":
-                raise MakeIllegalPropertyValue(
-                    f"Error for setting property in {params_string} {property_name} was empty a value must be supplied"
-                )
-
             make_primitive_property = MakePrimitiveProperty(**match.groupdict())
-            value_parsed = handle_extracted_property(make_primitive_property)
 
-            property_dictionary[property_name] = value_parsed
+            if match.group("property_value").strip() == "":
+                raise MakeIllegalPropertyValue(
+                    f"Error for setting property in {params_string} {make_primitive_property.property_name} was empty a value must be supplied"
+                )
+            value_parsed = handle_extracted_primitive_property(make_primitive_property)
+            primitive_property_dictionary[
+                make_primitive_property.property_name
+            ] = value_parsed
 
+    return primitive_property_dictionary
+
+
+def parse_list_property(params_string: str) -> dict:
+    list_property_dictionary = dict()
     if props_list := LIST_KEY_VALUE_REGEX.finditer(params_string):
         for match in props_list:
             make_list_property = MakeListProperty(**match.groupdict())
 
             list_parsed = handle_list_property(make_list_property.property_value)
 
-            property_dictionary[make_list_property.property_name] = list_parsed
+            list_property_dictionary[make_list_property.property_name] = list_parsed
+    return list_property_dictionary
 
-    return property_dictionary
 
-
-def handle_extracted_property(make_property: MakePrimitiveProperty):
+def handle_extracted_primitive_property(make_property: MakePrimitiveProperty):
     extracted_property = make_property.yield_extracted_param()
 
     for property_type, extracted_property in extracted_property.items():
