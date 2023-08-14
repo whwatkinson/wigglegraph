@@ -88,12 +88,12 @@ def handle_bool_property(value: str) -> bool:
     match value:
         case "true":
             bool_found = True
+        case "false":
+            bool_found = False
         case "True":
             raise MakeIllegalPropertyValue(
                 f"{value} should be lowercase. Boolean property example {{foo: true}}"
             )
-        case "false":
-            bool_found = False
         case "False":
             raise MakeIllegalPropertyValue(
                 f"{value} should be lowercase. Boolean property example {{foo: false}}"
@@ -107,7 +107,7 @@ def handle_bool_property(value: str) -> bool:
 def handle_float_property(value: str) -> float:
     if "." not in value:
         raise MakeIllegalPropertyValue(
-            f"{value} missing a period please add, e.g {{foo: 3.14}}"
+            f"{value} missing a period. Float property example: {{foo: 3.14}}"
         )
     try:
         found_float = float(value)

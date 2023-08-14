@@ -1,4 +1,3 @@
-from models.wigsh import DbmsFilePath
 from models.wql import Clause, EmitNodes, MakePre, NodePre, ParsedMake, RelationshipPre
 
 
@@ -11,20 +10,14 @@ def relationship_is_left_to_right(parsed_relationship_pattern: str) -> bool:
     return True if parsed_relationship_pattern[-1] == ">" else False
 
 
-def process_parsed_make(
-    parsed_make: ParsedMake, dbms_file_path: DbmsFilePath, current_wiggle_number: int
-) -> MakePre:
-    pass
-
-
 def process_parsed_make_list(
     parsed_make_list: list[ParsedMake], current_wiggle_number: int
 ) -> tuple[int, list[EmitNodes]]:
     """
-
-    :param parsed_make_list:
-    :param current_wiggle_number:
-    :return:
+    Turns a ParsedMake into a MakePre.
+    :param parsed_make_list: The list of parsed make statements.
+    :param current_wiggle_number: The next available WN.
+    :return: The current WN and list of MakePres ready for turning into nodes.
     """
     emit_nodes_list = []
 

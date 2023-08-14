@@ -7,13 +7,13 @@ from wiggle_query_language.clauses.regexes.make_patterns_helpers import (
     get_nodes_rels_pattern_regex,
 )
 
-# MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel);
+# MAKE *;
 MAKE_STATEMENT_ALL_REGEX = compile(
     r"(?P<make_stmt_all>MAKE\s*\(.+\);)", flags=IGNORECASE
 )
 
 
-# (left:NodeLabel)-[r:LM]->(middle:NodeLabel)-[r2:MR]->(right:NodeLabel);
+# (left:NodeLabel{LeftParams})-[r:LM{LMParams}]->(middle:NodeLabel{MiddleParams})-[r2:MR{MRParams}]->(right:NodeLabel{RightParams});
 NODES_RELS_PATTERN_REGEX = compile(
     rf"{get_nodes_rels_pattern_regex()}",
     flags=IGNORECASE,
@@ -39,11 +39,6 @@ RELATIONSHIP_DIR_CHECK_REGEX = compile(
     flags=IGNORECASE,
 )
 
-# foo: 1, bar: "2"
-NOT_LIST_KEY_VALUE_REGEX = compile(
-    rf"(?P<property_name>\w+)\s*:\s*(?P<property_value>[\w'\"\.{EXTRA_ALLOWED_CHARS}]+)",
-    flags=IGNORECASE,
-)
 
 # int: 1, float: 3.14, bool: true, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [
 ALL_PARAMS_KEY_VALUE_REGEX = compile(
@@ -51,11 +46,6 @@ ALL_PARAMS_KEY_VALUE_REGEX = compile(
     flags=IGNORECASE,
 )
 
-# baz: [1, 2, 3, 4]
-LIST_KEY_VALUE_REGEX = compile(
-    rf"(?P<property_name>[\w]+)\s*:\s*(?P<property_value>\[[\w,\s'\"\.{EXTRA_ALLOWED_CHARS}]+])",
-    flags=IGNORECASE,
-)
 
 # [1, '2', "2_4", "3 4", 3.14]
 PARAM_LIST_VALUE_REGEX = compile(

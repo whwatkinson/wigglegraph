@@ -5,12 +5,10 @@ import pytest
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.regexes.make_patterns import (
     ILLEGAL_CHARS_REGEX,
-    LIST_KEY_VALUE_REGEX,
     MAKE_STATEMENT_ALL_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
     NODES_RELS_PATTERN_REGEX,
-    NOT_LIST_KEY_VALUE_REGEX,
     PARAM_LIST_VALUE_REGEX,
     RELATIONSHIP_DIR_CHECK_REGEX,
 )
@@ -168,78 +166,6 @@ class TestMakeRePatterns:
     ) -> None:
         with exception:
             test = RELATIONSHIP_DIR_CHECK_REGEX.findall(test_pattern)
-            assert test == expected_result
-
-    @pytest.mark.parametrize(
-        "test_pattern, expected_result, exception",
-        [
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}""",
-                [
-                    ("int", "1"),
-                    ("str", "'2'"),
-                    ("str2", '"2_4"'),
-                    ("float", "3.14"),
-                    ("bool", "true"),
-                ],
-                does_not_raise(),
-                id="EXP PASS: 1 Match",
-            ),
-            pytest.param(
-                """{list: [1, '2', "2_4", "3 4", 3.14]}""",
-                [],
-                does_not_raise(),
-                id="EXP PASS: No Match",
-            ),
-        ],
-    )
-    def test_not_list_key_value_regex(
-        self, test_pattern: str, expected_result: Optional[list[str]], exception
-    ) -> None:
-        with exception:
-            test = NOT_LIST_KEY_VALUE_REGEX.findall(test_pattern)
-            assert test == expected_result
-
-    @pytest.mark.parametrize(
-        "test_pattern, expected_result, exception",
-        [
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}""",
-                [("list", '[1, \'2\', "2_4", "3 4", 3.14]')],
-                does_not_raise(),
-                id="EXP PASS: 1 Match",
-            ),
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", list: [1, '2', "2_4", "3 4", 3.14, null, true], float: 3.14, bool: true, list2: [true, 1, '2', "2_4", "3 4", 3.14]}""",
-                [
-                    ("list", '[1, \'2\', "2_4", "3 4", 3.14, null, true]'),
-                    ("list2", """[true, 1, '2', "2_4", "3 4", 3.14]"""),
-                ],
-                does_not_raise(),
-                id="EXP PASS: 2 Match, double list, separated by another prop",
-            ),
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", true, "3 4", 3.14],  list2: [1, '2', "2_4", null, "3 4", 3.14]}""",
-                [
-                    ("list", '[1, \'2\', "2_4", true, "3 4", 3.14]'),
-                    ("list2", """[1, '2', "2_4", null, "3 4", 3.14]"""),
-                ],
-                does_not_raise(),
-                id="EXP PASS: 2 Match, double list, next two each other",
-            ),
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14]}""",
-                [],
-                does_not_raise(),
-                id="EXP PASS: No Match",
-            ),
-        ],
-    )
-    def test_list_key_value_regex(
-        self, test_pattern: str, expected_result: Optional[list[str]], exception
-    ) -> None:
-        with exception:
-            test = LIST_KEY_VALUE_REGEX.findall(test_pattern)
             assert test == expected_result
 
     @pytest.mark.parametrize(
