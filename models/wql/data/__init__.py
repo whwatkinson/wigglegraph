@@ -1,3 +1,3 @@
 from typing import Union
 
-TYPES_ALLOWED = Union[str, int, float, list, bool]
+TYPES_ALLOWED = Union[str, int, float, list, bool, None]

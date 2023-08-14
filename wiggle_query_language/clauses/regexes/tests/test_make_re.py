@@ -210,19 +210,19 @@ class TestMakeRePatterns:
                 id="EXP PASS: 1 Match",
             ),
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", list: [1, '2', "2_4", "3 4", 3.14], float: 3.14, bool: true, list2: [1, '2', "2_4", "3 4", 3.14]}""",
+                """{int: 1, str: '2', str2:"2_4", list: [1, '2', "2_4", "3 4", 3.14, null, true], float: 3.14, bool: true, list2: [true, 1, '2', "2_4", "3 4", 3.14]}""",
                 [
-                    ("list", '[1, \'2\', "2_4", "3 4", 3.14]'),
-                    ("list2", """[1, '2', "2_4", "3 4", 3.14]"""),
+                    ("list", '[1, \'2\', "2_4", "3 4", 3.14, null, true]'),
+                    ("list2", """[true, 1, '2', "2_4", "3 4", 3.14]"""),
                 ],
                 does_not_raise(),
                 id="EXP PASS: 2 Match, double list, separated by another prop",
             ),
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14],  list2: [1, '2', "2_4", "3 4", 3.14]}""",
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", true, "3 4", 3.14],  list2: [1, '2', "2_4", null, "3 4", 3.14]}""",
                 [
-                    ("list", '[1, \'2\', "2_4", "3 4", 3.14]'),
-                    ("list2", """[1, '2', "2_4", "3 4", 3.14]"""),
+                    ("list", '[1, \'2\', "2_4", true, "3 4", 3.14]'),
+                    ("list2", """[1, '2', "2_4", null, "3 4", 3.14]"""),
                 ],
                 does_not_raise(),
                 id="EXP PASS: 2 Match, double list, next two each other",
@@ -246,13 +246,13 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]}""",
                 ['[1, \'2\', "2_4", "3 4", 3.14]'],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
             ),
             pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14]}""",
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, none: null, bool: false]}""",
                 [],
                 does_not_raise(),
                 id="EXP PASS: No Match",

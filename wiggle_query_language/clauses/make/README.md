@@ -22,6 +22,8 @@ The MAKE clause of WQL.
 * Float
 * Integer
 * String
+* Boolean
+* NoneType
 
 ### Sub Node or Rel structures
 * A List of any combination of the above.

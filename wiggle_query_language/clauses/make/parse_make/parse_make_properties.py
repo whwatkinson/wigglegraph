@@ -1,8 +1,9 @@
 from ast import literal_eval
-from typing import Union
+from typing import Optional
+
+from models.wql.data import TYPES_ALLOWED
 
 from graph_logger.graph_logger import graph_logger
-
 from exceptions.wql.make import MakeIllegalNodePropertyType
 from wiggle_query_language.clauses.regexes.make_patterns import (
     LIST_KEY_VALUE_REGEX,
@@ -10,13 +11,16 @@ from wiggle_query_language.clauses.regexes.make_patterns import (
 )
 
 
-def make_properties(params_string: str) -> dict:
+def make_properties(params_string: str) -> Optional[dict]:
     """
     The extracted params to be turned into a dictionary
     :param params_string: The raw params string
     :return: A parsed dictionary with correct data types
     """
     params_dict = dict()
+
+    if not params_dict:
+        return None
 
     # not list first
     if params_primitive := NOT_LIST_KEY_VALUE_REGEX.finditer(params_string):
@@ -54,7 +58,7 @@ def make_properties(params_string: str) -> dict:
     return params_dict
 
 
-def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
+def string_to_correct_data_type(value: str) -> TYPES_ALLOWED:
     """
     Turns a string to the correct datatype.
     By identifying characteristics of data types
@@ -116,7 +120,7 @@ def string_to_correct_data_type(value: str) -> Union[float, int, str, list]:
         pass
 
 
-def string_to_list_data_type(value: str) -> Union[float, int, str, list]:
+def string_to_list_data_type(value: str) -> TYPES_ALLOWED:
     """
     Turns a string to the correct datatype.
     By identifying characteristics of data types
