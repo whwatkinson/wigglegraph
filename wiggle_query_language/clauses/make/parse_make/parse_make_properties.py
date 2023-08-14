@@ -1,13 +1,14 @@
 from ast import literal_eval
 from typing import Optional
 
-from models.wql import TYPES_ALLOWED, MakeListProperty, MakePrimitiveProperty
+from models.wql import TYPES_ALLOWED, MakeProperty
 from graph_logger.graph_logger import graph_logger
 from exceptions.wql.make import MakeIllegalPropertyValue
 from wiggle_query_language.clauses.regexes.make_patterns import (
-    LIST_KEY_VALUE_REGEX,
     ALL_PARAMS_KEY_VALUE_REGEX,
 )
+
+# TODO docstrings
 
 
 def make_properties(params_string: str) -> Optional[dict]:
@@ -21,19 +22,16 @@ def make_properties(params_string: str) -> Optional[dict]:
         return None
 
     # Handle primitive properties first
-    primitive_property_dictionary = parse_primitive_properties(params_string)
+    property_dictionary = parse_primitive_properties(params_string)
 
-    # Then attempt the list
-    list_property_dictionary = parse_list_property(params_string)
-
-    return primitive_property_dictionary | list_property_dictionary
+    return property_dictionary
 
 
 def parse_primitive_properties(params_string: str) -> dict:
     primitive_property_dictionary = dict()
     if props_primitive := ALL_PARAMS_KEY_VALUE_REGEX.finditer(params_string):
         for match in props_primitive:
-            make_primitive_property = MakePrimitiveProperty(**match.groupdict())
+            make_primitive_property = MakeProperty(**match.groupdict())
             if match.group("property_value").strip() == "":
                 raise MakeIllegalPropertyValue(
                     f"Error for setting property in {params_string} {make_primitive_property.property_name} was empty a value must be supplied"
@@ -52,22 +50,7 @@ def parse_primitive_properties(params_string: str) -> dict:
     return primitive_property_dictionary
 
 
-def parse_list_property(params_string: str) -> dict:
-    list_property_dictionary = dict()
-
-    if props_list := LIST_KEY_VALUE_REGEX.finditer(params_string):
-        for match in props_list:
-            make_list_property = MakeListProperty(**match.groupdict())
-            try:
-                list_parsed = handle_list_property(make_list_property.property_value)
-            except MakeIllegalPropertyValue as e:
-                raise e
-            list_property_dictionary[make_list_property.property_name] = list_parsed
-
-    return list_property_dictionary
-
-
-def handle_extracted_primitive_property(make_property: MakePrimitiveProperty):
+def handle_extracted_primitive_property(make_property: MakeProperty) -> TYPES_ALLOWED:
     extracted_property = make_property.yield_extracted_param()
 
     for property_type, extracted_property in extracted_property.items():
@@ -82,6 +65,8 @@ def handle_extracted_primitive_property(make_property: MakePrimitiveProperty):
                 return handle_float_property(striped_value)
             case "int":
                 return handle_int_property(striped_value)
+            case "list":
+                return handle_list_property(striped_value)
             case "string":
                 return handle_string_property(striped_value)
             case _:
@@ -153,6 +138,11 @@ def handle_string_property(value: str) -> str:
             f"Cannot use {value} as a string, please use the null type for example {{foo: null}}"
         )
 
+    if value in {"true", "True", "false", "False"}:
+        raise MakeIllegalPropertyValue(
+            f"Cannot use {value} as a string, please use the bool type for example {{foo: true}}"
+        )
+
     # catch all.. todo make this better
     found_str = str(value)
     graph_logger.debug(f"{value} was determined to be a string: {found_str}")
@@ -160,7 +150,7 @@ def handle_string_property(value: str) -> str:
 
 
 def handle_list_property(value_in: str) -> list[TYPES_ALLOWED]:
-    # TODO change to it iterate ove the list.
+    # params validation happens in check_make_params
     value = value_in.replace("true", "True").replace("false", "False")
     try:
         found_list = literal_eval(value)

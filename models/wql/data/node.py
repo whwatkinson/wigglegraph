@@ -1,8 +1,9 @@
-from typing import Optional
+from typing import Optional, Any
 
 
 from models.wql.data.wiggle_metadata import WiggleGraphMetalData
-from models.wql.data import TYPES_ALLOWED
+
+# from models.wql.data import TYPES_ALLOWED
 from models.wql.data.relationship import Relationship
 
 from pydantic import BaseModel
@@ -18,7 +19,8 @@ class Node(BaseModel):
 
     # User defined
     node_label: str
-    properties: Optional[dict[str, TYPES_ALLOWED]] = None
+    # Using types allowed marshals the data incorrectly
+    properties: Optional[dict[str, Any]] = None
     relations: Optional[list[Relationship]] = None
 
     @property

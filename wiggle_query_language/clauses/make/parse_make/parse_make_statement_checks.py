@@ -43,8 +43,11 @@ def check_make_params(make_matches: list[str]) -> True:
             continue
 
         # TODO remove double loop, most of the time will be one match..
-        for param_match in param_string:
-            # TODO bool syntax check true vs True.
+        for param_match_in in param_string:
+            # TODO replace PARAM_LIST_VALUE_REGEX with ALL_PARAMS_KEY_VALUE_REGEX
+            param_match = param_match_in.replace("true", "True").replace(
+                "false", "False"
+            )
             # remove the list from the params
             params_sans_list = PARAM_LIST_VALUE_REGEX.sub("", param_match)
             check_param_formatting(params_sans_list)

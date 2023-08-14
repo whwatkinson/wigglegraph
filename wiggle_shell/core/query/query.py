@@ -76,11 +76,11 @@ if __name__ == "__main__":
     MAKE (:NodeLabel{int: 1})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]}});
     """
 
-    qry = """
-    MAKE (:NodeLabel{int: 1})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"});
-    """
-
-    qry = """MAKE (c:NodeLabel {bool: true,int: 1, str: '2', str2:"2_4", float: 3.14, list1: [1, '2', "2_4", "3 4", 3.14], foo: 1, list: [1, '2', "2_4", "3 4", 3.14]});"""
+    # qry = """
+    # MAKE (:NodeLabel{int: 1})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"});
+    # """
+    #
+    # qry = """MAKE (c:NodeLabel {int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"], list2: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]});"""
 
     # qry = """
     #     MAKE (:NodeLabel1), (:NodeLabel2);
