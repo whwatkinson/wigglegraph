@@ -35,12 +35,16 @@ def parse_primitive_properties(params_string: str) -> dict:
     if props_primitive := ALL_PARAMS_KEY_VALUE_REGEX.finditer(params_string):
         for match in props_primitive:
             make_primitive_property = MakePrimitiveProperty(**match.groupdict())
-
             if match.group("property_value").strip() == "":
                 raise MakeIllegalPropertyValue(
                     f"Error for setting property in {params_string} {make_primitive_property.property_name} was empty a value must be supplied"
                 )
-            value_parsed = handle_extracted_primitive_property(make_primitive_property)
+            try:
+                value_parsed = handle_extracted_primitive_property(
+                    make_primitive_property
+                )
+            except Exception:
+                raise Exception()
             primitive_property_dictionary[
                 make_primitive_property.property_name
             ] = value_parsed
@@ -50,13 +54,16 @@ def parse_primitive_properties(params_string: str) -> dict:
 
 def parse_list_property(params_string: str) -> dict:
     list_property_dictionary = dict()
+
     if props_list := LIST_KEY_VALUE_REGEX.finditer(params_string):
         for match in props_list:
             make_list_property = MakeListProperty(**match.groupdict())
-
-            list_parsed = handle_list_property(make_list_property.property_value)
-
+            try:
+                list_parsed = handle_list_property(make_list_property.property_value)
+            except Exception:
+                raise Exception()
             list_property_dictionary[make_list_property.property_name] = list_parsed
+
     return list_property_dictionary
 
 
@@ -118,14 +125,6 @@ def handle_int_property(value: str) -> int:
         pass
 
 
-def handle_list_property(value: str) -> list[TYPES_ALLOWED]:
-    # TODO change to it iterate ove the list.
-    value = value.replace("true", "True").replace("false", "False")
-    found_list = literal_eval(value)
-    graph_logger.debug(f"{value} was determined to be a list: {found_list}")
-    return found_list
-
-
 def handle_string_property(value: str) -> str:
     try:
         # catch all.. todo make this better
@@ -134,6 +133,14 @@ def handle_string_property(value: str) -> str:
         return found_str
     except Exception:
         pass
+
+
+def handle_list_property(value_in: str) -> list[TYPES_ALLOWED]:
+    # TODO change to it iterate ove the list.
+    value = value_in.replace("true", "True").replace("false", "False")
+    found_list = literal_eval(value)
+    graph_logger.debug(f"{value_in} was determined to be a list: {found_list}")
+    return found_list
 
 
 if __name__ == "__main__":
