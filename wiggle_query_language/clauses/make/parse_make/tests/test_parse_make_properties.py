@@ -104,7 +104,7 @@ class TestParseMakeProperties:
                 id="EXP PASS: int, float, bool, bool2, none, str, str2, str3, email",
             ),
             pytest.param(
-                """{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]}""",
+                """{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net', pn: '+447541254566',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]}""",
                 {
                     "int": 1,
                     "float": 3.14,
@@ -115,13 +115,14 @@ class TestParseMakeProperties:
                     "str2": "2_4",
                     "str3": "3 4 5",
                     "email": "foo@bar.net",
+                    "pn": "+447541254566",
                     "list": [1, 3.14, True, False, "2", "2_4", "3 4", "foo@bar.net"],
                 },
                 does_not_raise(),
                 id="EXP PASS: int, float, bool, bool2, none, str, str2, str3, email, list",
             ),
             pytest.param(
-                """{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"], list2: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]}""",
+                """{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net', pn: '+447541254566'}""",
                 {
                     "int": 1,
                     "float": 3.14,
@@ -132,6 +133,24 @@ class TestParseMakeProperties:
                     "str2": "2_4",
                     "str3": "3 4 5",
                     "email": "foo@bar.net",
+                    "pn": "+447541254566",
+                },
+                does_not_raise(),
+                id="EXP PASS: int, float, bool, bool2, none, str, str2, str3, email, list",
+            ),
+            pytest.param(
+                """{int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net', pn: '+447541254566',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"], list2: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]}""",
+                {
+                    "int": 1,
+                    "float": 3.14,
+                    "bool": True,
+                    "bool2": False,
+                    "none": None,
+                    "str": "2",
+                    "str2": "2_4",
+                    "str3": "3 4 5",
+                    "email": "foo@bar.net",
+                    "pn": "+447541254566",
                     "list": [1, 3.14, True, False, "2", "2_4", "3 4", "foo@bar.net"],
                     "list2": [1, 3.14, True, False, "2", "2_4", "3 4", "foo@bar.net"],
                 },
@@ -152,16 +171,16 @@ class TestParseMakeProperties:
         [
             pytest.param("null", None, does_not_raise(), id="EXP PASS: Simple case"),
             pytest.param(
-                " null ",
+                "Null",
                 None,
-                does_not_raise(),
-                id="EXP PASS: Simple case, with spacing",
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: null has capital N",
             ),
             pytest.param(
                 "None",
                 None,
                 pytest.raises(MakeIllegalPropertyValue),
-                id="EXP EXEC: Wrong parma value",
+                id="EXP EXEC: Wrong param value",
             ),
         ],
     )
@@ -169,13 +188,32 @@ class TestParseMakeProperties:
         self, test_wg_property: str, expected_value: dict, exception
     ) -> None:
         with exception:
-            test = handle_null_property(test_wg_property)
-            assert test == expected_value
+            assert handle_null_property(test_wg_property) is None
 
-    @pytest.mark.xfail
     @pytest.mark.parametrize(
         "test_wg_property, expected_value, exception",
-        [pytest.param("", "", does_not_raise(), id="EXP PASS: ")],
+        [
+            pytest.param("true", True, does_not_raise(), id="EXP PASS: true"),
+            pytest.param("false", False, does_not_raise(), id="EXP PASS: true"),
+            pytest.param(
+                "True",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: True",
+            ),
+            pytest.param(
+                "False",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: False",
+            ),
+            pytest.param(
+                "7734",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: Not a bool",
+            ),
+        ],
     )
     def test_handle_bool_property(
         self, test_wg_property: str, expected_value: dict, exception
@@ -184,10 +222,24 @@ class TestParseMakeProperties:
             test = handle_bool_property(test_wg_property)
             assert test == expected_value
 
-    @pytest.mark.xfail
     @pytest.mark.parametrize(
         "test_wg_property, expected_value, exception",
-        [pytest.param("", "", does_not_raise(), id="EXP PASS: ")],
+        [
+            pytest.param("3.14", 3.14, does_not_raise(), id="EXP PASS: Simple Case"),
+            pytest.param("3.", 3.0, does_not_raise(), id="EXP PASS: Simple Case"),
+            pytest.param(
+                "3",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: Not a float, int",
+            ),
+            pytest.param(
+                "three point one four",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: Not a float but str",
+            ),
+        ],
     )
     def test_handle_float_property(
         self, test_wg_property: str, expected_value: dict, exception
@@ -196,10 +248,23 @@ class TestParseMakeProperties:
             test = handle_float_property(test_wg_property)
             assert test == expected_value
 
-    @pytest.mark.xfail
     @pytest.mark.parametrize(
         "test_wg_property, expected_value, exception",
-        [pytest.param("", "", does_not_raise(), id="EXP PASS: ")],
+        [
+            pytest.param("6", 6, does_not_raise(), id="EXP PASS: Simple Case"),
+            pytest.param(
+                "6.",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: Not an int but float",
+            ),
+            pytest.param(
+                "three",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP EXEC: Not an int but str",
+            ),
+        ],
     )
     def test_handle_int_property(
         self, test_wg_property: str, expected_value: dict, exception
@@ -208,10 +273,37 @@ class TestParseMakeProperties:
             test = handle_int_property(test_wg_property)
             assert test == expected_value
 
-    @pytest.mark.xfail
     @pytest.mark.parametrize(
         "test_wg_property, expected_value, exception",
-        [pytest.param("", "", does_not_raise(), id="EXP PASS: ")],
+        [
+            pytest.param(
+                "foo", "foo", does_not_raise(), id="EXP PASS: Simple Case, str"
+            ),
+            pytest.param(
+                "6 ducks",
+                "6 ducks",
+                does_not_raise(),
+                id="EXP PASS: Simple Case, int + str",
+            ),
+            pytest.param(
+                "foo bar",
+                "foo bar",
+                does_not_raise(),
+                id="EXP PASS: Simple Case, str + str",
+            ),
+            pytest.param(
+                "foo@bar.net",
+                "foo@bar.net",
+                does_not_raise(),
+                id="EXP PASS: Simple Case, email",
+            ),
+            pytest.param(
+                "+447541254566",
+                "+447541254566",
+                does_not_raise(),
+                id="EXP PASS: Simple Case, phone number",
+            ),
+        ],
     )
     def test_handle_string_property(
         self, test_wg_property: str, expected_value: dict, exception
@@ -220,10 +312,22 @@ class TestParseMakeProperties:
             test = handle_string_property(test_wg_property)
             assert test == expected_value
 
-    @pytest.mark.xfail
     @pytest.mark.parametrize(
         "test_wg_property, expected_value, exception",
-        [pytest.param("", "", does_not_raise(), id="EXP PASS: ")],
+        [
+            pytest.param(
+                """[1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]""",
+                [1, 3.14, True, False, "2", "2_4", "3 4", "foo@bar.net"],
+                does_not_raise(),
+                id="EXP PASS: ",
+            ),
+            pytest.param(
+                """[1, 3.14 true, false, '2', "2_4", "3 4", "foo@bar.net"]""",
+                None,
+                pytest.raises(MakeIllegalPropertyValue),
+                id="EXP PASS: ",
+            ),
+        ],
     )
     def test_handle_list_property(
         self, test_wg_property: str, expected_value: dict, exception
