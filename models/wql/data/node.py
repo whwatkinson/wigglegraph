@@ -1,12 +1,10 @@
-from typing import Optional, Any
+from typing import Any, Optional
 
-
-from models.wql.data.wiggle_metadata import WiggleGraphMetalData
+from pydantic import BaseModel
 
 # from models.wql.data import WG_ALLOWED_TYPES
 from models.wql.data.relationship import Relationship
-
-from pydantic import BaseModel
+from models.wql.data.wiggle_metadata import WiggleGraphMetalData
 
 
 class Node(BaseModel):

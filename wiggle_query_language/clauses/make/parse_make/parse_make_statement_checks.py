@@ -1,16 +1,16 @@
 from exceptions.wql.make import (
     MakeClauseSyntaxError,
-    MakeParamSyntaxError,
-    MakeNonDirectedRelationshipError,
     MakeIllegalCharacterError,
+    MakeNonDirectedRelationshipError,
+    MakeParamSyntaxError,
     MakeRelationshipNameSyntaxError,
 )
 from wiggle_query_language.clauses.regexes.make_patterns import (
+    ILLEGAL_CHARS_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
-    RELATIONSHIP_DIR_CHECK_REGEX,
     PARAM_LIST_VALUE_REGEX,
-    ILLEGAL_CHARS_REGEX,
+    RELATIONSHIP_DIR_CHECK_REGEX,
 )
 
 

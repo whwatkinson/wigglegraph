@@ -3,11 +3,11 @@ from typing import Generator
 import pytest
 
 from exceptions.wql.database import NodeExistsError
+from testing import DATABASE_TEST_FILE_PATH
 from wiggle_query_language.graph.database.database import (
     add_item_to_database,
     load_database,
 )
-from testing import DATABASE_TEST_FILE_PATH
 
 
 @pytest.mark.skip

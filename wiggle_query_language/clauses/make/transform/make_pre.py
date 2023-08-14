@@ -1,12 +1,5 @@
-from models.wql import (
-    ParsedMake,
-    Clause,
-    NodePre,
-    RelationshipPre,
-    MakePre,
-    EmitNodes,
-)
 from models.wigsh import DbmsFilePath
+from models.wql import Clause, EmitNodes, MakePre, NodePre, ParsedMake, RelationshipPre
 
 
 def relationship_is_left_to_right(parsed_relationship_pattern: str) -> bool:

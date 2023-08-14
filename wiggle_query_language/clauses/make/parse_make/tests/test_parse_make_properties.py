@@ -1,15 +1,15 @@
 import pytest
 
-from testing.test_helpers import does_not_raise
 from exceptions.wql.make import MakeIllegalPropertyValue
+from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_properties import (
-    make_properties,
-    handle_null_property,
     handle_bool_property,
     handle_float_property,
     handle_int_property,
-    handle_string_property,
     handle_list_property,
+    handle_null_property,
+    handle_string_property,
+    make_properties,
 )
 
 

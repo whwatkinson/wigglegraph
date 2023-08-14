@@ -1,10 +1,10 @@
 import pytest
 
+from testing import WIGGLE_NUMBER_TEST_FILE_PATH
 from wiggle_query_language.graph.state.wiggle_number import (
     get_current_wiggle_number,
     update_wiggle_number,
 )
-from testing import WIGGLE_NUMBER_TEST_FILE_PATH
 
 
 class TestWiggleNumber:

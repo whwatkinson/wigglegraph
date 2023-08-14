@@ -1,18 +1,18 @@
+from models.wigsh import DbmsFilePath
 from models.wql import (
-    ParsedMake,
+    EmitNode,
+    EmitNodes,
     Node,
+    ParsedMake,
     Relationship,
     RelationshipPre,
     WiggleGraphMetalData,
-    EmitNode,
-    EmitNodes,
-)
-from models.wigsh import DbmsFilePath
-from wiggle_query_language.clauses.make.transform.make_pre import (
-    process_parsed_make_list,
 )
 from wiggle_query_language.clauses.make.parse_make.parse_make_properties import (
     make_properties,
+)
+from wiggle_query_language.clauses.make.transform.make_pre import (
+    process_parsed_make_list,
 )
 from wiggle_query_language.graph.state.wiggle_number import (
     get_current_wiggle_number,

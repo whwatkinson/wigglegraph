@@ -1,14 +1,13 @@
 from pathlib import Path
 
-
 from exceptions.wiggleshell.query import NotAValidQueryError
-from models.wql import ParsedQuery
 from models.wigsh import DbmsFilePath
+from models.wql import ParsedQuery
 from project_root import get_project_root
+from wiggle_query_language.clauses.make import make
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
     parse_make_statement_from_query_string,
 )
-from wiggle_query_language.clauses.make import make
 
 
 def parse_query_string(query_string: str) -> ParsedQuery:

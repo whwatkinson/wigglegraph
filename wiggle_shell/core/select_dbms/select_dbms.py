@@ -10,7 +10,6 @@ from wiggle_shell.core.select_dbms.select_database import (
     create_new_database,
     get_existing_db_file_path,
 )
-
 from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
     create_new_wiggle_number_file,
     get_existing_wn_file_path,

@@ -3,22 +3,22 @@ from typing import Optional
 import pytest
 
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.regexes.tests.cases_for_test_re import (
-    cases_for_test_nodes_rel_pattern,
+from wiggle_query_language.clauses.regexes.make_patterns import (
+    ILLEGAL_CHARS_REGEX,
+    LIST_KEY_VALUE_REGEX,
+    MAKE_STATEMENT_ALL_REGEX,
+    MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
+    MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
+    NODES_RELS_PATTERN_REGEX,
+    NOT_LIST_KEY_VALUE_REGEX,
+    PARAM_LIST_VALUE_REGEX,
+    RELATIONSHIP_DIR_CHECK_REGEX,
 )
 from wiggle_query_language.clauses.regexes.make_patterns_helpers import (
     get_nodes_rels_pattern_regex,
 )
-from wiggle_query_language.clauses.regexes.make_patterns import (
-    NODES_RELS_PATTERN_REGEX,
-    MAKE_STATEMENT_ALL_REGEX,
-    MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
-    MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
-    RELATIONSHIP_DIR_CHECK_REGEX,
-    NOT_LIST_KEY_VALUE_REGEX,
-    LIST_KEY_VALUE_REGEX,
-    PARAM_LIST_VALUE_REGEX,
-    ILLEGAL_CHARS_REGEX,
+from wiggle_query_language.clauses.regexes.tests.cases_for_test_re import (
+    cases_for_test_nodes_rel_pattern,
 )
 
 

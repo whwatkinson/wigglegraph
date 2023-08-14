@@ -1,8 +1,6 @@
 import pytest
 
-from exceptions.wql.make import (
-    MakeClauseSyntaxError,
-)
+from exceptions.wql.make import MakeClauseSyntaxError
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
     build_parsed_make,

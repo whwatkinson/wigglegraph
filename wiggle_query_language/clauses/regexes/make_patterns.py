@@ -1,12 +1,11 @@
 from re import IGNORECASE, compile
 
 from wiggle_query_language.clauses.regexes.make_patterns_helpers import (
-    get_nodes_rels_pattern_regex,
-    get_all_params_regex,
     EXTRA_ALLOWED_CHARS,
     ILLEGAL_CHARS,
+    get_all_params_regex,
+    get_nodes_rels_pattern_regex,
 )
-
 
 # MAKE (node1:NodeLabel)-[rel1:REL]->(node2:NodeLabel);
 MAKE_STATEMENT_ALL_REGEX = compile(

@@ -1,9 +1,9 @@
 from ast import literal_eval
 from typing import Optional
 
-from models.wql import WG_ALLOWED_TYPES, MakeProperty
-from graph_logger.graph_logger import graph_logger
 from exceptions.wql.make import MakeIllegalPropertyValue
+from graph_logger.graph_logger import graph_logger
+from models.wql import WG_ALLOWED_TYPES, MakeProperty
 from wiggle_query_language.clauses.regexes.make_patterns import (
     ALL_PARAMS_KEY_VALUE_REGEX,
 )
