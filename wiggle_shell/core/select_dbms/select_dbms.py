@@ -10,6 +10,10 @@ from wiggle_shell.core.select_dbms.select_database import (
     create_new_database,
     get_existing_db_file_path,
 )
+from wiggle_shell.core.select_dbms.select_relationship_index import (
+    create_new_relationship_index,
+    get_existing_relationship_index_file_path,
+)
 from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
     create_new_wiggle_number_file,
     get_existing_wn_file_path,
@@ -91,7 +95,7 @@ def get_new_dbms_file_paths(
     try:
         # todo cancel operation
         db_path = create_new_database(new_dbms_name, path_to_dbms_dir)
-        ri_index = Path()
+        ri_index = create_new_relationship_index(new_dbms_name, path_to_dbms_dir)
         wn_path = create_new_wiggle_number_file(new_dbms_name, path_to_dbms_dir)
         print(f"Using {new_dbms_name}")
         return DbmsFilePath(
@@ -132,11 +136,16 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
             db_path = get_existing_db_file_path(
                 dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
+            ri_path = get_existing_relationship_index_file_path(
+                dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
+            )
             wn_path = get_existing_wn_file_path(
                 dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
             return DbmsFilePath(
-                database_file_path=db_path, wiggle_number_file_path=wn_path
+                database_file_path=db_path,
+                relationship_index_file_path=ri_path,
+                wiggle_number_file_path=wn_path,
             )
         except FileNotFoundError as e:
             print(f"Database files could not be found {e}")
