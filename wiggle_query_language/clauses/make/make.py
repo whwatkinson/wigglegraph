@@ -98,12 +98,14 @@ def add_nodes_to_graph(
     """
     # Add Nodes
 
-    nodes_dict_list = [node.export_node() for node in nodes_list]
+    nodes_dict_list = [node.export_node(True, True) for node in nodes_list]
     data_to_add_dict = {
         node_wn: value for node in nodes_dict_list for node_wn, value in node.items()
     }
 
     add_item_to_database(dbms_file_path.database_file_path, data_to_add_dict)
+
+    # Relationship indexes
 
     # Update WiggleNumber
     update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)

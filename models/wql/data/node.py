@@ -30,8 +30,14 @@ class Node(BaseModel):
     def __repr__(self) -> str:
         return f"|{self.__class__.__name__}| {self.node_label}: {self.node_metadata.wn}"
 
-    def export_node(self) -> dict:
-        return {self.node_metadata.wn: self.dict()}
+    def export_node(
+        self, exclude_unset: bool = False, exclude_none: bool = False
+    ) -> dict[str, Any]:
+        return {
+            str(self.node_metadata.wn): self.dict(
+                exclude_unset=exclude_unset, exclude_none=exclude_none
+            )
+        }
 
     @root_validator
     def validate_relationships(cls, values: dict) -> dict:

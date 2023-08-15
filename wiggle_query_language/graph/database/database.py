@@ -25,23 +25,23 @@ def load_database(database_file_path: Path) -> dict:
         return {}
 
 
-def add_item_to_database(database_file_path: Path, item: dict) -> bool:
+def add_item_to_database(database_file_path: Path, items_to_add: dict) -> bool:
     """
     Adds the data to the database.
     :param database_file_path: The file path to the Wiggle number file.
-    :param item: The items to be added to the database.
+    :param items_to_add: The items to be added to the database.
     :return: A bool.
     """
     database = load_database(database_file_path)
-
+    database_keys = database.keys()
     # todo o(n) -> o(1)
-    for wiggle_number_to_add, _ in item.items():
-        if str(wiggle_number_to_add) in database.keys():
+    for wiggle_number_to_add in items_to_add:
+        if str(wiggle_number_to_add) in database_keys:
             raise NodeExistsError(
                 message=f"Node {wiggle_number_to_add} already exists did you mean to update"
             )
 
-    database.update(item)
+    database.update(items_to_add)
 
     with open(database_file_path, "w") as file_handle:
         graph_logger.info("writing to db")
