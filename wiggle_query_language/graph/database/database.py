@@ -61,7 +61,7 @@ def wipe_database(database_file_path: Path, im_sure: bool = False) -> bool:
     if im_sure:
         graph_logger.info("Dropping database")
         with open(database_file_path, "w") as file_handle:
-            file_handle.write("")
+            file_handle.write("{}")
         graph_logger.info("Database successfully dropped.")
         return True
     graph_logger.debug(f"Did not drop database as {im_sure=}")

@@ -15,6 +15,9 @@ from wiggle_query_language.clauses.make.transform.make_pre import (
     process_parsed_make_list,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
+from wiggle_query_language.graph.database.relationship_index import (
+    add_items_to_relationship_index,
+)
 from wiggle_query_language.graph.state.wiggle_number import (
     get_current_wiggle_number,
     update_wiggle_number,
@@ -84,10 +87,6 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     )
 
 
-def upsert_relationship_indexes(relationships) -> bool:
-    return True
-
-
 def add_nodes_to_graph(
     nodes_list: list[Node],
     current_wiggle_number: int,
@@ -101,18 +100,20 @@ def add_nodes_to_graph(
     :return: A bool.
     """
     # Add Nodes
-
-    nodes_dict_list = [node.export_node(True, True) for node in nodes_list]
-    data_to_add_dict = {
-        str(node_wn): value
-        for node in nodes_dict_list
-        for node_wn, value in node.items()
-    }
+    data_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
 
     add_item_to_database(dbms_file_path.database_file_path, data_to_add_dict)
 
     # Relationship indexes
-    upsert_relationship_indexes(0)
+    # TODO should be index['relationship'] rather than a new index file?
+    rels_to_add = {
+        node.wn: {rel.wn for rel in node.relations}
+        for node in nodes_list
+        if node.export_relationship_indexes()
+    }
+    add_items_to_relationship_index(
+        dbms_file_path.relationship_index_file_path, rels_to_add
+    )
 
     # Update WiggleNumber
     update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)

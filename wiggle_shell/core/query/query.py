@@ -9,6 +9,8 @@ from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
     parse_make_statement_from_query_string,
 )
 
+#  todo docstrings
+
 
 def parse_query_string(query_string: str) -> ParsedQuery:
     """
@@ -72,7 +74,7 @@ if __name__ == "__main__":
     #     qry = file.read()
 
     qry = """
-    MAKE (:NodeLabel{str: '2'})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]}});
+    MAKE (:NodeLabel{str: '2'})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]}});
     """
 
     # qry = """
