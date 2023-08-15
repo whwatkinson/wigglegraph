@@ -1,16 +1,8 @@
-from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel
 
-
-class PropertyType(Enum):
-    NONE_TYPE = "NONE_TYPE"
-    BOOL_TYPE = "BOOL_TYPE"
-    FLOAT_TYPE = "FLOAT_TYPE"
-    INT_TYPE = "INT_TYPE"
-    LIST_TYPE = "LIST_TYPE"
-    STRING_TYPE = "STRING_TYPE"
+from models.wql.enums.property_type import PropertyType
 
 
 class ExtractedProperty(BaseModel):
