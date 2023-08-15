@@ -1,8 +1,7 @@
+from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel
-
-from enum import Enum
 
 
 class PropertyType(Enum):
@@ -31,17 +30,13 @@ class MakeProperty(BaseModel):
 
     def yield_extracted_property(self) -> ExtractedProperty:
         """
-        When using ALL_PARAMS_KEY_VALUE_REGEX on a property then calling groupdict() on the match.
-        e.g.
-            {str: 'foo'} -> {"string": 'foo'}
+        Allows for dynamic fetching the extracted property from ALL_PARAMS_KEY_VALUE_REGEX.
 
-        This output
+        This is then fed into handle_extracted_property which correctly assigns the property type.
 
-
-        :return:
+        :return: An ExtractedProperty
         """
         skips = {"property_name", "property_value"}
-        # return  {k: v for k, v in self.dict(exclude_none=True).items() if k not in skips}
 
         output = [
             prop_type
