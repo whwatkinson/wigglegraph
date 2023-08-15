@@ -3,7 +3,7 @@ from typing import Optional
 
 from exceptions.wql.make import MakeIllegalPropertyValue
 from graph_logger.graph_logger import graph_logger
-from models.wql import WG_ALLOWED_TYPES, MakeProperty
+from models.wql import WG_ALLOWED_TYPES, MakeProperty, PropertyType
 from wiggle_query_language.clauses.regexes.make_patterns import (
     ALL_PARAMS_KEY_VALUE_REGEX,
 )
@@ -37,9 +37,7 @@ def parse_primitive_properties(params_string: str) -> dict:
                     f"Error for setting property in {params_string} {make_primitive_property.property_name} was empty a value must be supplied"
                 )
             try:
-                value_parsed = handle_extracted_primitive_property(
-                    make_primitive_property
-                )
+                value_parsed = handle_extracted_property(make_primitive_property)
             except MakeIllegalPropertyValue as e:
                 raise e
 
@@ -50,29 +48,28 @@ def parse_primitive_properties(params_string: str) -> dict:
     return primitive_property_dictionary
 
 
-def handle_extracted_primitive_property(
+def handle_extracted_property(
     make_property: MakeProperty,
 ) -> WG_ALLOWED_TYPES:
-    extracted_property = make_property.yield_extracted_param()
+    extracted_property = make_property.yield_extracted_property()
 
-    for property_type, extracted_property in extracted_property.items():
-        striped_value = extracted_property.strip('"').strip("'").strip()
+    striped_value = extracted_property.property_value.strip('"').strip("'").strip()
 
-        match property_type:
-            case "none":
-                return handle_null_property(striped_value)
-            case "bool":
-                return handle_bool_property(striped_value)
-            case "float":
-                return handle_float_property(striped_value)
-            case "int":
-                return handle_int_property(striped_value)
-            case "list":
-                return handle_list_property(striped_value)
-            case "string":
-                return handle_string_property(striped_value)
-            case _:
-                raise Exception()
+    match extracted_property.property_type:
+        case PropertyType.NONE_TYPE:
+            return handle_null_property(striped_value)
+        case PropertyType.BOOL_TYPE:
+            return handle_bool_property(striped_value)
+        case PropertyType.FLOAT_TYPE:
+            return handle_float_property(striped_value)
+        case PropertyType.INT_TYPE:
+            return handle_int_property(striped_value)
+        case PropertyType.LIST_TYPE:
+            return handle_list_property(striped_value)
+        case PropertyType.STRING_TYPE:
+            return handle_string_property(striped_value)
+        case _:
+            raise Exception()
 
 
 def handle_null_property(value: str) -> None:
