@@ -1,7 +1,7 @@
-from typing import Optional
 from json import dump, load
 from json.decoder import JSONDecodeError
 from pathlib import Path
+from typing import Optional
 
 from graph_logger.graph_logger import graph_logger
 from testing import RELATIONSHIP_INDEX_FILE_PATH
