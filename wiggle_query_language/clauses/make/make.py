@@ -27,7 +27,7 @@ def make_nodes(emit_node: EmitNodes) -> list[Node]:
     :param emit_node: The pre-processed Node
     :return: A list of Nodes for loading onto the graph.
     """
-    # Will always be a left in a MAKE
+    # Will always be a left node in a MAKE
     nodes = [make_node(emit_node.left)]
 
     if emit_node.middle:
@@ -135,7 +135,6 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bo
     )
 
     # create Nodes and Relationship
-    # TODO one list
     nodes_list = [make_nodes(emit_nodes) for emit_nodes in emit_nodes_list]
     nodes_list_flat = [item for sublist in nodes_list for item in sublist]
 
