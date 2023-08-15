@@ -25,6 +25,9 @@ def create_new_relationship_index(
     path_touch_db = new_db_folder.joinpath(f"indexes_{dbms_name}.json")
     path_touch_db.touch()
 
+    with open(f"{dbms_name}/indexes_{dbms_name}.json", "r") as file_handle:
+        file_handle.write("""{"relationships": null}""")
+
     return path_touch_db
 
 
