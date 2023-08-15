@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from exceptions.wql.make import MakePropertyTypeAssignmentError
 from models.wql.enums.property_type import PropertyType
 
 
@@ -36,7 +37,9 @@ class MakeProperty(BaseModel):
             if prop_type not in skips
         ]
         if len(output) != 1:
-            raise Exception()
+            raise MakePropertyTypeAssignmentError(
+                f"{self.property_name} {self.property_value} was {output}, should be only one"
+            )
 
         prop_type_enum = PropertyType[output[0].upper()]
 
