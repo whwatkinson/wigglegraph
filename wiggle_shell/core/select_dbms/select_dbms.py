@@ -91,9 +91,14 @@ def get_new_dbms_file_paths(
     try:
         # todo cancel operation
         db_path = create_new_database(new_dbms_name, path_to_dbms_dir)
+        ri_index = Path()
         wn_path = create_new_wiggle_number_file(new_dbms_name, path_to_dbms_dir)
         print(f"Using {new_dbms_name}")
-        return DbmsFilePath(database_file_path=db_path, wiggle_number_file_path=wn_path)
+        return DbmsFilePath(
+            database_file_path=db_path,
+            relationship_index_file_path=ri_index,
+            wiggle_number_file_path=wn_path,
+        )
     except ValueError:
         print(f"{new_dbms_name} is already taken, please choose another name.")
         raise

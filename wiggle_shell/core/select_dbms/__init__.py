@@ -1,3 +1,8 @@
+from wiggle_shell.core.select_dbms.select_relationship_index import (
+    create_new_relationship_index,
+    get_existing_relationship_index_file_path,
+)
+
 from wiggle_shell.core.select_dbms.select_database import (
     create_new_database,
     get_existing_db_file_path,
@@ -20,12 +25,14 @@ from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
 __all__ = [
     "create_new_database",
     "create_new_dbms",
+    "create_new_relationship_index",
     "create_new_wiggle_number_file",
     "delete_dbms",
     "get_and_display_available_dbms",
     "get_existing_db_file_path",
     "get_existing_dbms",
     "get_existing_dbms_file_paths",
+    "get_existing_relationship_index_file_path",
     "get_existing_wn_file_path",
     "get_new_dbms_file_paths",
     "list_existing_dbms",

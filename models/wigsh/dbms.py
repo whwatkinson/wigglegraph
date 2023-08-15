@@ -9,4 +9,5 @@ class DbmsFilePath(BaseModel):
     """
 
     database_file_path: Path
+    relationship_index_file_path: Path
     wiggle_number_file_path: Path

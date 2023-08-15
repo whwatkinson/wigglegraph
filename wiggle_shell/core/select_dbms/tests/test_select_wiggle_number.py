@@ -3,7 +3,7 @@ from typing import Generator
 import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
-from wiggle_shell.core.select_dbms import (
+from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
     create_new_wiggle_number_file,
     get_existing_wn_file_path,
 )
