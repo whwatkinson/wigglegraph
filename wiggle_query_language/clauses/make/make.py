@@ -84,6 +84,10 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     )
 
 
+def upsert_relationship_indexes(relationships) -> bool:
+    return True
+
+
 def add_nodes_to_graph(
     nodes_list: list[Node],
     current_wiggle_number: int,
@@ -106,6 +110,7 @@ def add_nodes_to_graph(
     add_item_to_database(dbms_file_path.database_file_path, data_to_add_dict)
 
     # Relationship indexes
+    upsert_relationship_indexes(0)
 
     # Update WiggleNumber
     update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)

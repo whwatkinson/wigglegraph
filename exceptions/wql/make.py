@@ -5,6 +5,10 @@ class MakeClauseSyntaxError(WiggleGraphBaseException):
     pass
 
 
+class MakeDuplicateHandlesError(WiggleGraphBaseException):
+    pass
+
+
 class MakeParamSyntaxError(WiggleGraphBaseException):
     pass
 

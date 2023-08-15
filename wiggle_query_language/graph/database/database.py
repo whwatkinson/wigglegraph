@@ -34,9 +34,8 @@ def add_item_to_database(database_file_path: Path, items_to_add: dict) -> bool:
     """
     database = load_database(database_file_path)
     database_keys = database.keys()
-    # todo o(n) -> o(1)
     for wiggle_number_to_add in items_to_add:
-        if str(wiggle_number_to_add) in database_keys:
+        if wiggle_number_to_add in database_keys:
             raise NodeExistsError(
                 message=f"Node {wiggle_number_to_add} already exists did you mean to update"
             )

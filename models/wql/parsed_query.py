@@ -1,7 +1,8 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, root_validator
 
+from exceptions.wql.make import MakeDuplicateHandlesError
 from models.wql.enums.clauses import Clause
 from wiggle_query_language.clauses.regexes.make_patterns import MAKE_STATEMENT_ALL_REGEX
 
@@ -16,9 +17,6 @@ class Rel(BaseModel):
     rel_handle: Optional[str]
     rel_label: Optional[str]
     rel_props: Optional[str]
-
-
-# TODO make sure that all the handles are unique
 
 
 class ParsedPattern(BaseModel):
@@ -62,6 +60,17 @@ class ParsedPattern(BaseModel):
 
     def __repr__(self) -> str:
         return f"|{self.__class__.__name__}| Nodes: {self.number_of_nodes}, Rels: {self.number_of_relationships}"
+
+    @root_validator
+    def validate_handles(cls, values: dict) -> dict:
+        handle_names = [v for name, v in values.items() if v and "handle" in name]
+
+        if len(handle_names) != len(set(handle_names)):
+            raise MakeDuplicateHandlesError(
+                f"Handles must be unique per MAKE statement Handles:{', '.join(handle_names)}"
+            )
+
+        return values
 
 
 class ParsedMake(BaseModel):

@@ -31,15 +31,6 @@ class Relationship(BaseModel):
     def __repr__(self) -> str:
         return f"|{self.__class__.__name__}| {self.relationship_name}: FROM {self.wn_from_node} TO {self.wn_to_node}"
 
-    def export_relationship(
-        self, exclude_unset: bool = False, exclude_none: bool = False
-    ) -> dict[str, Any]:
-        return {
-            str(self.relationship_metadata.wn): self.dict(
-                exclude_unset=exclude_unset, exclude_none=exclude_none
-            )
-        }
-
     @root_validator
     def validate_from_to_wn(cls, values: dict) -> dict:
         wn_from_node = values["wn_from_node"]

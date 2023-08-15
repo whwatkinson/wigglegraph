@@ -32,11 +32,18 @@ class Node(BaseModel):
 
     def export_node(
         self, exclude_unset: bool = False, exclude_none: bool = False
-    ) -> dict[str, Any]:
+    ) -> dict[int, Any]:
         return {
-            str(self.node_metadata.wn): self.dict(
+            self.node_metadata.wn: self.dict(
                 exclude_unset=exclude_unset, exclude_none=exclude_none
             )
+        }
+
+    def export_relationship_indexes(self) -> dict[str, set[str]]:
+        return {
+            str(self.node_metadata.wn): {
+                relationship.wn_to_node for relationship in self.relations
+            }
         }
 
     @root_validator
