@@ -6,7 +6,7 @@ from typing import Optional
 
 from models.wigish import DbmsFilePath
 from wiggle_shell import DBMS_FOLDER, INPUT_PROMPT_SPACING
-from wiggle_shell.core.select_dbms.select_database import (
+from wiggle_shell.core.select_dbms.select_database_file import (
     create_new_database,
     get_existing_db_file_path,
 )

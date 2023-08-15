@@ -4,7 +4,7 @@ from typing import Generator
 import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
-from wiggle_shell.core.select_dbms.select_database import (
+from wiggle_shell.core.select_dbms.select_database_file import (
     create_new_database,
     get_existing_db_file_path,
 )

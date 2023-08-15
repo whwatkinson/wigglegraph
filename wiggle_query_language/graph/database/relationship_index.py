@@ -83,7 +83,7 @@ def wipe_relationship_index(
     if im_sure:
         graph_logger.info("Dropping relationship indexes")
         with open(relationship_index_file_path, "w") as file_handle:
-            file_handle.write("{}")
+            file_handle.write("""{"relationship_index: null"}""")
         graph_logger.info("Relationship indexes successfully dropped.")
         return True
     graph_logger.debug(f"Did not drop relationship indexes as {im_sure=}")

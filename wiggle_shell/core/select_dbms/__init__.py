@@ -1,4 +1,4 @@
-from wiggle_shell.core.select_dbms.select_database import (
+from wiggle_shell.core.select_dbms.select_database_file import (
     create_new_database,
     get_existing_db_file_path,
 )
