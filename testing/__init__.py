@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from models.wigsh import DbmsFilePath
+from models.wigish import DbmsFilePath
 from project_root import get_project_root
 
 DATABASE_TEST_FILE_PATH = Path(

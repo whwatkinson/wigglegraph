@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from exceptions.wiggleshell.query import NotAValidQueryError
-from models.wigsh import DbmsFilePath
+from models.wigish import DbmsFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
 from wiggle_query_language.clauses.make import make

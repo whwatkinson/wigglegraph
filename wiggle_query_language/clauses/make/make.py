@@ -1,4 +1,4 @@
-from models.wigsh import DbmsFilePath
+from models.wigish import DbmsFilePath
 from models.wql import (
     EmitNode,
     EmitNodes,
