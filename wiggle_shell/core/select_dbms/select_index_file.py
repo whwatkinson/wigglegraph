@@ -38,7 +38,7 @@ def get_existing_relationship_index_file_path(
     :return:
     """
     rel_idx_file_path = path_to_dbms_dir.joinpath(
-        f"{dbms_name}/relationship_index_{dbms_name}.json"
+        f"{dbms_name}/indexes_{dbms_name}.json"
     )
     if not rel_idx_file_path.is_file():
         raise FileNotFoundError()

@@ -38,7 +38,7 @@ class TestRelationshipIndex:
 
     def test_get_existing_relationship_index_file_path(self) -> None:
         exp_ri_fp = TEST_DBMS_FOLDER_PATH.joinpath(
-            "sample_dbms/relationship_index_sample_dbms.json"
+            "sample_dbms/indexes_sample_dbms.json"
         )
         test_db_fp = get_existing_relationship_index_file_path(
             dbms_name="sample_dbms", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
