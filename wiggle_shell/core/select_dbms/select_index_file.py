@@ -14,7 +14,7 @@ def create_new_relationship_index(
     """
 
     new_rel_idx_file_path = path_to_dbms_dir.joinpath(
-        f"{dbms_name}/relationship_index_{dbms_name}.json"
+        f"{dbms_name}/indexes_{dbms_name}.json"
     )
 
     if new_rel_idx_file_path.is_file():
@@ -22,7 +22,7 @@ def create_new_relationship_index(
 
     path_to_dbms_dir.joinpath(f"{dbms_name}").mkdir(parents=True, exist_ok=True)
     new_db_folder = path_to_dbms_dir.joinpath(f"{dbms_name}")
-    path_touch_db = new_db_folder.joinpath(f"relationship_index_{dbms_name}.json")
+    path_touch_db = new_db_folder.joinpath(f"indexes_{dbms_name}.json")
     path_touch_db.touch()
 
     return path_touch_db

@@ -16,7 +16,7 @@ class TestRelationshipIndex:
         # Check that the rel index does not exit
 
         test_ri_fp = TEST_DBMS_FOLDER_PATH.joinpath(
-            f"{dbms_name}/relationship_index_{dbms_name}.json"
+            f"{dbms_name}/indexes_{dbms_name}.json"
         )
         assert test_ri_fp.is_file() is False
 
