@@ -3,43 +3,43 @@ from typing import Optional
 
 from exceptions.wql.make import MakeIllegalPropertyValue
 from graph_logger.graph_logger import graph_logger
-from models.wql import WG_ALLOWED_TYPES, MakeProperty
+from models.wql import WG_ALLOWED_TYPES, MakeProperty, PropertyType
 from wiggle_query_language.clauses.regexes.make_patterns import (
     ALL_PARAMS_KEY_VALUE_REGEX,
 )
 
-# TODO docstrings
 
-
-def make_properties(params_string: str) -> Optional[dict]:
+def make_properties(properties_string: str) -> Optional[dict]:
     """
     The extracted params to be turned into a dictionary
-    :param params_string: The raw params string
+    :param properties_string: The raw params string.
     :return: A parsed dictionary with correct data types
     """
 
-    if not params_string:
+    if not properties_string:
         return None
 
-    # Handle primitive properties first
-    property_dictionary = parse_primitive_properties(params_string)
+    property_dictionary = parse_properties(properties_string)
 
     return property_dictionary
 
 
-def parse_primitive_properties(params_string: str) -> dict:
+def parse_properties(properties_string: str) -> dict:
+    """
+    Parses the properties_string to WiggleGraph types.
+    :param properties_string: The raw params string.
+    :return: A dictionary ready for export.
+    """
     primitive_property_dictionary = dict()
-    if props_primitive := ALL_PARAMS_KEY_VALUE_REGEX.finditer(params_string):
+    if props_primitive := ALL_PARAMS_KEY_VALUE_REGEX.finditer(properties_string):
         for match in props_primitive:
             make_primitive_property = MakeProperty(**match.groupdict())
             if match.group("property_value").strip() == "":
                 raise MakeIllegalPropertyValue(
-                    f"Error for setting property in {params_string} {make_primitive_property.property_name} was empty a value must be supplied"
+                    f"Error for setting property in {properties_string} {make_primitive_property.property_name} was empty a value must be supplied"
                 )
             try:
-                value_parsed = handle_extracted_primitive_property(
-                    make_primitive_property
-                )
+                value_parsed = handle_extracted_property(make_primitive_property)
             except MakeIllegalPropertyValue as e:
                 raise e
 
@@ -50,32 +50,41 @@ def parse_primitive_properties(params_string: str) -> dict:
     return primitive_property_dictionary
 
 
-def handle_extracted_primitive_property(
+def handle_extracted_property(
     make_property: MakeProperty,
 ) -> WG_ALLOWED_TYPES:
-    extracted_property = make_property.yield_extracted_param()
+    """
+    Handles the selection for parsing the extracted property.
+    :param make_property: The extracted property.
+    :return: A parsed WiggleGraph property.
+    """
+    extracted_property = make_property.yield_extracted_property()
 
-    for property_type, extracted_property in extracted_property.items():
-        striped_value = extracted_property.strip('"').strip("'").strip()
+    striped_value = extracted_property.property_value.strip('"').strip("'").strip()
 
-        match property_type:
-            case "none":
-                return handle_null_property(striped_value)
-            case "bool":
-                return handle_bool_property(striped_value)
-            case "float":
-                return handle_float_property(striped_value)
-            case "int":
-                return handle_int_property(striped_value)
-            case "list":
-                return handle_list_property(striped_value)
-            case "string":
-                return handle_string_property(striped_value)
-            case _:
-                raise Exception()
+    match extracted_property.property_type:
+        case PropertyType.NONE_TYPE:
+            return handle_null_property(striped_value)
+        case PropertyType.BOOL_TYPE:
+            return handle_bool_property(striped_value)
+        case PropertyType.FLOAT_TYPE:
+            return handle_float_property(striped_value)
+        case PropertyType.INT_TYPE:
+            return handle_int_property(striped_value)
+        case PropertyType.LIST_TYPE:
+            return handle_list_property(striped_value)
+        case PropertyType.STRING_TYPE:
+            return handle_string_property(striped_value)
+        case _:
+            raise Exception()
 
 
 def handle_null_property(value: str) -> None:
+    """
+    Handles the parsing for WiggleGraph null values.
+    :param value: The extracted property value.
+    :return: A Python None
+    """
     if value != "null":
         raise MakeIllegalPropertyValue(
             f"Value must be null: provided value was {value} "
@@ -85,6 +94,11 @@ def handle_null_property(value: str) -> None:
 
 
 def handle_bool_property(value: str) -> bool:
+    """
+    Handles the parsing for WiggleGraph bool values.
+    :param value: The extracted property value.
+    :return: A Python bool.
+    """
     match value:
         case "true":
             bool_found = True
@@ -105,6 +119,11 @@ def handle_bool_property(value: str) -> bool:
 
 
 def handle_float_property(value: str) -> float:
+    """
+    Handles the parsing for WiggleGraph float values
+    :param value: The extracted property value.
+    :return: A Python float
+    """
     if "." not in value:
         raise MakeIllegalPropertyValue(
             f"{value} missing a period. Float property example: {{foo: 3.14}}"
@@ -120,6 +139,12 @@ def handle_float_property(value: str) -> float:
 
 
 def handle_int_property(value: str) -> int:
+    """
+    Handles the parsing for WiggleGraph int values
+    :param value: The extracted property value.
+    :return: A Python int
+    """
+
     if "." in value:
         raise MakeIllegalPropertyValue(
             f"{value} has a period, please remove, e.g {{foo: 6}}"
@@ -134,7 +159,28 @@ def handle_int_property(value: str) -> int:
         )
 
 
+def handle_list_property(value_in: str) -> list[WG_ALLOWED_TYPES]:
+    """
+    Handles the parsing for WiggleGraph list values
+    :param value_in: The extracted property value.
+    :return: A Python list.
+    """
+    # params validation happens in check_make_params
+    value = value_in.replace("true", "True").replace("false", "False")
+    try:
+        found_list = literal_eval(value)
+    except SyntaxError:
+        raise MakeIllegalPropertyValue(f"{value_in} contained an Error.")
+    graph_logger.debug(f"{value_in} was determined to be a list: {found_list}")
+    return found_list
+
+
 def handle_string_property(value: str) -> str:
+    """
+    Handles the parsing for WiggleGraph string values
+    :param value: The extracted property value.
+    :return: A Python string
+    """
     if value in {"Null", "None", "none"}:
         raise MakeIllegalPropertyValue(
             f"Cannot use {value} as a string, please use the null type for example {{foo: null}}"
@@ -145,21 +191,9 @@ def handle_string_property(value: str) -> str:
             f"Cannot use {value} as a string, please use the bool type for example {{foo: true}}"
         )
 
-    # catch all.. todo make this better
     found_str = str(value)
     graph_logger.debug(f"{value} was determined to be a string: {found_str}")
     return found_str
-
-
-def handle_list_property(value_in: str) -> list[WG_ALLOWED_TYPES]:
-    # params validation happens in check_make_params
-    value = value_in.replace("true", "True").replace("false", "False")
-    try:
-        found_list = literal_eval(value)
-    except SyntaxError:
-        raise MakeIllegalPropertyValue(f"{value_in} contained an Error.")
-    graph_logger.debug(f"{value_in} was determined to be a list: {found_list}")
-    return found_list
 
 
 if __name__ == "__main__":

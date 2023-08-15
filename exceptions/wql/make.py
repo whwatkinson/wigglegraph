@@ -5,6 +5,10 @@ class MakeClauseSyntaxError(WiggleGraphBaseException):
     pass
 
 
+class MakeDuplicateHandlesError(WiggleGraphBaseException):
+    pass
+
+
 class MakeParamSyntaxError(WiggleGraphBaseException):
     pass
 
@@ -22,4 +26,8 @@ class MakeRelationshipNameSyntaxError(WiggleGraphBaseException):
 
 
 class MakeIllegalPropertyValue(WiggleGraphBaseException):
+    pass
+
+
+class MakePropertyTypeAssignmentError(WiggleGraphBaseException):
     pass

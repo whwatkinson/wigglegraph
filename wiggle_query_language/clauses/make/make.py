@@ -27,7 +27,7 @@ def make_nodes(emit_node: EmitNodes) -> list[Node]:
     :param emit_node: The pre-processed Node
     :return: A list of Nodes for loading onto the graph.
     """
-    # Will always be a left in a MAKE
+    # Will always be a left node in a MAKE
     nodes = [make_node(emit_node.left)]
 
     if emit_node.middle:
@@ -84,6 +84,10 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     )
 
 
+def upsert_relationship_indexes(relationships) -> bool:
+    return True
+
+
 def add_nodes_to_graph(
     nodes_list: list[Node],
     current_wiggle_number: int,
@@ -98,12 +102,15 @@ def add_nodes_to_graph(
     """
     # Add Nodes
 
-    nodes_dict_list = [node.export_node() for node in nodes_list]
+    nodes_dict_list = [node.export_node(True, True) for node in nodes_list]
     data_to_add_dict = {
         node_wn: value for node in nodes_dict_list for node_wn, value in node.items()
     }
 
     add_item_to_database(dbms_file_path.database_file_path, data_to_add_dict)
+
+    # Relationship indexes
+    upsert_relationship_indexes(0)
 
     # Update WiggleNumber
     update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)
@@ -128,7 +135,6 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bo
     )
 
     # create Nodes and Relationship
-    # TODO one list
     nodes_list = [make_nodes(emit_nodes) for emit_nodes in emit_nodes_list]
     nodes_list_flat = [item for sublist in nodes_list for item in sublist]
 
