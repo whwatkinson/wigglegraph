@@ -28,8 +28,8 @@ def load_database(database_file_path: Path) -> dict:
 def add_item_to_database(database_file_path: Path, items_to_add: dict) -> bool:
     """
     Adds the data to the database.
-    :param database_file_path: The file path to the Wiggle number file.
-    :param items_to_add: The items to be added to the database.
+    :param database_file_path: The file path to the Database file.
+    :param items_to_add: The items to be added to the Database file.
     :return: A bool.
     """
     database = load_database(database_file_path)
@@ -40,6 +40,7 @@ def add_item_to_database(database_file_path: Path, items_to_add: dict) -> bool:
                 message=f"Node {wiggle_number_to_add} already exists did you mean to update"
             )
 
+    #  todo replace with https://stackoverflow.com/questions/21035762/python-read-json-file-and-modify
     database.update(items_to_add)
 
     with open(database_file_path, "w") as file_handle:
@@ -50,25 +51,10 @@ def add_item_to_database(database_file_path: Path, items_to_add: dict) -> bool:
     return True
 
 
-def add_item_to_database_append(file_path: Path, item: dict):
-    wiggle_number = None
-    for key in item:
-        wiggle_number = key
-        if str(wiggle_number) in {1, 2, 3}:
-            raise NodeExistsError(
-                message=f"Node {wiggle_number} already exisits did you mean to update"
-            )
-
-    with open(file_path, "a") as file_handle:
-        graph_logger.info(f"Writing Node {wiggle_number} to db")
-        dump(item, file_handle, ensure_ascii=False)
-        graph_logger.info(f"Succesfully wrote Node {wiggle_number} to db")
-
-
 def wipe_database(database_file_path: Path, im_sure: bool = False) -> bool:
     """
     Wipes the database, must set im_sure to true.
-    :param database_file_path: The file path to the Wiggle number file.
+    :param database_file_path: The file path to the Database file.
     :param im_sure: Flag for making sure.
     :return:
     """

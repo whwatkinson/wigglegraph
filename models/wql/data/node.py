@@ -34,7 +34,7 @@ class Node(BaseModel):
         self, exclude_unset: bool = False, exclude_none: bool = False
     ) -> dict[int, Any]:
         return {
-            self.node_metadata.wn: self.dict(
+            str(self.node_metadata.wn): self.dict(
                 exclude_unset=exclude_unset, exclude_none=exclude_none
             )
         }

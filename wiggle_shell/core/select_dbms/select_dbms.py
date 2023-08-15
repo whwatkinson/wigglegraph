@@ -43,14 +43,15 @@ def list_existing_dbms(
 
 def get_and_display_available_dbms(
     path_to_dbms_dir: Path = DBMS_FOLDER,
-) -> dict[str, str]:
+) -> Optional[dict[str, str]]:
     """
     Lists the available DBMS's to the User to select.
     :param path_to_dbms_dir: The directory of the DBMS folder.
     :return: A mapping of Letter: DBMS.
     """
     skips = {"tests", "__pycache__"}
-    existing_databases = list_existing_dbms(skips, path_to_dbms_dir)
+    if not (existing_databases := list_existing_dbms(skips, path_to_dbms_dir)):
+        return None
     # Zip does the shorter of the two iterables
     letter_db_dict = {
         char: x
