@@ -1,6 +1,8 @@
 from typing import Any, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, root_validator
+
+from exceptions.wql.data import NodeHasUnrelatedRelationship
 
 # from models.wql.data import WG_ALLOWED_TYPES
 from models.wql.data.relationship import Relationship
@@ -30,3 +32,20 @@ class Node(BaseModel):
 
     def export_node(self) -> dict:
         return {self.node_metadata.wn: self.dict()}
+
+    @root_validator
+    def validate_relationships(cls, values: dict) -> dict:
+        node_metadata = values["node_metadata"]
+        relations = values["relations"]
+
+        if relations:
+            for relationship in relations:
+                if node_metadata.wn not in (
+                    relationship.wn_from_node,
+                    relationship.wn_to_node,
+                ):
+                    raise NodeHasUnrelatedRelationship(
+                        f"Relationship WN{relationship.relationship_metadata.wn} not associated with this node."
+                    )
+
+        return values

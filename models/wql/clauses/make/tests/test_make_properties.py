@@ -21,6 +21,7 @@ class TestMakeProprietiesModels:
                     property_value="bar", property_type=PropertyType.STRING_TYPE
                 ),
                 does_not_raise(),
+                id="EXP PASS: Correct assignment",
             ),
             pytest.param(
                 MakeProperty(
@@ -31,6 +32,7 @@ class TestMakeProprietiesModels:
                 ),
                 None,
                 pytest.raises(MakePropertyTypeAssignmentError),
+                id="EXP EXEC: Two proprieties",
             ),
         ],
     )
