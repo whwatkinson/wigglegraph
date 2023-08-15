@@ -12,7 +12,7 @@ from wiggle_shell.core.select_dbms.select_dbms import (
     list_existing_dbms,
     select_dbms,
 )
-from wiggle_shell.core.select_dbms.select_relationship_index import (
+from wiggle_shell.core.select_dbms.select_index_file import (
     create_new_relationship_index,
     get_existing_relationship_index_file_path,
 )

@@ -10,7 +10,7 @@ from wiggle_shell.core.select_dbms.select_database_file import (
     create_new_database,
     get_existing_db_file_path,
 )
-from wiggle_shell.core.select_dbms.select_relationship_index import (
+from wiggle_shell.core.select_dbms.select_index_file import (
     create_new_relationship_index,
     get_existing_relationship_index_file_path,
 )
