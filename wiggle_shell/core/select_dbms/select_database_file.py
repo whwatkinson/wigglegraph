@@ -21,6 +21,9 @@ def create_new_database(dbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) ->
 
     new_database_file_path.touch()
 
+    with open(new_database_file_path, "w") as file_handle:
+        file_handle.write("""{}""")
+
     return new_database_file_path
 
 

@@ -24,7 +24,7 @@ def create_new_indexes_file(
     new_indexes_file_path.touch()
 
     with open(new_indexes_file_path, "w") as file_handle:
-        file_handle.write("""{"relationships": null}""")
+        file_handle.write("""{"relationships": {}}""")
 
     return new_indexes_file_path
 

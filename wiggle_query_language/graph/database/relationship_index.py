@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 from graph_logger.graph_logger import graph_logger
-from testing import INDEXES_FILE_PATH
+from testing import INDEXES_TEST_FILE_PATH
 
 
 def json_to_dict(
@@ -52,8 +52,13 @@ def add_items_to_relationship_index(
     """
 
     with open(relationship_index_file_path, "r+") as file_handle:
-        rel_indexes_dict = load(file_handle)
-        rel_indexes_keys = rel_indexes_dict.keys()
+        indexes_dict = load(file_handle)
+        rel_indexes_dict = indexes_dict["relationships"]
+
+        if rel_indexes_dict:
+            rel_indexes_keys = rel_indexes_dict.keys()
+        else:
+            rel_indexes_keys = set()
 
         for node_wn, new_rels_wn_set in items_to_add.items():
             if node_wn in rel_indexes_keys:
@@ -82,14 +87,21 @@ def wipe_relationship_index(
     """
     if im_sure:
         graph_logger.info("Dropping relationship indexes")
-        with open(relationship_index_file_path, "w") as file_handle:
-            file_handle.write("""{"relationship_index: null"}""")
+        with open(relationship_index_file_path, "r+") as file_handle:
+            indexes_dict = load(file_handle)
+            indexes_dict["relationships"] = {}
+
+            file_handle.seek(0)
+
+            dump(indexes_dict, file_handle, indent=4)
+            file_handle.truncate()
+
         graph_logger.info("Relationship indexes successfully dropped.")
         return True
     graph_logger.debug(f"Did not drop relationship indexes as {im_sure=}")
 
 
 if __name__ == "__main__":
-    wipe_relationship_index(INDEXES_FILE_PATH, True)
+    wipe_relationship_index(INDEXES_TEST_FILE_PATH, True)
 
-    # add_items_to_relationship_index(RELATIONSHIP_INDEX_FILE_PATH, {"56": {57, 55,1,2,3,4,5,6,7,}, '54': {1,2,3}})
+    # add_items_to_relationship_index(INDEXES_FILE_PATH, {"56": {57, 55,1,2,3,4,5,6,7,}, '54': {1,2,3}})

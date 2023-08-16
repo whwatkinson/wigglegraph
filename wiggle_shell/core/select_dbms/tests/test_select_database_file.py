@@ -1,4 +1,4 @@
-from os import stat
+from json import load
 from typing import Generator
 
 import pytest
@@ -28,7 +28,10 @@ class TestSelectDatabase:
         assert test_after.is_file() is True
 
         # Check to see if the file is empty
-        assert stat(test_db_fp).st_size == 0
+        with open(test_after, "r") as file:
+            data = load(file)
+
+        assert data == {}
 
         # Create the database file again
         with pytest.raises(ValueError):
