@@ -105,7 +105,7 @@ def add_nodes_to_graph(
 
     # Relationship indexes
     rels_to_add = {
-        node.wn: {rel.wn for rel in node.relations}
+        str(node.wn): {rel.wn for rel in node.relations}
         for node in nodes_list
         if node.export_relationship_indexes()
     }

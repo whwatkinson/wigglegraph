@@ -10,7 +10,6 @@ from wiggle_query_language.graph.database.database import (
 )
 
 
-# @pytest.mark.skip
 class TestDataBase:
     def test_database(self, clear_database_test: Generator) -> None:
         # Check the db is empty
@@ -19,7 +18,7 @@ class TestDataBase:
         assert len(test) == 0
 
         # Insert some record
-        item = {
+        items = {
             "102132": {
                 "node_metadata": {
                     "wn": 102132,
@@ -75,7 +74,7 @@ class TestDataBase:
             },
         }
         add_item_to_database(
-            database_file_path=DATABASE_TEST_FILE_PATH, items_to_add=item
+            database_file_path=DATABASE_TEST_FILE_PATH, items_to_add=items
         )
         test = load_database(database_file_path=DATABASE_TEST_FILE_PATH)
 
@@ -85,5 +84,5 @@ class TestDataBase:
 
         with pytest.raises(NodeExistsError):
             add_item_to_database(
-                database_file_path=DATABASE_TEST_FILE_PATH, items_to_add=item
+                database_file_path=DATABASE_TEST_FILE_PATH, items_to_add=items
             )
