@@ -9,7 +9,7 @@ from wiggle_query_language.graph.database.relationship_index import (
 
 
 class TestRelationshipIndex:
-    def test_relationship_index(self, clear_relationship_index_test: Generator):
+    def test_relationship_index(self, clear_relationship_index_test: Generator) -> None:
         # Check the indexes is empty
         test_before = load_relationship_index(indexes_file_path=INDEXES_TEST_FILE_PATH)
 
