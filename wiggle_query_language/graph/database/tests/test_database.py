@@ -10,7 +10,7 @@ from wiggle_query_language.graph.database.database import (
 )
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 class TestDataBase:
     def test_database(self, clear_database_test: Generator) -> None:
         # Check the db is empty
@@ -18,23 +18,68 @@ class TestDataBase:
 
         assert len(test) == 0
 
-        # Insert a record
+        # Insert some record
         item = {
-            109: {
-                "wiggle_number": 19,
+            "102132": {
+                "node_metadata": {
+                    "wn": 102132,
+                    "created_at": 1692176499.688112,
+                    "updated_at": None,
+                },
                 "node_label": "NodeLabel",
-                "created_at": 1666534101.384132,
-                "updated_at": None,
-                "belongings": {"uuid": "7e48f6ae-b25a-4634-91af-b1fb67b90ad9"},
+                "properties": {"str": "2"},
                 "relations": None,
-            }
+            },
+            "102133": {
+                "node_metadata": {
+                    "wn": 102133,
+                    "created_at": 1692176499.688112,
+                    "updated_at": None,
+                },
+                "node_label": "NodeLabel",
+                "properties": {"str2": "2_4"},
+                "relations": [
+                    {
+                        "relationship_metadata": {
+                            "wn": 102135,
+                            "created_at": 1692176499.688112,
+                            "updated_at": None,
+                        },
+                        "relationship_name": "REL",
+                        "wn_from_node": 102133,
+                        "wn_to_node": 102132,
+                        "properties": {"str": "2"},
+                    },
+                    {
+                        "relationship_metadata": {
+                            "wn": 102136,
+                            "created_at": 1692176499.688112,
+                            "updated_at": None,
+                        },
+                        "relationship_name": "REL",
+                        "wn_from_node": 102133,
+                        "wn_to_node": 102134,
+                        "properties": {"float": 3.14},
+                    },
+                ],
+            },
+            "102134": {
+                "node_metadata": {
+                    "wn": 102134,
+                    "created_at": 1692176499.688112,
+                    "updated_at": None,
+                },
+                "node_label": "NodeLabel2",
+                "properties": {"list": [1, "2", "2_4", "3 4", 3.14]},
+                "relations": None,
+            },
         }
         add_item_to_database(
             database_file_path=DATABASE_TEST_FILE_PATH, items_to_add=item
         )
         test = load_database(database_file_path=DATABASE_TEST_FILE_PATH)
 
-        assert len(test) == 1
+        assert len(test) == 3
 
         # Insert a same record
 
