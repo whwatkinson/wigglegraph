@@ -96,12 +96,12 @@ def get_new_dbms_file_paths(
     try:
         # todo cancel operation
         db_path = create_new_database(new_dbms_name, path_to_dbms_dir)
-        ri_index = create_new_indexes_file(new_dbms_name, path_to_dbms_dir)
+        indexes_path = create_new_indexes_file(new_dbms_name, path_to_dbms_dir)
         wn_path = create_new_wiggle_number_file(new_dbms_name, path_to_dbms_dir)
         print(f"Using {new_dbms_name}")
         return DbmsFilePath(
             database_file_path=db_path,
-            relationship_index_file_path=ri_index,
+            indexes_file_path=indexes_path,
             wiggle_number_file_path=wn_path,
         )
     except ValueError:
@@ -137,7 +137,7 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
             db_path = get_existing_db_file_path(
                 dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
-            ri_path = get_existing_indexes_file_path(
+            indexes_path = get_existing_indexes_file_path(
                 dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
             wn_path = get_existing_wn_file_path(
@@ -145,7 +145,7 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
             )
             return DbmsFilePath(
                 database_file_path=db_path,
-                relationship_index_file_path=ri_path,
+                indexes_file_path=indexes_path,
                 wiggle_number_file_path=wn_path,
             )
         except FileNotFoundError as e:

@@ -61,10 +61,14 @@ class TestSelectDatabase:
         exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
             f"{new_dbms_name}/database_{new_dbms_name}.json"
         )
+        exp_indexes_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
+            f"{new_dbms_name}/indexes_{new_dbms_name}.json"
+        )
         exp_wiggle_number_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
             f"{new_dbms_name}/wiggle_number_{new_dbms_name}.txt"
         )
         assert test.database_file_path == exp_database_file_path
+        assert test.indexes_file_path == exp_indexes_file_path
         assert test.wiggle_number_file_path == exp_wiggle_number_file_path
 
     @pytest.mark.xfail

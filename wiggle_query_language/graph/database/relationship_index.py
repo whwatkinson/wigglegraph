@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 from graph_logger.graph_logger import graph_logger
-from testing import RELATIONSHIP_INDEX_FILE_PATH
+from testing import INDEXES_FILE_PATH
 
 
 def json_to_dict(
@@ -90,6 +90,6 @@ def wipe_relationship_index(
 
 
 if __name__ == "__main__":
-    wipe_relationship_index(RELATIONSHIP_INDEX_FILE_PATH, True)
+    wipe_relationship_index(INDEXES_FILE_PATH, True)
 
     # add_items_to_relationship_index(RELATIONSHIP_INDEX_FILE_PATH, {"56": {57, 55,1,2,3,4,5,6,7,}, '54': {1,2,3}})
