@@ -157,7 +157,32 @@ class TestWqlMake:
                 """,
                 1,
                 does_not_raise(),
-                id="EXP PASS: Simple case",
+                id="EXP PASS: Multiline query",
+            ),
+            pytest.param(
+                """
+                MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel);
+                MAKE (n:NodeLabel2)-[r:REL]->(m:NodeLabel2);
+                ADJUST n.name = "h" and m.name = "Wig";
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                REPORT wn(p), wn(q);
+                """,
+                2,
+                does_not_raise(),
+                id="EXP PASS: Multiline query, two MAKES",
+            ),
+            pytest.param(
+                """
+                MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel), (n:NodeLabel2)-[r:REL]->(m:NodeLabel2);
+                ADJUST n.name = "h" and m.name = "Wig";
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                REPORT wn(p), wn(q);
+                """,
+                1,
+                does_not_raise(),
+                id="EXP PASS:  Multiline query, One make, two patterns",
             ),
             pytest.param(
                 "FIND (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",

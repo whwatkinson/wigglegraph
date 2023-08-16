@@ -69,5 +69,16 @@ def parse_make_statement_from_query_string(
 if __name__ == "__main__":
     qs = """"MAKE (left_node_handle:LeftNodeLabel { int: 1   , str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});"""
     qs = "MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);"
+
+    qs = """
+        MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel);
+        MAKE (n:NodeLabel2)-[r:REL]->(m:NodeLabel2);
+        ADJUST n.name = "h" and m.name = "Wig";
+        FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+        CRITERIA p.name = "Bar" or q.name = "Bar;
+        REPORT wn(p), wn(q);
+
+    """
+
     s = parse_make_statement_from_query_string(qs)
     a = 1
