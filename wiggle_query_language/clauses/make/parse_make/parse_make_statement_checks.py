@@ -33,7 +33,7 @@ def check_param_formatting(params_string: str) -> bool:
 
 def check_make_params(make_matches: list[str]) -> True:
     """
-    Very crude check that the params match up with the colons
+    Very crude check that the params match are up to snuff.
     :param make_matches:  The extracted MAKE statements.
     :return: True or raises and exception.
     """
@@ -43,15 +43,17 @@ def check_make_params(make_matches: list[str]) -> True:
             continue
 
         for param_match_in in param_string:
-            # TODO replace PARAM_LIST_VALUE_REGEX with ALL_PARAMS_KEY_VALUE_REGEX
-            param_match = param_match_in.replace("true", "True").replace(
-                "false", "False"
+            param_match = (
+                param_match_in.replace("true", "True")
+                .replace("false", "False")
+                .replace("null", "None")
             )
+
             # remove the list from the params
             params_sans_list = PARAM_LIST_VALUE_REGEX.sub("", param_match)
             check_param_formatting(params_sans_list)
 
-            # check list
+            # check lists
             if params_lists := PARAM_LIST_VALUE_REGEX.findall(param_match):
                 for params_list in params_lists:
                     try:
