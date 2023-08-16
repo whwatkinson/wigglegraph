@@ -149,9 +149,9 @@ class TestWqlMake:
             ),
             pytest.param(
                 "FIND (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
-                0,
-                pytest.raises(MakeClauseSyntaxError),
-                id="EXP EXEC: Not a MAKE stmt",
+                None,
+                does_not_raise(),
+                id="EXP PASS: Not a MAKE stmt",
             ),
             pytest.param(
                 "MAEK (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
@@ -166,4 +166,7 @@ class TestWqlMake:
     ) -> None:
         with exception:
             test = parse_make_statement_from_query_string(test_make_stmt)
-            assert len(test) == 1
+            if test:
+                assert len(test) == expected_value
+            else:
+                assert test is None

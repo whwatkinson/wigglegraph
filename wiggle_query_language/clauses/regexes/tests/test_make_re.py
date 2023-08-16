@@ -75,8 +75,8 @@ class TestMakeRePatterns:
         "test_pattern, expected_result, exception",
         [
             pytest.param(
-                "AKE (:NodeLabel{})-[:]->(foo:NodeLabel {} );",
-                ["AKE"],
+                "AKME (:NodeLabel{})-[:]->(foo:NodeLabel {} );",
+                ["AKME"],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
             ),

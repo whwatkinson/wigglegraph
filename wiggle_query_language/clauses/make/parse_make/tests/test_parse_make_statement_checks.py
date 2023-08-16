@@ -21,31 +21,31 @@ class TestWqlMake:
         "test_make_stmt, expected_value, exception",
         [
             pytest.param(
-                "MAKeeE (node:NodeLabel);]",
+                "MAEK (node:NodeLabel);]",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "MAk (node:NodeLabel);",
+                "eMAk (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "Mkea (node:NodeLabel);",
+                "EMka (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "MAKeeE (node:NodeLabel);",
+                "KMAe (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "JSLW (node:NodeLabel);",
+                "EKAM (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
