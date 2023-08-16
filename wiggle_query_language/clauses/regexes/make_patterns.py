@@ -43,6 +43,9 @@ RELATIONSHIP_DIR_CHECK_REGEX = compile(
     flags=IGNORECASE,
 )
 
+# ()-->()
+UNNAMED_REL_REGEX = compile(r"(?P<unnamed_rel>\)<?-*>?\()", flags=IGNORECASE)
+
 
 # int: 1, float: 3.14, bool: true, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [...]
 ALL_PARAMS_KEY_VALUE_REGEX = compile(

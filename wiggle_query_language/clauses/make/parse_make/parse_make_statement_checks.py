@@ -91,6 +91,7 @@ def check_relationships(make_matches: list[str]) -> bool:
 
     for stmt in make_matches:
         if not (rels_matches := RELATIONSHIP_DIR_CHECK_REGEX.findall(stmt)):
+            # checks not names rels
             return True
         for rel in rels_matches:
             rel_pattern: str = rel[0]

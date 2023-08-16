@@ -25,6 +25,10 @@ class MakeRelationshipNameSyntaxError(WiggleGraphBaseException):
     pass
 
 
+class UnNamedRelationShipError(WiggleGraphBaseException):
+    pass
+
+
 class MakeIllegalPropertyValue(WiggleGraphBaseException):
     pass
 
