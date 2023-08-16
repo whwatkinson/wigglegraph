@@ -4,6 +4,7 @@ from exceptions.wql.make import (
     MakeNonDirectedRelationshipError,
     MakeParamSyntaxError,
     MakeRelationshipNameSyntaxError,
+    UnNamedRelationShipError,
 )
 from wiggle_query_language.clauses.regexes.make_patterns import (
     ILLEGAL_CHARS_REGEX,
@@ -11,6 +12,7 @@ from wiggle_query_language.clauses.regexes.make_patterns import (
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
     PARAM_LIST_VALUE_REGEX,
     RELATIONSHIP_DIR_CHECK_REGEX,
+    UNNAMED_RELATIONSHIP_REGEX,
 )
 
 
@@ -90,8 +92,11 @@ def check_relationships(make_matches: list[str]) -> bool:
     """
 
     for stmt in make_matches:
+        if UNNAMED_RELATIONSHIP_REGEX.findall(stmt):
+            raise UnNamedRelationShipError(
+                f'Unnamed relationships are not allowed in WiggleGraph. Please name {"rels_matches"}'
+            )
         if not (rels_matches := RELATIONSHIP_DIR_CHECK_REGEX.findall(stmt)):
-            # checks not names rels
             return True
         for rel in rels_matches:
             rel_pattern: str = rel[0]

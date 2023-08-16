@@ -37,14 +37,14 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
     flags=IGNORECASE,
 )
 
-# <-[r:Rel]->
+# -[r:Rel]->
 RELATIONSHIP_DIR_CHECK_REGEX = compile(
     rf"(?P<foo><?-+\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*{get_all_params_regex()}-+>?)",
     flags=IGNORECASE,
 )
 
 # ()-->()
-UNNAMED_REL_REGEX = compile(r"(?P<unnamed_rel>\)<?-*>?\()", flags=IGNORECASE)
+UNNAMED_RELATIONSHIP_REGEX = compile(r"\)(?P<unnamed_rel><?-*>?)\(", flags=IGNORECASE)
 
 
 # int: 1, float: 3.14, bool: true, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [...]
