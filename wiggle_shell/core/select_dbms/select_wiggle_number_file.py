@@ -15,11 +15,12 @@ def create_new_wiggle_number_file(
     :param path_to_dbms_dir The directory of the DBMS folder.
     :return The path to the new Wiggle number file.
     """
+    path_to_dbms_dir.joinpath(f"{dbms_name}").mkdir(parents=True, exist_ok=True)
     new_wn_state_file_path = path_to_dbms_dir.joinpath(
         f"{dbms_name}/wiggle_number_{dbms_name}.txt"
     )
     if new_wn_state_file_path.is_file():
-        raise ValueError("A wiggle file already exists")
+        raise ValueError("A WiggleNUmber file already exists")
 
     new_wn_state_file_path.touch()
 

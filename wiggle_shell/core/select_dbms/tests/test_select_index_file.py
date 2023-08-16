@@ -1,4 +1,4 @@
-from os import stat
+from json import load
 from typing import Generator
 
 import pytest
@@ -28,7 +28,11 @@ class TestRelationshipIndex:
         assert test_after.is_file() is True
 
         # Check to see if the file is empty
-        assert stat(test_ri_fp).st_size == 0
+        # Check to see that the file contains 0
+        with open(test_after, "r") as file:
+            data = load(file)
+
+            assert data == {"relationships": None}
 
         # Create the rel index file again
         with pytest.raises(ValueError):

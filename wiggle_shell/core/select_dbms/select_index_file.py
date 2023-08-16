@@ -13,23 +13,13 @@ def create_new_indexes_file(
     :return : The path to the new database file.
     """
 
-    # new_rel_idx_file_path = path_to_dbms_dir.joinpath(
-    #     f"{dbms_name}/indexes_{dbms_name}.json"
-    # )
-    #
-    # if new_rel_idx_file_path.is_file():
-    #     raise ValueError("Name in use")
-    #
-    # path_to_dbms_dir.joinpath(f"{dbms_name}").mkdir(parents=True, exist_ok=True)
-    # new_db_folder = path_to_dbms_dir.joinpath(f"{dbms_name}")
-    # path_touch_db = new_db_folder.joinpath(f"indexes_{dbms_name}.json")
-    # path_touch_db.touch()
-
+    path_to_dbms_dir.joinpath(f"{dbms_name}").mkdir(parents=True, exist_ok=True)
     new_indexes_file_path = path_to_dbms_dir.joinpath(
         f"{dbms_name}/indexes_{dbms_name}.json"
     )
+
     if new_indexes_file_path.is_file():
-        raise ValueError("A wiggle file already exists")
+        raise ValueError("An Indexes file already exists")
 
     new_indexes_file_path.touch()
 
