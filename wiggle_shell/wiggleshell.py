@@ -36,7 +36,7 @@ def start_wiggle_shell() -> None:
             continue
 
         try:
-            query(query_string)
+            query(query_string=query_string, dbms_file_path=dbms_file_path)
         except Exception as e:
             print(e)
             continue
