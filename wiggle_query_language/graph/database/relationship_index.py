@@ -55,13 +55,8 @@ def add_items_to_relationship_index(
         indexes_dict = load(file_handle)
         rel_indexes_dict = indexes_dict["relationships"]
 
-        if rel_indexes_dict:
-            rel_indexes_keys = rel_indexes_dict.keys()
-        else:
-            rel_indexes_keys = set()
-
         for node_wn, new_rels_wn_set in items_to_add.items():
-            if node_wn in rel_indexes_keys:
+            if node_wn in rel_indexes_dict:
                 existing_rels = set(rel_indexes_dict[node_wn])
                 new_set = existing_rels.union(new_rels_wn_set)
                 rel_indexes_dict[node_wn] = list(new_set)
@@ -70,7 +65,9 @@ def add_items_to_relationship_index(
 
             file_handle.seek(0)
 
-        dump(rel_indexes_dict, file_handle, indent=4)
+        indexes_dict["relationships"] = rel_indexes_dict
+
+        dump(indexes_dict, file_handle, indent=4)
         file_handle.truncate()
 
     return True
@@ -90,9 +87,7 @@ def wipe_relationship_index(
         with open(relationship_index_file_path, "r+") as file_handle:
             indexes_dict = load(file_handle)
             indexes_dict["relationships"] = {}
-
             file_handle.seek(0)
-
             dump(indexes_dict, file_handle, indent=4)
             file_handle.truncate()
 
@@ -104,4 +99,20 @@ def wipe_relationship_index(
 if __name__ == "__main__":
     wipe_relationship_index(INDEXES_TEST_FILE_PATH, True)
 
-    # add_items_to_relationship_index(INDEXES_FILE_PATH, {"56": {57, 55,1,2,3,4,5,6,7,}, '54': {1,2,3}})
+    add_items_to_relationship_index(
+        INDEXES_TEST_FILE_PATH,
+        {
+            "56": {
+                57,
+                55,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+            },
+            "54": {1, 2, 3},
+        },
+    )

@@ -101,19 +101,15 @@ def add_nodes_to_graph(
     """
     # Add Nodes
     data_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
-
     add_item_to_database(dbms_file_path.database_file_path, data_to_add_dict)
 
     # Relationship indexes
-    # TODO should be index['relationship'] rather than a new index file?
     rels_to_add = {
         node.wn: {rel.wn for rel in node.relations}
         for node in nodes_list
         if node.export_relationship_indexes()
     }
-    add_items_to_relationship_index(
-        dbms_file_path.relationship_index_file_path, rels_to_add
-    )
+    add_items_to_relationship_index(dbms_file_path.indexes_file_path, rels_to_add)
 
     # Update WiggleNumber
     update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)

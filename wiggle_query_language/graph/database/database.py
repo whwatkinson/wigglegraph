@@ -1,13 +1,16 @@
 from json import dump, load
 from json.decoder import JSONDecodeError
 from pathlib import Path
+from typing import Any
 
 from exceptions.wql.database import NodeExistsError
 from graph_logger.graph_logger import graph_logger
 from testing import DATABASE_TEST_FILE_PATH
 
+DATABASE_SHAPE = dict[str, dict[str, Any]]
 
-def load_database(database_file_path: Path) -> dict:
+
+def load_database(database_file_path: Path) -> DATABASE_SHAPE:
     """
     Loads the database into memory.
     :param database_file_path: The file path to the Wiggle number file.
@@ -25,20 +28,27 @@ def load_database(database_file_path: Path) -> dict:
         return {}
 
 
-def add_item_to_database(database_file_path: Path, items_to_add: dict) -> bool:
+def add_item_to_database(
+    database_file_path: Path, items_to_add: DATABASE_SHAPE
+) -> bool:
     """
     Adds the data to the database.
     :param database_file_path: The file path to the Database file.
     :param items_to_add: The items to be added to the Database file.
     :return: A bool.
     """
-    database = load_database(database_file_path)
-    database_keys = database.keys()
-    for wiggle_number_to_add in items_to_add:
-        if wiggle_number_to_add in database_keys:
-            raise NodeExistsError(
-                message=f"Node {wiggle_number_to_add} already exists did you mean to update"
-            )
+    # database = load_database(database_file_path)
+
+    with open(database_file_path, "r+") as file_handle:
+        database = load(file_handle)
+
+        for wiggle_number_to_add, node in items_to_add.items():
+            if wiggle_number_to_add in database:
+                raise NodeExistsError(
+                    message=f"Node {wiggle_number_to_add} already exists did you mean to update"
+                )
+            else:
+                database[wiggle_number_to_add] = node
 
     #  todo replace with https://stackoverflow.com/questions/21035762/python-read-json-file-and-modify
     database.update(items_to_add)
