@@ -11,9 +11,7 @@ from wiggle_shell.core.select_dbms.select_index_file import (
 
 
 class TestRelationshipIndex:
-    def test_create_new_relationship_index(
-        self, clear_relationship_index_test: Generator
-    ) -> None:
+    def test_create_new_relationship_index(self, setup_databases: Generator) -> None:
         dbms_name = "foo2"
         # Check that the rel index does not exit
 

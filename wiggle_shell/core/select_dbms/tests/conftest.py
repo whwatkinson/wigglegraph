@@ -5,7 +5,6 @@ import pytest
 from testing import TEST_DBMS_FOLDER_PATH
 from wiggle_shell.core.select_dbms.select_dbms import (
     create_new_database,
-    create_new_indexes_file,
     delete_dbms,
     list_existing_dbms,
 )
@@ -25,7 +24,7 @@ def clear_dbmss() -> None:
 def setup_databases() -> Generator:
     clear_dbmss()
     create_new_database(dbms_name="test", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
-    create_new_indexes_file(dbms_name="test", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+    # create_new_indexes_file(dbms_name="test", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
     yield None
     clear_dbmss()

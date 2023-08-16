@@ -84,7 +84,7 @@ def wipe_relationship_index(indexes_file_path: Path, im_sure: bool = False) -> b
     """
     if im_sure:
         graph_logger.info("Dropping relationship indexes")
-        with open(indexes_file_path, "w") as file_handle:
+        with open(indexes_file_path, "r+") as file_handle:
             indexes_dict = load(file_handle)
             indexes_dict["relationships"] = {}
             file_handle.seek(0)
@@ -99,20 +99,20 @@ def wipe_relationship_index(indexes_file_path: Path, im_sure: bool = False) -> b
 if __name__ == "__main__":
     wipe_relationship_index(INDEXES_TEST_FILE_PATH, True)
 
-    add_items_to_relationship_index(
-        INDEXES_TEST_FILE_PATH,
-        {
-            "56": {
-                57,
-                55,
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-            },
-            "54": {1, 2, 3},
-        },
-    )
+    # add_items_to_relationship_index(
+    #     INDEXES_TEST_FILE_PATH,
+    #     {
+    #         "56": {
+    #             57,
+    #             55,
+    #             1,
+    #             2,
+    #             3,
+    #             4,
+    #             5,
+    #             6,
+    #             7,
+    #         },
+    #         "54": {1, 2, 3},
+    #     },
+    # )
