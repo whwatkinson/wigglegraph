@@ -26,5 +26,6 @@ def setup_databases() -> Generator:
     clear_dbmss()
     create_new_database(dbms_name="test", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
     create_new_indexes_file(dbms_name="test", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+
     yield None
     clear_dbmss()
