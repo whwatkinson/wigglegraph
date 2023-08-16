@@ -1,4 +1,4 @@
-from models.wigsh import DbmsFilePath
+from models.wigish import DbmsFilePath
 from models.wql import (
     EmitNode,
     EmitNodes,
@@ -15,6 +15,9 @@ from wiggle_query_language.clauses.make.transform.make_pre import (
     process_parsed_make_list,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
+from wiggle_query_language.graph.database.relationship_index import (
+    add_items_to_relationship_index,
+)
 from wiggle_query_language.graph.state.wiggle_number import (
     get_current_wiggle_number,
     update_wiggle_number,
@@ -84,10 +87,6 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     )
 
 
-def upsert_relationship_indexes(relationships) -> bool:
-    return True
-
-
 def add_nodes_to_graph(
     nodes_list: list[Node],
     current_wiggle_number: int,
@@ -100,17 +99,19 @@ def add_nodes_to_graph(
     :param dbms_file_path: The path to the DBMS.
     :return: A bool.
     """
-    # Add Nodes
-
-    nodes_dict_list = [node.export_node(True, True) for node in nodes_list]
-    data_to_add_dict = {
-        node_wn: value for node in nodes_dict_list for node_wn, value in node.items()
+    # Export Nodes and Rels
+    nodes_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
+    rel_indexes_to_add_dict = {
+        str(node.wn): {rel.wn for rel in node.relations}
+        for node in nodes_list
+        if node.relations
     }
 
-    add_item_to_database(dbms_file_path.database_file_path, data_to_add_dict)
-
-    # Relationship indexes
-    upsert_relationship_indexes(0)
+    # Write to the database
+    add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+    add_items_to_relationship_index(
+        dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
+    )
 
     # Update WiggleNumber
     update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)

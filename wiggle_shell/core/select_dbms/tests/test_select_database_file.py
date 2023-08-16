@@ -1,10 +1,13 @@
-from os import stat
+from json import load
 from typing import Generator
 
 import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
-from wiggle_shell.core.select_dbms import create_new_database, get_existing_db_file_path
+from wiggle_shell.core.select_dbms.select_database_file import (
+    create_new_database,
+    get_existing_db_file_path,
+)
 
 
 class TestSelectDatabase:
@@ -25,7 +28,10 @@ class TestSelectDatabase:
         assert test_after.is_file() is True
 
         # Check to see if the file is empty
-        assert stat(test_db_fp).st_size == 0
+        with open(test_after, "r") as file:
+            data = load(file)
+
+        assert data == {}
 
         # Create the database file again
         with pytest.raises(ValueError):

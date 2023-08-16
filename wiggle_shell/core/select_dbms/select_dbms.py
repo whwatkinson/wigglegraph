@@ -4,11 +4,15 @@ from pathlib import Path
 from string import ascii_uppercase
 from typing import Optional
 
-from models.wigsh import DbmsFilePath
+from models.wigish import DbmsFilePath
 from wiggle_shell import DBMS_FOLDER, INPUT_PROMPT_SPACING
-from wiggle_shell.core.select_dbms.select_database import (
+from wiggle_shell.core.select_dbms.select_database_file import (
     create_new_database,
     get_existing_db_file_path,
+)
+from wiggle_shell.core.select_dbms.select_index_file import (
+    create_new_indexes_file,
+    get_existing_indexes_file_path,
 )
 from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
     create_new_wiggle_number_file,
@@ -39,14 +43,15 @@ def list_existing_dbms(
 
 def get_and_display_available_dbms(
     path_to_dbms_dir: Path = DBMS_FOLDER,
-) -> dict[str, str]:
+) -> Optional[dict[str, str]]:
     """
     Lists the available DBMS's to the User to select.
     :param path_to_dbms_dir: The directory of the DBMS folder.
     :return: A mapping of Letter: DBMS.
     """
     skips = {"tests", "__pycache__"}
-    existing_databases = list_existing_dbms(skips, path_to_dbms_dir)
+    if not (existing_databases := list_existing_dbms(skips, path_to_dbms_dir)):
+        return None
     # Zip does the shorter of the two iterables
     letter_db_dict = {
         char: x
@@ -91,9 +96,14 @@ def get_new_dbms_file_paths(
     try:
         # todo cancel operation
         db_path = create_new_database(new_dbms_name, path_to_dbms_dir)
+        indexes_path = create_new_indexes_file(new_dbms_name, path_to_dbms_dir)
         wn_path = create_new_wiggle_number_file(new_dbms_name, path_to_dbms_dir)
         print(f"Using {new_dbms_name}")
-        return DbmsFilePath(database_file_path=db_path, wiggle_number_file_path=wn_path)
+        return DbmsFilePath(
+            database_file_path=db_path,
+            indexes_file_path=indexes_path,
+            wiggle_number_file_path=wn_path,
+        )
     except ValueError:
         print(f"{new_dbms_name} is already taken, please choose another name.")
         raise
@@ -127,11 +137,16 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
             db_path = get_existing_db_file_path(
                 dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
+            indexes_path = get_existing_indexes_file_path(
+                dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
+            )
             wn_path = get_existing_wn_file_path(
                 dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
             return DbmsFilePath(
-                database_file_path=db_path, wiggle_number_file_path=wn_path
+                database_file_path=db_path,
+                indexes_file_path=indexes_path,
+                wiggle_number_file_path=wn_path,
             )
         except FileNotFoundError as e:
             print(f"Database files could not be found {e}")

@@ -11,19 +11,20 @@ def create_new_database(dbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) ->
     :return : The path to the new database file.
     """
 
-    new_db_file_path = path_to_dbms_dir.joinpath(
+    path_to_dbms_dir.joinpath(f"{dbms_name}").mkdir(parents=True, exist_ok=True)
+    new_database_file_path = path_to_dbms_dir.joinpath(
         f"{dbms_name}/database_{dbms_name}.json"
     )
 
-    if new_db_file_path.is_file():
-        raise ValueError("Name in use")
+    if new_database_file_path.is_file():
+        raise ValueError("A Database file already exists")
 
-    path_to_dbms_dir.joinpath(f"{dbms_name}").mkdir(parents=True, exist_ok=True)
-    new_db_folder = path_to_dbms_dir.joinpath(f"{dbms_name}")
-    path_touch_db = new_db_folder.joinpath(f"database_{dbms_name}.json")
-    path_touch_db.touch()
+    new_database_file_path.touch()
 
-    return path_touch_db
+    with open(new_database_file_path, "w") as file_handle:
+        file_handle.write("""{}""")
+
+    return new_database_file_path
 
 
 def get_existing_db_file_path(

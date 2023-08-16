@@ -1,12 +1,9 @@
 import pytest
 
 from exceptions.wql.make import MakePropertyTypeAssignmentError
-from testing.test_helpers import does_not_raise
+from models.wql.clauses.make.make_properties import ExtractedProperty, MakeProperty
 from models.wql.enums.property_type import PropertyType
-from models.wql.clauses.make.make_properties import (
-    MakeProperty,
-    ExtractedProperty,
-)
+from testing.test_helpers import does_not_raise
 
 
 class TestMakeProprietiesModels:
