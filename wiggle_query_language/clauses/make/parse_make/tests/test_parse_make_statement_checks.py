@@ -21,7 +21,7 @@ class TestWqlMake:
         "test_make_stmt, expected_value, exception",
         [
             pytest.param(
-                "MAEK (node:NodeLabel);]",
+                "MAEK (node:NodeLabel);",
                 None,
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",

@@ -148,6 +148,18 @@ class TestWqlMake:
                 id="EXP PASS: Simple case",
             ),
             pytest.param(
+                """
+                MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel);
+                ADJUST n.name = "h" and m.name = "Wig";
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                REPORT wn(p), wn(q);
+                """,
+                1,
+                does_not_raise(),
+                id="EXP PASS: Simple case",
+            ),
+            pytest.param(
                 "FIND (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
                 None,
                 does_not_raise(),
