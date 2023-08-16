@@ -9,7 +9,7 @@ from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
 )
 
 
-class TestSelectDatabase:
+class TestSelectWiggleNumberFile:
     def test_create_new_wiggle_number_file(self, setup_databases: Generator) -> None:
         # Check to see that there is no wiggle number file
         db_name = "test"

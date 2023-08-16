@@ -26,7 +26,7 @@ def create_new_indexes_file(
     # path_touch_db.touch()
 
     new_indexes_file_path = path_to_dbms_dir.joinpath(
-        f"{dbms_name}/wiggle_number_{dbms_name}.txt"
+        f"{dbms_name}/indexes_{dbms_name}.json"
     )
     if new_indexes_file_path.is_file():
         raise ValueError("A wiggle file already exists")
