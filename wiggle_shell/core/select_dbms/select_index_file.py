@@ -3,7 +3,7 @@ from pathlib import Path
 from wiggle_shell import DBMS_FOLDER
 
 
-def create_new_relationship_index(
+def create_new_indexes_file(
     dbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
 ) -> Path:
     """
@@ -13,25 +13,33 @@ def create_new_relationship_index(
     :return : The path to the new database file.
     """
 
-    new_rel_idx_file_path = path_to_dbms_dir.joinpath(
-        f"{dbms_name}/indexes_{dbms_name}.json"
+    # new_rel_idx_file_path = path_to_dbms_dir.joinpath(
+    #     f"{dbms_name}/indexes_{dbms_name}.json"
+    # )
+    #
+    # if new_rel_idx_file_path.is_file():
+    #     raise ValueError("Name in use")
+    #
+    # path_to_dbms_dir.joinpath(f"{dbms_name}").mkdir(parents=True, exist_ok=True)
+    # new_db_folder = path_to_dbms_dir.joinpath(f"{dbms_name}")
+    # path_touch_db = new_db_folder.joinpath(f"indexes_{dbms_name}.json")
+    # path_touch_db.touch()
+
+    new_indexes_file_path = path_to_dbms_dir.joinpath(
+        f"{dbms_name}/wiggle_number_{dbms_name}.txt"
     )
+    if new_indexes_file_path.is_file():
+        raise ValueError("A wiggle file already exists")
 
-    if new_rel_idx_file_path.is_file():
-        raise ValueError("Name in use")
+    new_indexes_file_path.touch()
 
-    path_to_dbms_dir.joinpath(f"{dbms_name}").mkdir(parents=True, exist_ok=True)
-    new_db_folder = path_to_dbms_dir.joinpath(f"{dbms_name}")
-    path_touch_db = new_db_folder.joinpath(f"indexes_{dbms_name}.json")
-    path_touch_db.touch()
-
-    with open(f"{dbms_name}/indexes_{dbms_name}.json", "r") as file_handle:
+    with open(new_indexes_file_path, "w") as file_handle:
         file_handle.write("""{"relationships": null}""")
 
-    return path_touch_db
+    return new_indexes_file_path
 
 
-def get_existing_relationship_index_file_path(
+def get_existing_indexes_file_path(
     dbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
 ) -> Path:
     """
@@ -49,4 +57,4 @@ def get_existing_relationship_index_file_path(
 
 
 if __name__ == "__main__":
-    create_new_relationship_index("foo")
+    create_new_indexes_file("foo")

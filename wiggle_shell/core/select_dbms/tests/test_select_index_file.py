@@ -5,8 +5,8 @@ import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
 from wiggle_shell.core.select_dbms.select_index_file import (
-    create_new_relationship_index,
-    get_existing_relationship_index_file_path,
+    create_new_indexes_file,
+    get_existing_indexes_file_path,
 )
 
 
@@ -21,7 +21,7 @@ class TestRelationshipIndex:
         assert test_ri_fp.is_file() is False
 
         # Create the rel index file
-        test_after = create_new_relationship_index(
+        test_after = create_new_indexes_file(
             dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
         )
         assert test_after == test_ri_fp
@@ -32,21 +32,21 @@ class TestRelationshipIndex:
 
         # Create the rel index file again
         with pytest.raises(ValueError):
-            create_new_relationship_index(
+            create_new_indexes_file(
                 dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
 
     def test_get_existing_relationship_index_file_path(self) -> None:
-        exp_ri_fp = TEST_DBMS_FOLDER_PATH.joinpath(
+        exp_indexes_fp = TEST_DBMS_FOLDER_PATH.joinpath(
             "sample_dbms/indexes_sample_dbms.json"
         )
-        test_db_fp = get_existing_relationship_index_file_path(
+        test_db_fp = get_existing_indexes_file_path(
             dbms_name="sample_dbms", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
         )
 
-        assert exp_ri_fp == test_db_fp
+        assert exp_indexes_fp == test_db_fp
 
         with pytest.raises(FileNotFoundError):
-            get_existing_relationship_index_file_path(
+            get_existing_indexes_file_path(
                 dbms_name="NOT A rel index", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
