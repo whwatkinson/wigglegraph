@@ -32,14 +32,14 @@ class Node(BaseModel):
 
     def export_node(
         self, exclude_unset: bool = False, exclude_none: bool = False
-    ) -> dict[str, Any]:
+    ) -> dict[str, dict[str, Any]]:
         return {
             str(self.node_metadata.wn): self.dict(
                 exclude_unset=exclude_unset, exclude_none=exclude_none
             )
         }
 
-    def export_relationship_indexes(self) -> Optional[dict[str, set[str]]]:
+    def export_relationship_indexes(self) -> Optional[dict[str, set[int]]]:
         if self.relations:
             return {
                 str(self.node_metadata.wn): {

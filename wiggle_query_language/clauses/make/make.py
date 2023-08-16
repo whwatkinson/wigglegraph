@@ -99,17 +99,19 @@ def add_nodes_to_graph(
     :param dbms_file_path: The path to the DBMS.
     :return: A bool.
     """
-    # Add Nodes
-    data_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
-    add_item_to_database(dbms_file_path.database_file_path, data_to_add_dict)
-
-    # Relationship indexes
-    rels_to_add = {
+    # Export Nodes and Rels
+    nodes_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
+    rel_indexes_to_add_dict = {
         str(node.wn): {rel.wn for rel in node.relations}
         for node in nodes_list
-        if node.export_relationship_indexes()
+        if node.relations
     }
-    add_items_to_relationship_index(dbms_file_path.indexes_file_path, rels_to_add)
+
+    # Write to the database
+    add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+    add_items_to_relationship_index(
+        dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
+    )
 
     # Update WiggleNumber
     update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)
