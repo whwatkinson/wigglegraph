@@ -8,8 +8,8 @@ from models.wql import (
     RelationshipPre,
     WiggleGraphMetalData,
 )
-from wiggle_query_language.clauses.make.parse_make.parse_make_properties import (
-    make_properties,
+from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
+    get_property_dict,
 )
 from wiggle_query_language.clauses.make.transform.make_pre import (
     process_parsed_make_list,
@@ -51,7 +51,7 @@ def make_node(emit_node: EmitNode) -> Node:
     node_pre = emit_node.node_pre
     node_metadata = WiggleGraphMetalData(wn=node_pre.wn)
     node_label = node_pre.node_label
-    properties = make_properties(node_pre.props_string)
+    properties = get_property_dict(node_pre.props_string)
     if emit_node.relationship_pre:
         relations = [
             make_relationship(relationship_pre)
@@ -76,7 +76,7 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
     """
     rel_metadata = WiggleGraphMetalData(wn=relationship_pre.wn)
 
-    properties = make_properties(relationship_pre.props_string)
+    properties = get_property_dict(relationship_pre.props_string)
 
     return Relationship(
         relationship_metadata=rel_metadata,

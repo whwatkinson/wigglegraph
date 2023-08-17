@@ -23,11 +23,3 @@ class MakeIllegalCharacterError(WiggleGraphBaseException):
 
 class MakeRelationshipNameSyntaxError(WiggleGraphBaseException):
     pass
-
-
-class MakeIllegalPropertyValue(WiggleGraphBaseException):
-    pass
-
-
-class MakePropertyTypeAssignmentError(WiggleGraphBaseException):
-    pass
