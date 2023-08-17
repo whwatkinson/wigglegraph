@@ -165,7 +165,7 @@ def handle_list_property(value_in: str) -> list[WG_ALLOWED_TYPES]:
     :param value_in: The extracted property value.
     :return: A Python list.
     """
-    # params validation happens in check_make_params
+    # params validation happens in check_node_rel_params
     value = value_in.replace("true", "True").replace("false", "False")
     try:
         found_list = literal_eval(value)
