@@ -13,20 +13,22 @@ from wiggle_shell.core.select_dbms import (
 
 
 class TestSelectDatabase:
-    def test_list_existing_dbms(self, setup_databases: Generator) -> None:
+    def test_list_existing_dbms(self, wigsh_setup_databases: Generator) -> None:
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
         assert len(test) == 2
         assert "test" in test
 
-    def test_get_and_display_available_dbms(self, setup_databases: Generator) -> None:
+    def test_get_and_display_available_dbms(
+        self, wigsh_setup_databases: Generator
+    ) -> None:
         test = get_and_display_available_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
         assert len(test) == 2
         assert test["A"] == "sample_dbms"
         assert test["B"] == "test"
 
-    def test_create_new_database(self, setup_databases: Generator) -> None:
+    def test_create_new_database(self, wigsh_setup_databases: Generator) -> None:
         dbms_name = "foo2"
         # Check that the db does not exit
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
@@ -54,7 +56,7 @@ class TestSelectDatabase:
         assert len(test) == 3
         assert dbms_name in test
 
-    def test_get_new_dbms_file_paths(self, setup_databases: Generator) -> None:
+    def test_get_new_dbms_file_paths(self, wigsh_setup_databases: Generator) -> None:
         new_dbms_name = "test_foo"
         test = get_new_dbms_file_paths(new_dbms_name, TEST_DBMS_FOLDER_PATH)
 

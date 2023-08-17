@@ -148,10 +148,47 @@ class TestWqlMake:
                 id="EXP PASS: Simple case",
             ),
             pytest.param(
+                """
+                MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel);
+                ADJUST n.name = "h" and m.name = "Wig";
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                REPORT wn(p), wn(q);
+                """,
+                1,
+                does_not_raise(),
+                id="EXP PASS: Multiline query",
+            ),
+            pytest.param(
+                """
+                MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel);
+                MAKE (n:NodeLabel2)-[r:REL]->(m:NodeLabel2);
+                ADJUST n.name = "h" and m.name = "Wig";
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                REPORT wn(p), wn(q);
+                """,
+                2,
+                does_not_raise(),
+                id="EXP PASS: Multiline query, two MAKES",
+            ),
+            pytest.param(
+                """
+                MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel), (n:NodeLabel2)-[r:REL]->(m:NodeLabel2);
+                ADJUST n.name = "h" and m.name = "Wig";
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                REPORT wn(p), wn(q);
+                """,
+                1,
+                does_not_raise(),
+                id="EXP PASS:  Multiline query, One make, two patterns",
+            ),
+            pytest.param(
                 "FIND (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
-                0,
-                pytest.raises(MakeClauseSyntaxError),
-                id="EXP EXEC: Not a MAKE stmt",
+                None,
+                does_not_raise(),
+                id="EXP PASS: Not a MAKE stmt",
             ),
             pytest.param(
                 "MAEK (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
@@ -166,4 +203,7 @@ class TestWqlMake:
     ) -> None:
         with exception:
             test = parse_make_statement_from_query_string(test_make_stmt)
-            assert len(test) == 1
+            if test:
+                assert len(test) == expected_value
+            else:
+                assert test is None

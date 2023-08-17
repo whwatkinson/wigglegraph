@@ -21,7 +21,11 @@ NODES_RELS_PATTERN_REGEX = compile(
 
 # AKME (node1:NodeLabel);
 MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX = compile(
-    r"\s?(?P<make_syntax_error>[adeijklmnorswz]{3,6})\s?\(", flags=IGNORECASE
+    (
+        r"\s?(?P<make_syntax_error>maek|mkae|mkea|meak|meka|amke|amek|akme"
+        r"|akem|aemk|aekm|kmae|kmea|kame|kaem|kema|keam|emak|emka|eamk|eakm|ekma|ekam)\s?\("
+    ),
+    flags=IGNORECASE,
 )
 
 # #%&*
@@ -33,16 +37,23 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
     flags=IGNORECASE,
 )
 
-# <-[*:*]->
+# -[r:Rel]->
 RELATIONSHIP_DIR_CHECK_REGEX = compile(
     rf"(?P<foo><?-+\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*{get_all_params_regex()}-+>?)",
     flags=IGNORECASE,
 )
 
+# ()-->()
+# UNNAMED_RELATIONSHIP_REGEX = compile(r"\)(?P<unnamed_rel><?-*>?)\(", flags=IGNORECASE)
 
-# int: 1, float: 3.14, bool: true, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [
+
+# int: 1, float: 3.14, bool: true, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [...]
 ALL_PARAMS_KEY_VALUE_REGEX = compile(
-    r"(?P<property_name>\w+)\s*:\s*(?P<property_value>(?P<none_type>null)|(?P<bool_type>true|false)|(?P<float_type>\d+\.\d+)|(?P<int_type>[0-9]+)|(?P<list_type>\[[\w,\s'\"\.@\+]+\])|(?P<string_type>[\w+\'\"@\.\s]+))",
+    (
+        r"(?P<property_name>\w+)\s*:\s*(?P<property_value>(?P<none_type>null)|(?P<bool_type>true|false)|"
+        r"(?P<float_type>\d+\.\d+)|(?P<int_type>[0-9]+)|(?P<list_type>\[[\w,\s'\"\.@\+]+\])|"
+        r"(?P<string_type>[\w+\'\"@\.\s]+))"
+    ),
     flags=IGNORECASE,
 )
 

@@ -11,7 +11,9 @@ from wiggle_shell.core.select_dbms.select_index_file import (
 
 
 class TestRelationshipIndex:
-    def test_create_new_relationship_index(self, setup_databases: Generator) -> None:
+    def test_create_new_relationship_index(
+        self, wigsh_setup_databases: Generator
+    ) -> None:
         dbms_name = "foo2"
         # Check that the rel index does not exit
 
@@ -27,8 +29,7 @@ class TestRelationshipIndex:
         assert test_after == test_ri_fp
         assert test_after.is_file() is True
 
-        # Check to see if the file is empty
-        # Check to see that the file contains 0
+        # Check to see if the file has noe indexes
         with open(test_after, "r") as file:
             data = load(file)
 

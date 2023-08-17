@@ -1,3 +1,5 @@
+from re import split
+
 from exceptions.wql.make import (
     MakeClauseSyntaxError,
     MakeIllegalCharacterError,
@@ -33,7 +35,7 @@ def check_param_formatting(params_string: str) -> bool:
 
 def check_make_params(make_matches: list[str]) -> True:
     """
-    Very crude check that the params match up with the colons
+    Very crude check that the params match are up to snuff.
     :param make_matches:  The extracted MAKE statements.
     :return: True or raises and exception.
     """
@@ -43,15 +45,17 @@ def check_make_params(make_matches: list[str]) -> True:
             continue
 
         for param_match_in in param_string:
-            # TODO replace PARAM_LIST_VALUE_REGEX with ALL_PARAMS_KEY_VALUE_REGEX
-            param_match = param_match_in.replace("true", "True").replace(
-                "false", "False"
+            param_match = (
+                param_match_in.replace("true", "True")
+                .replace("false", "False")
+                .replace("null", "None")
             )
+
             # remove the list from the params
             params_sans_list = PARAM_LIST_VALUE_REGEX.sub("", param_match)
             check_param_formatting(params_sans_list)
 
-            # check list
+            # check lists
             if params_lists := PARAM_LIST_VALUE_REGEX.findall(param_match):
                 for params_list in params_lists:
                     try:
@@ -64,9 +68,9 @@ def check_make_params(make_matches: list[str]) -> True:
     return True
 
 
-def check_make_clause_syntax(query_string: str) -> bool:
+def check_make_clause_spelling(query_string: str) -> bool:
     """
-    Checks the syntax of the MAKE statement.
+    Checks the MAKE for a spelling mistake.
     :param query_string: The extracted MAKE statements.
     :return: True or raises and exception.
     """
@@ -126,12 +130,47 @@ def check_illegal_characters(make_matches: list[str]) -> bool:
     return True
 
 
+def check_make_statement_syntax(make_matches: list[str]) -> bool:
+    """
+    Checks the syntax of the MAKE statement.
+    :param make_matches: The extracted MAKE statements.
+    :return: True or raises and exception.
+    """
+
+    for stmt in make_matches:
+        stmt_split = split(r"[<>]+", stmt)
+
+        for sub_stmt in stmt_split:
+            # parens and curls must be even
+            parens_count = sum(1 for x in sub_stmt if x in ("(", ")"))
+            curly_count = sum(1 for x in sub_stmt if x in ("{", "}"))
+            square_count = sum(1 for x in sub_stmt if x in ("[", "]"))
+
+            if parens_count % 2 == 1:
+                raise MakeClauseSyntaxError(
+                    f"Node is missing a parentheses: ---> {sub_stmt} <---"
+                )
+
+            if curly_count % 2 == 1:
+                raise MakeClauseSyntaxError(
+                    f"Properties is missing a curly brace: ---> {sub_stmt} <---"
+                )
+
+            if square_count % 2 == 1:
+                raise MakeClauseSyntaxError(
+                    f"A Relationship or property list is missing a square bracket: ---> {sub_stmt} <---"
+                )
+
+    return True
+
+
 def validate_make_statement(make_matches: list[str]) -> bool:
     """
     Handles the validation for the make statement.
     :param make_matches: The extracted make statements.
     :return: True or raises and exception.
     """
+    check_make_statement_syntax(make_matches)
     check_illegal_characters(make_matches)
     check_make_params(make_matches)
     check_relationships(make_matches)

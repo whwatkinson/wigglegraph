@@ -10,7 +10,9 @@ from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
 
 
 class TestSelectWiggleNumberFile:
-    def test_create_new_wiggle_number_file(self, setup_databases: Generator) -> None:
+    def test_create_new_wiggle_number_file(
+        self, wigsh_setup_databases: Generator
+    ) -> None:
         # Check to see that there is no wiggle number file
         db_name = "test"
         test_wn_fp = TEST_DBMS_FOLDER_PATH.joinpath(f"test/wiggle_number_{db_name}.txt")
@@ -32,7 +34,7 @@ class TestSelectWiggleNumberFile:
         with pytest.raises(ValueError):
             create_new_wiggle_number_file(db_name, TEST_DBMS_FOLDER_PATH)
 
-    def test_get_existing_wn_file(self, setup_databases: Generator) -> None:
+    def test_get_existing_wn_file(self, wigsh_setup_databases: Generator) -> None:
         exp_wn_fp = TEST_DBMS_FOLDER_PATH.joinpath(
             "sample_dbms/wiggle_number_sample_dbms.txt"
         )

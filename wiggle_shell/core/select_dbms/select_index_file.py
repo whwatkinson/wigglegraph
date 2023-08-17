@@ -47,4 +47,6 @@ def get_existing_indexes_file_path(
 
 
 if __name__ == "__main__":
-    create_new_indexes_file("foo")
+    from testing import TEST_DBMS_FOLDER_PATH
+
+    create_new_indexes_file("foo", TEST_DBMS_FOLDER_PATH)

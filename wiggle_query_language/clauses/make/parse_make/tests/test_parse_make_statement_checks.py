@@ -10,55 +10,49 @@ from exceptions.wql.make import (
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
     check_illegal_characters,
-    check_make_clause_syntax,
+    check_make_clause_spelling,
     check_make_params,
     check_relationships,
+    check_make_statement_syntax,
 )
 
 
 class TestWqlMake:
     @pytest.mark.parametrize(
-        "test_make_stmt, expected_value, exception",
+        "test_make_stmt, exception",
         [
             pytest.param(
-                "MAKeeE (node:NodeLabel);]",
-                None,
+                "MAEK (node:NodeLabel);",
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "MAk (node:NodeLabel);",
-                None,
+                "eMAk (node:NodeLabel);",
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "Mkea (node:NodeLabel);",
-                None,
+                "EMka (node:NodeLabel);",
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "MAKeeE (node:NodeLabel);",
-                None,
+                "KMAe (node:NodeLabel);",
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "JSLW (node:NodeLabel);",
-                None,
+                "EKAM (node:NodeLabel);",
                 pytest.raises(MakeClauseSyntaxError),
                 id="EXP EXEC",
             ),
         ],
     )
-    def test_check_make_syntax(
-        self, test_make_stmt: str, expected_value: None, exception
-    ) -> None:
+    def test_check_make_clause_spelling(self, test_make_stmt: str, exception) -> None:
         with exception:
-            check_make_clause_syntax(test_make_stmt)
+            test = check_make_clause_spelling(test_make_stmt)
+            assert test is True
 
-    # @pytest.mark.xfail()
     @pytest.mark.parametrize(
         "test_make_stmt, exception",
         [
@@ -151,6 +145,11 @@ class TestWqlMake:
                 pytest.raises(MakeRelationshipNameSyntaxError),
                 id="EXP EXEC: Double node with long relationship, lowercase rel name",
             ),
+            pytest.param(
+                ["MAKE (:NodeLabel)--[:rel]-->(:NodeLabel);"],
+                pytest.raises(MakeRelationshipNameSyntaxError),
+                id="EXP EXEC: Double node with long relationship, lowercase rel name",
+            ),
         ],
     )
     def test_check_relationship(self, test_make_matches: list[str], exception) -> None:
@@ -199,5 +198,61 @@ class TestWqlMake:
         self, test_make_matches: list[str], exception
     ) -> None:
         with exception:
-            check_illegal_characters(test_make_matches)
-            assert True
+            test = check_illegal_characters(test_make_matches)
+            assert test is True
+
+    @pytest.mark.parametrize(
+        "test_make_matches, exception",
+        [
+            pytest.param(
+                ["MAKE (:NodeLabel);"],
+                does_not_raise(),
+                id="EXP PASS: No syntax error",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel;"],
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: Missing ( on on Node",
+            ),
+            pytest.param(
+                ["MAKE (:NodeLabel;"],
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: Missing ) on Node",
+            ),
+            pytest.param(
+                ["""MAKE (:NodeLabel{ int: 1 , str: '$2', str2:"2_4"};"""],
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: Missing ) on Node with props",
+            ),
+            pytest.param(
+                ["""MAKE (:NodeLabel{ int: 1 , str: '$2', str2:"2_4");"""],
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: Missing } on Node with props",
+            ),
+            pytest.param(
+                [
+                    """MAKE (:NodeLabel{str: '2'})-[]->(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});"""
+                ],
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: Missing ( on right Node",
+            ),
+            pytest.param(
+                [
+                    """MAKE (:NodeLabel{str: '2'})-[->(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});"""
+                ],
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: Missing [ on left rel",
+            ),
+            pytest.param(
+                [
+                    """MAKE (:NodeLabel{str: '2'})-[]->(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14});"""
+                ],
+                pytest.raises(MakeClauseSyntaxError),
+                id="EXP EXEC: Missing [ on right node list",
+            ),
+        ],
+    )
+    def test_check_make_statement_syntax(self, test_make_matches: list[str], exception):
+        with exception:
+            test = check_make_statement_syntax(test_make_matches)
+            assert test is True

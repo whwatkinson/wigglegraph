@@ -191,7 +191,7 @@ def select_dbms() -> DbmsFilePath:
 
     db_choice = input(f"Use existing dbms (y/n):{INPUT_PROMPT_SPACING}")
     match db_choice:
-        case "y":
+        case "y" | "yes":
             db_path = get_existing_dbms()
         case _:
             db_path = create_new_dbms()

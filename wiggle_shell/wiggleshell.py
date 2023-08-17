@@ -35,8 +35,10 @@ def start_wiggle_shell() -> None:
             print("A helpful guide is on the way!\n")
             continue
 
+        # query(query_string=query_string, dbms_file_path=dbms_file_path)
+
         try:
-            query(query_string)
+            query(query_string=query_string, dbms_file_path=dbms_file_path)
         except Exception as e:
             print(e)
             continue
