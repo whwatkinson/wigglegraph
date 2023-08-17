@@ -1,13 +1,12 @@
 from re import split
 
-from exceptions.wql.make import (
-    MakeParamSyntaxError,
-    MakeRelationshipNameSyntaxError,
-)
+
 from exceptions.wql.parsing import (
     ClauseSyntaxError,
     IllegalCharacterError,
     NonDirectedRelationshipError,
+    ParamSyntaxError,
+    RelationshipNameSyntaxError,
 )
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
     ILLEGAL_CHARS_REGEX,
@@ -28,9 +27,7 @@ def check_property_syntax(params_string: str) -> bool:
     exp_param_count = params_string.count(",") + 1
     colon_count = params_string.count(":")
     if exp_param_count != colon_count:
-        raise MakeParamSyntaxError(
-            message=f"SyntaxError: {params_string} missing : or ,"
-        )
+        raise ParamSyntaxError(message=f"SyntaxError: {params_string} missing : or ,")
 
     return True
 
@@ -63,7 +60,7 @@ def check_node_rel_properties(stmt_matches: list[str]) -> True:
                     try:
                         eval(params_list)
                     except SyntaxError:
-                        raise MakeParamSyntaxError(
+                        raise ParamSyntaxError(
                             message=f"SyntaxError: {params_lists} missing a comma?"
                         )
 
@@ -110,7 +107,7 @@ def check_relationships(stmt_matches: list[str]) -> bool:
                 )
 
             if not rel_name.isupper() and rel_name:
-                raise MakeRelationshipNameSyntaxError(
+                raise RelationshipNameSyntaxError(
                     f"Relationship names must be upper case: {rel_name} -> {rel_name.upper()}"
                 )
 

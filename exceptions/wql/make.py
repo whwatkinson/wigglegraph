@@ -7,11 +7,3 @@ class MakeClauseSyntaxError(WiggleGraphBaseException):
 
 class MakeDuplicateHandlesError(WiggleGraphBaseException):
     pass
-
-
-class MakeParamSyntaxError(WiggleGraphBaseException):
-    pass
-
-
-class MakeRelationshipNameSyntaxError(WiggleGraphBaseException):
-    pass

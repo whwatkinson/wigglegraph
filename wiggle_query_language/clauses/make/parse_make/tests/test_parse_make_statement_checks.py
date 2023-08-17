@@ -1,16 +1,11 @@
 import pytest
 
-from exceptions.wql.make import (
-    # MakeClauseSyntaxError,
-    # MakeIllegalCharacterError,
-    # MakeNonDirectedRelationshipError,
-    MakeParamSyntaxError,
-    MakeRelationshipNameSyntaxError,
-)
 from exceptions.wql.parsing import (
     ClauseSyntaxError,
     IllegalCharacterError,
     NonDirectedRelationshipError,
+    ParamSyntaxError,
+    RelationshipNameSyntaxError,
 )
 
 from testing.test_helpers import does_not_raise
@@ -83,7 +78,7 @@ class TestWqlMake:
                 [
                     """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4" 3.14]});"""
                 ],
-                pytest.raises(MakeParamSyntaxError),
+                pytest.raises(ParamSyntaxError),
                 id="EXP EXEC: Missing comma in param list",
             ),
         ],
@@ -147,17 +142,17 @@ class TestWqlMake:
             ),
             pytest.param(
                 ["MAKE (:NodeLabel)-[:rel]->(:NodeLabel);"],
-                pytest.raises(MakeRelationshipNameSyntaxError),
+                pytest.raises(RelationshipNameSyntaxError),
                 id="EXP EXEC: lowercase rel name",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel)--[:rel]-->(:NodeLabel);"],
-                pytest.raises(MakeRelationshipNameSyntaxError),
+                pytest.raises(RelationshipNameSyntaxError),
                 id="EXP EXEC: Double node with long relationship, lowercase rel name",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel)--[:rel]-->(:NodeLabel);"],
-                pytest.raises(MakeRelationshipNameSyntaxError),
+                pytest.raises(RelationshipNameSyntaxError),
                 id="EXP EXEC: Double node with long relationship, lowercase rel name",
             ),
         ],
