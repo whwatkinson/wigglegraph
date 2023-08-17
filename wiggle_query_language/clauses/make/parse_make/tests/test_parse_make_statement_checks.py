@@ -8,13 +8,15 @@ from exceptions.wql.make import (
     MakeRelationshipNameSyntaxError,
 )
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
+from wiggle_query_language.clauses.parsing_helpers.parse_make_statement_checks import (
     check_illegal_characters,
     check_make_clause_spelling,
     check_make_params,
     check_relationships,
     check_make_statement_syntax,
 )
+
+# TODO move and separate the test
 
 
 class TestWqlMake:

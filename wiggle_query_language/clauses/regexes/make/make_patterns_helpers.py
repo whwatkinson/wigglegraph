@@ -4,15 +4,21 @@ ILLEGAL_CHARS = "#%&*$"
 
 def get_all_params_regex() -> str:
     """
-    Generates the regex for the parameters for a Node or Rel.
+    Gets the regex for the parameters for a Node or Rel.
     :return: A regex expression.
     """
     return rf"[{{}}\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+"
 
 
-def get_handle_label_regex(name: str, required_char: bool = False) -> str:
-    first = "?" if required_char else ""
-    second = "*" if required_char else "+"
+def get_handle_label_regex(name: str, required_chars: bool = True) -> str:
+    """
+    Get the regex for a node or relationship handle and label.
+    :param name: The Node/Rel name
+    :param required_chars: If the handel and label are required.
+    :return: A regex expression.
+    """
+    first = "" if required_chars else "?"
+    second = "+" if required_chars else "*"
 
     return rf"(?P<{name}_handle>\w*)\s*:{first}\s*(?P<{name}_label>\w{second})"
 
@@ -34,7 +40,7 @@ def get_rel_pattern_regex(rel_name: str) -> str:
     :param rel_name: The name of the Rel.
     :return: A regex expression.
     """
-    handle_label_regex = get_handle_label_regex(f"{rel_name}_rel", True)
+    handle_label_regex = get_handle_label_regex(f"{rel_name}_rel", False)
     return rf"\s*(?P<{rel_name}_rel><?-*\[\s*{handle_label_regex}\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]-*>?\s*)"
 
 

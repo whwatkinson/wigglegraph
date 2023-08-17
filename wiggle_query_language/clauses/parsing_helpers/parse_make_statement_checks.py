@@ -7,7 +7,7 @@ from exceptions.wql.make import (
     MakeParamSyntaxError,
     MakeRelationshipNameSyntaxError,
 )
-from wiggle_query_language.clauses.regexes.make_patterns import (
+from wiggle_query_language.clauses.regexes.make.make_patterns import (
     ILLEGAL_CHARS_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,

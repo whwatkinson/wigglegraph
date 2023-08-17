@@ -1,6 +1,6 @@
 from re import IGNORECASE, compile
 
-from wiggle_query_language.clauses.regexes.make_patterns_helpers import (
+from wiggle_query_language.clauses.regexes.make.make_patterns_helpers import (
     EXTRA_ALLOWED_CHARS,
     ILLEGAL_CHARS,
     get_all_params_regex,

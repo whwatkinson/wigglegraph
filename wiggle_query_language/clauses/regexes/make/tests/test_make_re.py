@@ -3,7 +3,7 @@ from typing import Optional
 import pytest
 
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.regexes.make_patterns import (
+from wiggle_query_language.clauses.regexes.make.make_patterns import (
     ALL_PARAMS_KEY_VALUE_REGEX,
     ILLEGAL_CHARS_REGEX,
     MAKE_STATEMENT_ALL_REGEX,
@@ -13,10 +13,10 @@ from wiggle_query_language.clauses.regexes.make_patterns import (
     PARAM_LIST_VALUE_REGEX,
     RELATIONSHIP_DIR_CHECK_REGEX,
 )
-from wiggle_query_language.clauses.regexes.make_patterns_helpers import (
+from wiggle_query_language.clauses.regexes.make.make_patterns_helpers import (
     get_nodes_rels_pattern_regex,
 )
-from wiggle_query_language.clauses.regexes.tests.cases_for_test_re import (
+from wiggle_query_language.clauses.regexes.make.tests.cases_for_test_re import (
     cases_for_test_nodes_rel_pattern,
 )
 

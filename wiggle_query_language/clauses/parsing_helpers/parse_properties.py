@@ -4,7 +4,7 @@ from typing import Optional
 from exceptions.wql.parsing import WiggleGraphIllegalPropertyValue
 from graph_logger.graph_logger import graph_logger
 from models.wql import WG_ALLOWED_TYPES, WiggleGraphPropertyPre, PropertyType
-from wiggle_query_language.clauses.regexes.make_patterns import (
+from wiggle_query_language.clauses.regexes.make.make_patterns import (
     ALL_PARAMS_KEY_VALUE_REGEX,
 )
 
