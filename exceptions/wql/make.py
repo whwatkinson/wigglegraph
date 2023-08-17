@@ -13,13 +13,5 @@ class MakeParamSyntaxError(WiggleGraphBaseException):
     pass
 
 
-class MakeNonDirectedRelationshipError(WiggleGraphBaseException):
-    pass
-
-
-class MakeIllegalCharacterError(WiggleGraphBaseException):
-    pass
-
-
 class MakeRelationshipNameSyntaxError(WiggleGraphBaseException):
     pass

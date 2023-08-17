@@ -1,6 +1,6 @@
 import pytest
 
-from exceptions.wql.make import MakeClauseSyntaxError
+from exceptions.wql.parsing import ClauseSyntaxError
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
     build_parsed_make,
@@ -193,7 +193,7 @@ class TestWqlMake:
             pytest.param(
                 "MAEK (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
                 0,
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC: MAKE clause sp error",
             ),
         ],

@@ -1,12 +1,18 @@
 import pytest
 
 from exceptions.wql.make import (
-    MakeClauseSyntaxError,
-    MakeIllegalCharacterError,
-    MakeNonDirectedRelationshipError,
+    # MakeClauseSyntaxError,
+    # MakeIllegalCharacterError,
+    # MakeNonDirectedRelationshipError,
     MakeParamSyntaxError,
     MakeRelationshipNameSyntaxError,
 )
+from exceptions.wql.parsing import (
+    ClauseSyntaxError,
+    IllegalCharacterError,
+    NonDirectedRelationshipError,
+)
+
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
     check_illegal_characters,
@@ -25,27 +31,27 @@ class TestWqlMake:
         [
             pytest.param(
                 "MAEK (node:NodeLabel);",
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
                 "eMAk (node:NodeLabel);",
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
                 "EMka (node:NodeLabel);",
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
                 "KMAe (node:NodeLabel);",
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
                 "EKAM (node:NodeLabel);",
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
         ],
@@ -121,22 +127,22 @@ class TestWqlMake:
             ),
             pytest.param(
                 ["MAKE (:NodeLabel)-[:]-(:NodeLabel);"],
-                pytest.raises(MakeNonDirectedRelationshipError),
+                pytest.raises(NonDirectedRelationshipError),
                 id="EXP EXEC: Non directed single relationship",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel)-[]-(:NodeLabel);"],
-                pytest.raises(MakeNonDirectedRelationshipError),
+                pytest.raises(NonDirectedRelationshipError),
                 id="EXP EXEC: Non directed single relationship, no colon",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel)<-[:]->(:NodeLabel);"],
-                pytest.raises(MakeNonDirectedRelationshipError),
+                pytest.raises(NonDirectedRelationshipError),
                 id="EXP EXEC: Rel is pointing both ways",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel)-[:]->(:NodeLabel)-[:]-(:NodeLabel);"],
-                pytest.raises(MakeNonDirectedRelationshipError),
+                pytest.raises(NonDirectedRelationshipError),
                 id="EXP EXEC: Triple node with two relationships, one not directed",
             ),
             pytest.param(
@@ -171,29 +177,29 @@ class TestWqlMake:
             ),
             pytest.param(
                 ["MAKE (:NodeLabel*);"],
-                pytest.raises(MakeIllegalCharacterError),
+                pytest.raises(IllegalCharacterError),
                 id="EXP EXEC: Illegal char *",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel#);"],
-                pytest.raises(MakeIllegalCharacterError),
+                pytest.raises(IllegalCharacterError),
                 id="EXP EXEC: Illegal char #",
             ),
             pytest.param(
                 ["""MAKE (:NodeLabel{ int: 1 , str: '2', st%r2:"2_4"});"""],
-                pytest.raises(MakeIllegalCharacterError),
+                pytest.raises(IllegalCharacterError),
                 id="EXP EXEC: Illegal char %",
             ),
             pytest.param(
                 [
                     """MAKE (left_node_handle:LeftNodeLabel{int: 1}) -[:]-> (middle_node_label:&MiddleNodeLabel) -[:]->(right_node_label:RightNodeLabel);"""
                 ],
-                pytest.raises(MakeIllegalCharacterError),
+                pytest.raises(IllegalCharacterError),
                 id="EXP EXEC: Illegal char &",
             ),
             pytest.param(
                 ["""MAKE (:NodeLabel{ int: 1 , str: '$2', str2:"2_4"});"""],
-                pytest.raises(MakeIllegalCharacterError),
+                pytest.raises(IllegalCharacterError),
                 id="EXP EXEC: Illegal char $",
             ),
         ],
@@ -215,43 +221,43 @@ class TestWqlMake:
             ),
             pytest.param(
                 ["MAKE (:NodeLabel;"],
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC: Missing ( on on Node",
             ),
             pytest.param(
                 ["MAKE (:NodeLabel;"],
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC: Missing ) on Node",
             ),
             pytest.param(
                 ["""MAKE (:NodeLabel{ int: 1 , str: '$2', str2:"2_4"};"""],
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC: Missing ) on Node with props",
             ),
             pytest.param(
                 ["""MAKE (:NodeLabel{ int: 1 , str: '$2', str2:"2_4");"""],
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC: Missing } on Node with props",
             ),
             pytest.param(
                 [
                     """MAKE (:NodeLabel{str: '2'})-[]->(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});"""
                 ],
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC: Missing ( on right Node",
             ),
             pytest.param(
                 [
                     """MAKE (:NodeLabel{str: '2'})-[->(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});"""
                 ],
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC: Missing [ on left rel",
             ),
             pytest.param(
                 [
                     """MAKE (:NodeLabel{str: '2'})-[]->(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14});"""
                 ],
-                pytest.raises(MakeClauseSyntaxError),
+                pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC: Missing [ on right node list",
             ),
         ],

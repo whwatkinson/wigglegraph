@@ -7,3 +7,15 @@ class WiggleGraphIllegalPropertyValue(WiggleGraphBaseException):
 
 class PropertyTypeAssignmentError(WiggleGraphBaseException):
     pass
+
+
+class ClauseSyntaxError(WiggleGraphBaseException):
+    pass
+
+
+class IllegalCharacterError(WiggleGraphBaseException):
+    pass
+
+
+class NonDirectedRelationshipError(WiggleGraphBaseException):
+    pass

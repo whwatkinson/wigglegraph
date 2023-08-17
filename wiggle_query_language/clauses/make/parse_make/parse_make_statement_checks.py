@@ -1,11 +1,13 @@
 from re import split
 
 from exceptions.wql.make import (
-    MakeClauseSyntaxError,
-    MakeIllegalCharacterError,
-    MakeNonDirectedRelationshipError,
     MakeParamSyntaxError,
     MakeRelationshipNameSyntaxError,
+)
+from exceptions.wql.parsing import (
+    ClauseSyntaxError,
+    IllegalCharacterError,
+    NonDirectedRelationshipError,
 )
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
     ILLEGAL_CHARS_REGEX,
@@ -77,7 +79,7 @@ def check_make_clause_spelling(query_string: str) -> bool:
 
     if matches := MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX.findall(query_string):
         for match in matches:
-            raise MakeClauseSyntaxError(
+            raise ClauseSyntaxError(
                 message=f"SyntaxError: {match} was not recognised did you mean MAKE?"
             )
 
@@ -99,11 +101,11 @@ def check_relationships(stmt_matches: list[str]) -> bool:
             rel_name: str = rel[1]
 
             if "<" in rel_pattern and ">" in rel_pattern:
-                raise MakeNonDirectedRelationshipError(
+                raise NonDirectedRelationshipError(
                     message=f"Relationships must be unidirectional: {rel_pattern}"
                 )
             if "<" not in rel_pattern and ">" not in rel_pattern:
-                raise MakeNonDirectedRelationshipError(
+                raise NonDirectedRelationshipError(
                     message=f"Relationships must be singly directed: {rel_pattern}"
                 )
 
@@ -125,7 +127,7 @@ def check_illegal_characters(stmt_matches: list[str]) -> bool:
     """
     for stmt in stmt_matches:
         if match := ILLEGAL_CHARS_REGEX.search(stmt):
-            raise MakeIllegalCharacterError(message=f"{match.group()} is not allowed")
+            raise IllegalCharacterError(message=f"{match.group()} is not allowed")
 
     return True
 
@@ -147,17 +149,17 @@ def check_statement_syntax(stmt_matches: list[str]) -> bool:
             square_count = sum(1 for x in sub_stmt if x in ("[", "]"))
 
             if parens_count % 2 == 1:
-                raise MakeClauseSyntaxError(
+                raise ClauseSyntaxError(
                     f"Node is missing a parentheses: ---> {sub_stmt} <---"
                 )
 
             if curly_count % 2 == 1:
-                raise MakeClauseSyntaxError(
+                raise ClauseSyntaxError(
                     f"Properties is missing a curly brace: ---> {sub_stmt} <---"
                 )
 
             if square_count % 2 == 1:
-                raise MakeClauseSyntaxError(
+                raise ClauseSyntaxError(
                     f"A Relationship or property list is missing a square bracket: ---> {sub_stmt} <---"
                 )
 
