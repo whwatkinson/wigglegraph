@@ -11,7 +11,7 @@ from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
     check_illegal_characters,
     check_make_clause_spelling,
-    check_node_rel_params,
+    check_node_rel_properties,
     check_relationships,
     check_statement_syntax,
 )
@@ -82,9 +82,11 @@ class TestWqlMake:
             ),
         ],
     )
-    def test_check_node_rel_params(self, test_make_stmt: list[str], exception) -> None:
+    def test_check_node_rel_properties(
+        self, test_make_stmt: list[str], exception
+    ) -> None:
         with exception:
-            test = check_node_rel_params(test_make_stmt)
+            test = check_node_rel_properties(test_make_stmt)
             assert test is True
 
     @pytest.mark.parametrize(

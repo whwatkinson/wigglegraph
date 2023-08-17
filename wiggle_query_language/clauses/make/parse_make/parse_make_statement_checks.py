@@ -33,7 +33,7 @@ def check_property_syntax(params_string: str) -> bool:
     return True
 
 
-def check_node_rel_params(stmt_matches: list[str]) -> True:
+def check_node_rel_properties(stmt_matches: list[str]) -> True:
     """
     Very crude check that the params match are up to snuff.
     :param stmt_matches: The extracted statements.
@@ -164,7 +164,7 @@ def check_statement_syntax(stmt_matches: list[str]) -> bool:
     return True
 
 
-def validate_make_statement(stmt_matches: list[str]) -> bool:
+def validate_statement(stmt_matches: list[str]) -> bool:
     """
     Handles the validation for the MAKE/FIND statement.
     :param stmt_matches: The extracted make statements.
@@ -172,7 +172,7 @@ def validate_make_statement(stmt_matches: list[str]) -> bool:
     """
     check_statement_syntax(stmt_matches)
     check_illegal_characters(stmt_matches)
-    check_node_rel_params(stmt_matches)
+    check_node_rel_properties(stmt_matches)
     check_relationships(stmt_matches)
 
     return True
