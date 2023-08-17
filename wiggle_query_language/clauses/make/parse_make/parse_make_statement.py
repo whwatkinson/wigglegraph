@@ -1,7 +1,7 @@
 from typing import Optional
 
 from models.wql import ParsedMake
-from wiggle_query_language.clauses.parsing_helpers.parse_make_statement_checks import (
+from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
     check_make_clause_spelling,
     validate_make_statement,
 )
