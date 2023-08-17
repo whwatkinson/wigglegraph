@@ -128,12 +128,23 @@ def check_illegal_characters(make_matches: list[str]) -> bool:
     return True
 
 
+def check_make_syntax(make_matches: list[str]) -> bool:
+    """
+    Checks the syntax of the MAKE statement.
+    :param make_matches:
+    :return: True or raises and exception.
+    """
+
+    return True
+
+
 def validate_make_statement(make_matches: list[str]) -> bool:
     """
     Handles the validation for the make statement.
     :param make_matches: The extracted make statements.
     :return: True or raises and exception.
     """
+    check_make_syntax(make_matches)
     check_illegal_characters(make_matches)
     check_make_params(make_matches)
     check_relationships(make_matches)

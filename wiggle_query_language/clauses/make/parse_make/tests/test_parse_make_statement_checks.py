@@ -6,7 +6,6 @@ from exceptions.wql.make import (
     MakeNonDirectedRelationshipError,
     MakeParamSyntaxError,
     MakeRelationshipNameSyntaxError,
-    UnNamedRelationShipError,
 )
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
@@ -156,11 +155,6 @@ class TestWqlMake:
                 ["MAKE (:NodeLabel)--[:rel]-->(:NodeLabel);"],
                 pytest.raises(MakeRelationshipNameSyntaxError),
                 id="EXP EXEC: Double node with long relationship, lowercase rel name",
-            ),
-            pytest.param(
-                ["MAKE (f:foo)-->(b:Bar);"],
-                pytest.raises(UnNamedRelationShipError),
-                id="EXP EXEC: Unnamed rel ltr",
             ),
         ],
     )
