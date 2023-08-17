@@ -22,7 +22,7 @@ NODES_RELS_PATTERN_REGEX = compile(
 # AKME (node1:NodeLabel);
 MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX = compile(
     (
-        r"\s?(?P<make_syntax_error>make|maek|mkae|mkea|meak|meka|amke|amek|akme"
+        r"\s?(?P<make_syntax_error>maek|mkae|mkea|meak|meka|amke|amek|akme"
         r"|akem|aemk|aekm|kmae|kmea|kame|kaem|kema|keam|emak|emka|eamk|eakm|ekma|ekam)\s?\("
     ),
     flags=IGNORECASE,

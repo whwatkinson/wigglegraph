@@ -12,7 +12,7 @@ The MAKE clause of WQL.
     * Maximum pattern:  (**left**)-[**REL1**]->(**middle**)-[**REL2**]->(**right**)
 ## Aims
 * To be simple and intuitive to use, the language itself is declarative in nature.
-* To be informative to the User and provide helpful feed back to the User in the case of an Error.
+* In the case of an Error providing helpful suggestions back to the User on how to fix the MAKE statement.
 * Flexable schema, add and remove as and when.
 * Multiple Noe and Relationship creation at once.
 

@@ -2,7 +2,7 @@ from typing import Optional
 
 from models.wql import ParsedMake
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
-    check_make_clause_syntax,
+    check_make_clause_spelling,
     validate_make_statement,
 )
 from wiggle_query_language.clauses.regexes.make_patterns import (
@@ -40,7 +40,7 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     ]:
         return make_matches
 
-    check_make_clause_syntax(query_string)
+    check_make_clause_spelling(query_string)
 
     return None
 

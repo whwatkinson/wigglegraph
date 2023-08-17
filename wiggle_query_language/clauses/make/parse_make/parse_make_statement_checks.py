@@ -68,9 +68,9 @@ def check_make_params(make_matches: list[str]) -> True:
     return True
 
 
-def check_make_clause_syntax(query_string: str) -> bool:
+def check_make_clause_spelling(query_string: str) -> bool:
     """
-    Checks the syntax of the MAKE statement.
+    Checks the MAKE for a spelling mistake.
     :param query_string: The extracted MAKE statements.
     :return: True or raises and exception.
     """

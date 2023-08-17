@@ -10,7 +10,7 @@ from exceptions.wql.make import (
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
     check_illegal_characters,
-    check_make_clause_syntax,
+    check_make_clause_spelling,
     check_make_params,
     check_relationships,
     check_make_statement_syntax,
@@ -48,9 +48,9 @@ class TestWqlMake:
             ),
         ],
     )
-    def test_check_make_syntax(self, test_make_stmt: str, exception) -> None:
+    def test_check_make_clause_spelling(self, test_make_stmt: str, exception) -> None:
         with exception:
-            test = check_make_clause_syntax(test_make_stmt)
+            test = check_make_clause_spelling(test_make_stmt)
             assert test is True
 
     @pytest.mark.parametrize(
