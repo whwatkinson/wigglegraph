@@ -1,3 +1,5 @@
+from re import split
+
 from exceptions.wql.make import (
     MakeClauseSyntaxError,
     MakeIllegalCharacterError,
@@ -128,12 +130,36 @@ def check_illegal_characters(make_matches: list[str]) -> bool:
     return True
 
 
-def check_make_syntax(make_matches: list[str]) -> bool:
+def check_make_statement_syntax(make_matches: list[str]) -> bool:
     """
     Checks the syntax of the MAKE statement.
-    :param make_matches:
+    :param make_matches: The extracted MAKE statements.
     :return: True or raises and exception.
     """
+
+    for stmt in make_matches:
+        stmt_split = split(r"[<>]+", stmt)
+
+        for sub_stmt in stmt_split:
+            # parens and curls must be even
+            parens_count = sum(1 for x in sub_stmt if x in ("(", ")"))
+            curly_count = sum(1 for x in sub_stmt if x in ("{", "}"))
+            square_count = sum(1 for x in sub_stmt if x in ("[", "]"))
+
+            if parens_count % 2 == 1:
+                raise MakeClauseSyntaxError(
+                    f"Node is missing a parentheses: ---> {sub_stmt} <---"
+                )
+
+            if curly_count % 2 == 1:
+                raise MakeClauseSyntaxError(
+                    f"Properties is missing a curly brace: ---> {sub_stmt} <---"
+                )
+
+            if square_count % 2 == 1:
+                raise MakeClauseSyntaxError(
+                    f"A Relationship or property list is missing a square bracket: ---> {sub_stmt} <---"
+                )
 
     return True
 
@@ -144,7 +170,7 @@ def validate_make_statement(make_matches: list[str]) -> bool:
     :param make_matches: The extracted make statements.
     :return: True or raises and exception.
     """
-    check_make_syntax(make_matches)
+    check_make_statement_syntax(make_matches)
     check_illegal_characters(make_matches)
     check_make_params(make_matches)
     check_relationships(make_matches)
