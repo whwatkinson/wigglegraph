@@ -1,5 +1,5 @@
 MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel);
-ADJUST n.name = "h" and m.name = "Wig";
 FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
 CRITERIA p.name = "Bar" or q.name = "Bar;
+ADJUST p.name = "h" and q.name = "Wig";
 REPORT wn(p), wn(q);

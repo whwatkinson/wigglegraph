@@ -1,20 +1,21 @@
-# Make
+# MAKE
 
 INSERT MAKE PIC HERE:
 
-The MAKE clause of WQL.
-
-## Introduction
-* The MAKE clause is how data is loaded onto the graph.
-* The user creates Nodes and Edges by expressing a pattern in the terminal.
-* Currently only support for creation of a maximum of three node and two relationships per MAKE statement. However, multiple make statements can be used
-    * Minimum pattern:  (**left**)
-    * Maximum pattern:  (**left**)-[**REL1**]->(**middle**)-[**REL2**]->(**right**)
 ## Aims
 * To be simple and intuitive to use, the language itself is declarative in nature.
 * In the case of an Error providing helpful suggestions back to the User on how to fix the MAKE statement.
 * Flexable schema, add and remove as and when.
-* Multiple Noe and Relationship creation at once.
+* Multiple Nodee and Relationship creation at once.
+
+
+## Introduction
+* The WQL MAKE clause is how data is loaded onto the graph.
+* The user creates Nodes and Edges by expressing a pattern in the terminal.
+* Currently only support for creation of a maximum of three node and two relationships per MAKE statement. However, multiple make statements can be used
+    * Minimum pattern:  (**left**)
+    * Maximum pattern:  (**left**)-[**REL1**]->(**middle**)-[**REL2**]->(**right**)
+
 
 ## Node and Relationship
 
@@ -29,7 +30,7 @@ The MAKE clause of WQL.
 * A List of any combination of the above.
 * Dictionary and object are not supported. In my view if your resorting to a dict/obj then its own node, change my mind!
 
-## Representation:
+## Representation
 * The two basic units of the graph and Node and Edges.
 * To create these follow this pattern.
 
@@ -69,27 +70,22 @@ The MAKE clause of WQL.
 ## Examples:
 
 1. Creation of a single node with no properties
-   - Use case: INSERT HERE
     ```
     MAKE (:NodeLabel);
     ```
 2. Creation of a two node with no properties
-   - Use case: INSERT HERE
     ```
     MAKE (:NodeLabel), (:NodeLabel);
     ```
 3. Creation of a single node with a node handle
-   - Use case: INSERT HERE
     ```
     MAKE (node:NodeLabel);
     ```
 4. Creation of a single node with properties
-   - Use case: INSERT HERE
     ```
     MAKE (node:NodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});
     ```
 5. Creation of two nodes, without a named relationship.
-   - Use case: INSERT HERE
     ```
     MAKE (:NodeLabel)-[]->(:NodeLabel);
     ```
