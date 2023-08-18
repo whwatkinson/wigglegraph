@@ -1,8 +1,6 @@
 from typing import Optional
 
-from models.wql import ParsedMake
-
-from models.wql.enums.clauses import Clause
+from models.wql import ParsedMake, Clause
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
     validate_statement,
 )

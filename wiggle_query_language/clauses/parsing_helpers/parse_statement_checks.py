@@ -7,7 +7,7 @@ from exceptions.wql.parsing import (
     ParamSyntaxError,
     RelationshipNameSyntaxError,
 )
-from models.wql.enums.clauses import Clause
+from models.wql import Clause
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
 )

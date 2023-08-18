@@ -1,7 +1,7 @@
 import pytest
 
 from exceptions.wql.parsing import ClauseSyntaxError
-from models.wql.enums.clauses import Clause
+from models.wql import Clause
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
     build_parsed_make,
