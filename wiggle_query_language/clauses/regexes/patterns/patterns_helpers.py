@@ -40,7 +40,7 @@ def get_rel_pattern_regex(rel_name: str) -> str:
     :return: A regex expression.
     """
     handle_label_regex = get_handle_label_regex(f"{rel_name}_rel", False)
-    return rf"\s*(?P<{rel_name}_rel><?-*\[\s*{handle_label_regex}\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]-*>?\s*)"
+    return rf"\s*(?P<{rel_name}_rel><?-+\[\s*{handle_label_regex}\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]-+>?\s*)"
 
 
 def get_nodes_rels_pattern_regex() -> str:
