@@ -80,6 +80,7 @@ if __name__ == "__main__":
     """
 
     # qry = """
+    #
     # MAKE (:NodeLabel{int: 1})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"});
     # """
     #
