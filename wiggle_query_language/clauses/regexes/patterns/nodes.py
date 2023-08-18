@@ -8,5 +8,5 @@ from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
 
 # (NodeHandle: NodeLabel {NodeProps})
 NODE_HANDLE_LABEL_PARAMS_REGEX = compile(
-    rf"{get_node_pattern_regex('this')}", flags=IGNORECASE
+    pattern=rf"{get_node_pattern_regex('this')}", flags=IGNORECASE
 )
