@@ -8,7 +8,7 @@ from wiggle_query_language.clauses.regexes.patterns.relationships import (
 )
 
 
-class TestMakeRePatterns:
+class TestRelationshipRegex:
     @pytest.mark.parametrize(
         "test_pattern, expected_result, exception",
         [
