@@ -32,7 +32,7 @@ def build_parsed_make(statement: str) -> ParsedFind:
     return parsed_make
 
 
-def parse_make_statement_from_query_string(
+def parse_find_statement_from_query_string(
     query_string: str,
 ) -> Optional[list[ParsedFind]]:
     """
@@ -66,5 +66,5 @@ if __name__ == "__main__":
     #
     # """
 
-    s = parse_make_statement_from_query_string(qs)
+    s = parse_find_statement_from_query_string(qs)
     a = 1

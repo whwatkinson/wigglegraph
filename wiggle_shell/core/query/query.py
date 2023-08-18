@@ -8,7 +8,10 @@ from wiggle_query_language.clauses.make import (
     make,
     parse_make_statement_from_query_string,
 )
-from wiggle_query_language.clauses.find import parse_find_statement_from_query_string
+from wiggle_query_language.clauses.find import (
+    find,
+    parse_find_statement_from_query_string,
+)
 
 
 #  todo docstrings
@@ -39,6 +42,9 @@ def parse_query_string(query_string: str) -> ParsedQuery:
 def execute_query(parsed_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> bool:
     if query_make := parsed_query.make_parsed:
         make(query_make, dbms_file_path)
+
+    if query_make := parsed_query.find_parsed:
+        find()
 
     return True
 
