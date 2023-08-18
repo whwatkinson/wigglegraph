@@ -9,6 +9,10 @@ from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_ALL_REGEX,
 )
 
+from wiggle_query_language.clauses.regexes.find.find_patterns import (
+    FIND_STATEMENT_ALL_REGEX,
+)
+
 
 def extract_all_statements(query_string: str, clause: Clause) -> Optional[list[str]]:
     """
@@ -21,7 +25,7 @@ def extract_all_statements(query_string: str, clause: Clause) -> Optional[list[s
         case Clause.MAKE:
             clause_all_regex = MAKE_STATEMENT_ALL_REGEX
         case Clause.FIND:
-            clause_all_regex = None
+            clause_all_regex = FIND_STATEMENT_ALL_REGEX
         case _:
             raise Exception()
 

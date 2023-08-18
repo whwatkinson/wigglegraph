@@ -11,6 +11,9 @@ from models.wql.enums.clauses import Clause
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
 )
+from wiggle_query_language.clauses.regexes.find.find_patterns import (
+    FIND_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
+)
 from wiggle_query_language.clauses.regexes.patterns.properties import (
     CHECK_PROPERTIES_SYNTAX_REGEX,
     PROPERTIES_LIST_VALUE_REGEX,
@@ -33,7 +36,7 @@ def check_clause_spelling(query_string: str, clause: Clause) -> bool:
         case Clause.MAKE:
             clause_syntax_regex = MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX
         case Clause.FIND:
-            clause_syntax_regex = None
+            clause_syntax_regex = FIND_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX
         case _:
             raise Exception()
 

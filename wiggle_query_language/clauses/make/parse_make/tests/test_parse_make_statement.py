@@ -12,7 +12,7 @@ from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
 )
 
 
-class TestWqlMake:
+class TestParseMake:
     @pytest.mark.parametrize(
         "test_query, expected_output, exception",
         [

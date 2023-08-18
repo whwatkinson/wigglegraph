@@ -38,7 +38,7 @@ def parse_make_statement_from_query_string(
     """
     Extracts the MAKE statement from the query body.
     :param query_string: The raw query.
-    :return: A list of MAKE statements.
+    :return: A list of ParsedMake.
     """
     make_matches = extract_all_statements(query_string, Clause.MAKE)
     if not make_matches:

@@ -260,3 +260,38 @@ class TestParseStatementChecks:
         with exception:
             test = check_clause_spelling(test_make_stmt, Clause.MAKE)
             assert test is True
+
+    @pytest.mark.parametrize(
+        "test_make_stmt, exception",
+        [
+            pytest.param(
+                "DIFN (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "FIDN (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "FNID (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "DNIF (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "IFND (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+        ],
+    )
+    def test_check_find_clause_spelling(self, test_make_stmt: str, exception) -> None:
+        with exception:
+            test = check_clause_spelling(test_make_stmt, Clause.FIND)
+            assert test is True
