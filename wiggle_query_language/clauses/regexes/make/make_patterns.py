@@ -1,9 +1,8 @@
 from re import IGNORECASE, compile
 
-from wiggle_query_language.clauses.regexes.make.make_patterns_helpers import (
+from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
     EXTRA_ALLOWED_CHARS,
     ILLEGAL_CHARS,
-    get_all_params_regex,
     get_nodes_rels_pattern_regex,
 )
 
@@ -37,11 +36,6 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
     flags=IGNORECASE,
 )
 
-# -[r:Rel]->
-RELATIONSHIP_DIR_CHECK_REGEX = compile(
-    rf"(?P<foo><?-+\[\s*\w*\s*:?\s*(?P<rel_name>\w*)\s*{get_all_params_regex()}-+>?)",
-    flags=IGNORECASE,
-)
 
 # ()-->()
 # UNNAMED_RELATIONSHIP_REGEX = compile(r"\)(?P<unnamed_rel><?-*>?)\(", flags=IGNORECASE)

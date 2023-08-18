@@ -11,9 +11,8 @@ from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX,
     NODES_RELS_PATTERN_REGEX,
     PARAM_LIST_VALUE_REGEX,
-    RELATIONSHIP_DIR_CHECK_REGEX,
 )
-from wiggle_query_language.clauses.regexes.make.make_patterns_helpers import (
+from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
     get_nodes_rels_pattern_regex,
 )
 from wiggle_query_language.clauses.regexes.make.tests.cases_for_test_re import (
@@ -121,53 +120,53 @@ class TestMakeRePatterns:
             test = MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX.findall(test_pattern)
             assert test == expected_result
 
-    @pytest.mark.parametrize(
-        "test_pattern, expected_result, exception",
-        [
-            pytest.param(
-                """MAKE (:NodeLabel)-[f:REL]->(foo:NodeLabel);""",
-                [("-[f:REL]->", "REL")],
-                does_not_raise(),
-                id="EXP PASS: 1 Match",
-            ),
-            pytest.param(
-                """MAKE (:NodeLabel)---[f:REL]--->(foo:NodeLabel);""",
-                [("---[f:REL]--->", "REL")],
-                does_not_raise(),
-                id="EXP PASS: 1 Match, long rel",
-            ),
-            pytest.param(
-                """MAKE (:NodeLabel)-[]-(foo:NodeLabel);""",
-                [("-[]-", "")],
-                does_not_raise(),
-                id="EXP PASS: 1 Match",
-            ),
-            pytest.param(
-                """MAKE (:NodeLabel)----[]---(foo:NodeLabel);""",
-                [("----[]---", "")],
-                does_not_raise(),
-                id="EXP PASS: 1 Match, long rel not symmetrical",
-            ),
-            pytest.param(
-                """MAKE (:NodeLabel)<-[f:FOO]->(foo:NodeLabel);""",
-                [("<-[f:FOO]->", "FOO")],
-                does_not_raise(),
-                id="EXP PASS: 1 Match",
-            ),
-            pytest.param(
-                "REPORT (:NodeLabel);",
-                [],
-                does_not_raise(),
-                id="EXP PASS: No Match",
-            ),
-        ],
-    )
-    def test_relationship_dir_check_regex(
-        self, test_pattern: str, expected_result: Optional[list[str]], exception
-    ) -> None:
-        with exception:
-            test = RELATIONSHIP_DIR_CHECK_REGEX.findall(test_pattern)
-            assert test == expected_result
+    # @pytest.mark.parametrize(
+    #     "test_pattern, expected_result, exception",
+    #     [
+    #         pytest.param(
+    #             """MAKE (:NodeLabel)-[f:REL]->(foo:NodeLabel);""",
+    #             [("-[f:REL]->", "REL")],
+    #             does_not_raise(),
+    #             id="EXP PASS: 1 Match",
+    #         ),
+    #         pytest.param(
+    #             """MAKE (:NodeLabel)---[f:REL]--->(foo:NodeLabel);""",
+    #             [("---[f:REL]--->", "REL")],
+    #             does_not_raise(),
+    #             id="EXP PASS: 1 Match, long rel",
+    #         ),
+    #         pytest.param(
+    #             """MAKE (:NodeLabel)-[]-(foo:NodeLabel);""",
+    #             [("-[]-", "")],
+    #             does_not_raise(),
+    #             id="EXP PASS: 1 Match",
+    #         ),
+    #         pytest.param(
+    #             """MAKE (:NodeLabel)----[]---(foo:NodeLabel);""",
+    #             [("----[]---", "")],
+    #             does_not_raise(),
+    #             id="EXP PASS: 1 Match, long rel not symmetrical",
+    #         ),
+    #         pytest.param(
+    #             """MAKE (:NodeLabel)<-[f:FOO]->(foo:NodeLabel);""",
+    #             [("<-[f:FOO]->", "FOO")],
+    #             does_not_raise(),
+    #             id="EXP PASS: 1 Match",
+    #         ),
+    #         pytest.param(
+    #             "REPORT (:NodeLabel);",
+    #             [],
+    #             does_not_raise(),
+    #             id="EXP PASS: No Match",
+    #         ),
+    #     ],
+    # )
+    # def test_relationship_dir_check_regex(
+    #     self, test_pattern: str, expected_result: Optional[list[str]], exception
+    # ) -> None:
+    #     with exception:
+    #         test = RELATIONSHIP_DIR_CHECK_REGEX.findall(test_pattern)
+    #         assert test == expected_result
 
     @pytest.mark.parametrize(
         "test_pattern, expected_result, exception",
