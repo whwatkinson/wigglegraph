@@ -1,11 +1,14 @@
 import pytest
 
 from exceptions.wql.parsing import ClauseSyntaxError
+from models.wql.enums.clauses import Clause
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
     build_parsed_make,
-    extract_all_make_statements,
     parse_make_statement_from_query_string,
+)
+from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
+    extract_all_statements,
 )
 
 
@@ -93,7 +96,7 @@ class TestWqlMake:
         self, test_query: str, expected_output: list[str], exception
     ) -> None:
         with exception:
-            test = extract_all_make_statements(test_query)
+            test = extract_all_statements(test_query, Clause.MAKE)
             assert test == expected_output
 
     @pytest.mark.parametrize(

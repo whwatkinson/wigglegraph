@@ -25,7 +25,7 @@ def check_clause_spelling(query_string: str, clause: Clause) -> bool:
     """
     Checks the MAKE for a spelling mistake.
     :param query_string: The extracted MAKE statements.
-    :param clause: The extracted MAKE statements.
+    :param clause: The WQL clause.
     :return: True or raises and exception.
     """
 

@@ -5,13 +5,13 @@ from models.wql import ParsedMake
 from models.wql.enums.clauses import Clause
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
     validate_statement,
-    check_clause_spelling,
 )
-from wiggle_query_language.clauses.regexes.make.make_patterns import (
-    MAKE_STATEMENT_ALL_REGEX,
-)
+
 from wiggle_query_language.clauses.regexes.patterns.patterns import (
     NODES_RELS_PATTERN_REGEX,
+)
+from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
+    extract_all_statements,
 )
 
 
@@ -32,23 +32,6 @@ def build_parsed_make(statement: str) -> ParsedMake:
     return parsed_make
 
 
-def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
-    """
-    Extracts the MAKE statement from the query body.
-    :param query_string: The raw query.
-    :return: A list of MAKE statements.
-    """
-
-    if make_matches := [
-        x.group() for x in MAKE_STATEMENT_ALL_REGEX.finditer(query_string)
-    ]:
-        return make_matches
-
-    check_clause_spelling(query_string, Clause.MAKE)
-
-    return None
-
-
 def parse_make_statement_from_query_string(
     query_string: str,
 ) -> Optional[list[ParsedMake]]:
@@ -57,7 +40,7 @@ def parse_make_statement_from_query_string(
     :param query_string: The raw query.
     :return: A list of MAKE statements.
     """
-    make_matches = extract_all_make_statements(query_string)
+    make_matches = extract_all_statements(query_string, Clause.MAKE)
     if not make_matches:
         return None
     if not validate_statement(make_matches):
