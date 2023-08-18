@@ -23,7 +23,7 @@ class WiggleGraphPropertyPre(BaseModel):
 
     def yield_extracted_property(self) -> ExtractedPropertyPre:
         """
-        Allows for dynamic fetching the extracted property from ALL_PARAMS_KEY_VALUE_REGEX.
+        Allows for dynamic fetching the extracted property from ALL_PROPERTIES_KEY_VALUE_REGEX.
 
         This is then fed into handle_extracted_property which correctly assigns the property type.
 

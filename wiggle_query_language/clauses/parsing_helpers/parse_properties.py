@@ -5,7 +5,7 @@ from exceptions.wql.parsing import WiggleGraphIllegalPropertyValue
 from graph_logger.graph_logger import graph_logger
 from models.wql import WG_ALLOWED_TYPES, WiggleGraphPropertyPre, PropertyType
 from wiggle_query_language.clauses.regexes.patterns.properties import (
-    ALL_PARAMS_KEY_VALUE_REGEX,
+    ALL_PROPERTIES_KEY_VALUE_REGEX,
 )
 
 
@@ -31,7 +31,7 @@ def parse_properties(properties_string: str) -> dict:
     :return: A dictionary ready for export.
     """
     primitive_property_dictionary = dict()
-    if props_primitive := ALL_PARAMS_KEY_VALUE_REGEX.finditer(properties_string):
+    if props_primitive := ALL_PROPERTIES_KEY_VALUE_REGEX.finditer(properties_string):
         for match in props_primitive:
             make_primitive_property = WiggleGraphPropertyPre(**match.groupdict())
             if match.group("property_value").strip() == "":

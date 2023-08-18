@@ -4,7 +4,7 @@ import pytest
 
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.regexes.patterns.properties import (
-    ALL_PARAMS_KEY_VALUE_REGEX,
+    ALL_PROPERTIES_KEY_VALUE_REGEX,
 )
 
 
@@ -51,5 +51,5 @@ class TestPropertiesRegex:
         self, test_pattern: str, expected_result: Optional[list[str]], exception
     ) -> None:
         with exception:
-            test = ALL_PARAMS_KEY_VALUE_REGEX.findall(test_pattern)
+            test = ALL_PROPERTIES_KEY_VALUE_REGEX.findall(test_pattern)
             assert test == expected_result
