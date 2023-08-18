@@ -1,5 +1,4 @@
-EXTRA_ALLOWED_CHARS = "@"
-ILLEGAL_CHARS = "#%&*$"
+from wiggle_query_language.clauses.regexes import EXTRA_ALLOWED_CHARS
 
 
 def get_all_params_regex() -> str:

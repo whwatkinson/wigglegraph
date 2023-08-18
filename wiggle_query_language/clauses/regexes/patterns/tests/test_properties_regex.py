@@ -5,6 +5,7 @@ import pytest
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.regexes.patterns.properties import (
     ALL_PROPERTIES_KEY_VALUE_REGEX,
+    CHECK_PARAMS_SYNTAX_REGEX,
 )
 
 
@@ -52,4 +53,30 @@ class TestPropertiesRegex:
     ) -> None:
         with exception:
             test = ALL_PROPERTIES_KEY_VALUE_REGEX.findall(test_pattern)
+            assert test == expected_result
+
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                """MAKE (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]});""",
+                [
+                    """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, list: [1, '2', "2_4", "3 4", 3.14]}"""
+                ],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                "REPORT (:NodeLabel);",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_make_statement_check_params_syntax(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = CHECK_PARAMS_SYNTAX_REGEX.findall(test_pattern)
             assert test == expected_result

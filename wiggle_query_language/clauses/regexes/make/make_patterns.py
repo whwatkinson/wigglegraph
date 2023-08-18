@@ -1,10 +1,10 @@
 from re import IGNORECASE, compile
 
 from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
-    EXTRA_ALLOWED_CHARS,
-    ILLEGAL_CHARS,
     get_nodes_rels_pattern_regex,
 )
+
+from wiggle_query_language.clauses.regexes import EXTRA_ALLOWED_CHARS, ILLEGAL_CHARS
 
 # MAKE *;
 MAKE_STATEMENT_ALL_REGEX = compile(
@@ -29,12 +29,6 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX = compile(
 
 # #%&*
 ILLEGAL_CHARS_REGEX = compile(rf"[{ILLEGAL_CHARS}]", flags=IGNORECASE)
-
-# {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
-MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
-    rf"(?P<all_props>{{[\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+}})",
-    flags=IGNORECASE,
-)
 
 
 # [1, '2', "2_4", "3 4", 3.14]
