@@ -5,7 +5,8 @@ import pytest
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.regexes.patterns.properties import (
     ALL_PROPERTIES_KEY_VALUE_REGEX,
-    CHECK_PARAMS_SYNTAX_REGEX,
+    CHECK_PROPERTIES_SYNTAX_REGEX,
+    PROPERTIES_LIST_VALUE_REGEX,
 )
 
 
@@ -78,5 +79,29 @@ class TestPropertiesRegex:
         self, test_pattern: str, expected_result: Optional[list[str]], exception
     ) -> None:
         with exception:
-            test = CHECK_PARAMS_SYNTAX_REGEX.findall(test_pattern)
+            test = CHECK_PROPERTIES_SYNTAX_REGEX.findall(test_pattern)
+            assert test == expected_result
+
+    @pytest.mark.parametrize(
+        "test_pattern, expected_result, exception",
+        [
+            pytest.param(
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]}""",
+                ['[1, \'2\', "2_4", "3 4", 3.14]'],
+                does_not_raise(),
+                id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                """{int: 1, str: '2', str2:"2_4", float: 3.14, none: null, bool: false]}""",
+                [],
+                does_not_raise(),
+                id="EXP PASS: No Match",
+            ),
+        ],
+    )
+    def test_param_list_value_regex(
+        self, test_pattern: str, expected_result: Optional[list[str]], exception
+    ) -> None:
+        with exception:
+            test = PROPERTIES_LIST_VALUE_REGEX.findall(test_pattern)
             assert test == expected_result

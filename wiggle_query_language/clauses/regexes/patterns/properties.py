@@ -14,7 +14,13 @@ ALL_PROPERTIES_KEY_VALUE_REGEX = compile(
 
 
 # {first_name:'Harry' , last_name:'Watkinson' , favourite_number: 6 , favourite_color: 'green'}
-CHECK_PARAMS_SYNTAX_REGEX = compile(
+CHECK_PROPERTIES_SYNTAX_REGEX = compile(
     rf"(?P<all_props>{{[\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+}})",
     flags=IGNORECASE,
+)
+
+
+# [1, '2', "2_4", "3 4", 3.14]
+PROPERTIES_LIST_VALUE_REGEX = compile(
+    rf"(?P<list_value>\[[\w,\s'\"\.{EXTRA_ALLOWED_CHARS}]+])", flags=IGNORECASE
 )

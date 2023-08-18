@@ -8,7 +8,6 @@ from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_ALL_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
     NODES_RELS_PATTERN_REGEX,
-    PARAM_LIST_VALUE_REGEX,
 )
 from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
     get_nodes_rels_pattern_regex,
@@ -90,30 +89,6 @@ class TestMakeRePatterns:
     ) -> None:
         with exception:
             test = MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX.findall(test_pattern)
-            assert test == expected_result
-
-    @pytest.mark.parametrize(
-        "test_pattern, expected_result, exception",
-        [
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]}""",
-                ['[1, \'2\', "2_4", "3 4", 3.14]'],
-                does_not_raise(),
-                id="EXP PASS: 1 Match",
-            ),
-            pytest.param(
-                """{int: 1, str: '2', str2:"2_4", float: 3.14, none: null, bool: false]}""",
-                [],
-                does_not_raise(),
-                id="EXP PASS: No Match",
-            ),
-        ],
-    )
-    def test_param_list_value_regex(
-        self, test_pattern: str, expected_result: Optional[list[str]], exception
-    ) -> None:
-        with exception:
-            test = PARAM_LIST_VALUE_REGEX.findall(test_pattern)
             assert test == expected_result
 
     @pytest.mark.parametrize(

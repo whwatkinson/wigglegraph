@@ -4,7 +4,7 @@ from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
     get_nodes_rels_pattern_regex,
 )
 
-from wiggle_query_language.clauses.regexes import EXTRA_ALLOWED_CHARS, ILLEGAL_CHARS
+from wiggle_query_language.clauses.regexes import ILLEGAL_CHARS
 
 # MAKE *;
 MAKE_STATEMENT_ALL_REGEX = compile(
@@ -29,12 +29,6 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX = compile(
 
 # #%&*
 ILLEGAL_CHARS_REGEX = compile(rf"[{ILLEGAL_CHARS}]", flags=IGNORECASE)
-
-
-# [1, '2', "2_4", "3 4", 3.14]
-PARAM_LIST_VALUE_REGEX = compile(
-    rf"(?P<list_value>\[[\w,\s'\"\.{EXTRA_ALLOWED_CHARS}]+])", flags=IGNORECASE
-)
 
 
 if __name__ == "__main__":
