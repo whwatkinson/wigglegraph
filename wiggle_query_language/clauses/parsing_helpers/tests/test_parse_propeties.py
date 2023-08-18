@@ -1,15 +1,15 @@
 import pytest
 
-from exceptions.wql.make import MakeIllegalPropertyValue
+from exceptions.wql.parsing import WiggleGraphIllegalPropertyValue
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.make.parse_make.parse_make_properties import (
+from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     handle_bool_property,
     handle_float_property,
     handle_int_property,
     handle_list_property,
     handle_null_property,
     handle_string_property,
-    make_properties,
+    get_property_dict,
 )
 
 
@@ -193,7 +193,7 @@ class TestParseMakeProperties:
         self, test_params_string: str, expected_value: dict, exception
     ) -> None:
         with exception:
-            test = make_properties(test_params_string)
+            test = get_property_dict(test_params_string)
             assert test == expected_value
 
     @pytest.mark.parametrize(
@@ -203,13 +203,13 @@ class TestParseMakeProperties:
             pytest.param(
                 "Null",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: null has capital N",
             ),
             pytest.param(
                 "None",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: Wrong param value",
             ),
         ],
@@ -228,19 +228,19 @@ class TestParseMakeProperties:
             pytest.param(
                 "True",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: True",
             ),
             pytest.param(
                 "False",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: False",
             ),
             pytest.param(
                 "7734",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: Not a bool",
             ),
         ],
@@ -260,13 +260,13 @@ class TestParseMakeProperties:
             pytest.param(
                 "3",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: Not a float, int",
             ),
             pytest.param(
                 "three point one four",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: Not a float but str",
             ),
         ],
@@ -285,13 +285,13 @@ class TestParseMakeProperties:
             pytest.param(
                 "6.",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: Not an int but float",
             ),
             pytest.param(
                 "three",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP EXEC: Not an int but str",
             ),
         ],
@@ -354,7 +354,7 @@ class TestParseMakeProperties:
             pytest.param(
                 """[1, 3.14 true, false, '2', "2_4", "3 4", "foo@bar.net"]""",
                 None,
-                pytest.raises(MakeIllegalPropertyValue),
+                pytest.raises(WiggleGraphIllegalPropertyValue),
                 id="EXP PASS: ",
             ),
         ],

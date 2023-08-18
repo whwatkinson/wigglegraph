@@ -4,10 +4,12 @@ from exceptions.wiggleshell.query import NotAValidQueryError
 from models.wigish import DbmsFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
-from wiggle_query_language.clauses.make import make
-from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
+from wiggle_query_language.clauses.make import (
+    make,
     parse_make_statement_from_query_string,
 )
+from wiggle_query_language.clauses.find import parse_find_statement_from_query_string
+
 
 #  todo docstrings
 
@@ -20,7 +22,7 @@ def parse_query_string(query_string: str) -> ParsedQuery:
     """
 
     make_parsed = parse_make_statement_from_query_string(query_string)
-    find_parsed = None
+    find_parsed = parse_find_statement_from_query_string(query_string)
     criteria_parsed = None
     report_parsed = None
 
@@ -74,7 +76,7 @@ if __name__ == "__main__":
     #     qry = file.read()
 
     qry = """
-    MAKE (:NodeLabel{str: '2'})-[]->:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});
+    MAKE (:NodeLabel{str: '2'})<-[]-(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});
     """
 
     # qry = """

@@ -1,17 +1,25 @@
-EXTRA_ALLOWED_CHARS = "@"
-ILLEGAL_CHARS = "#%&*$"
+from wiggle_query_language.clauses.regexes import EXTRA_ALLOWED_CHARS
 
 
 def get_all_params_regex() -> str:
     """
-    Generates the regex for the parameters for a Node or Rel.
+    Gets the regex for the parameters for a Node or Rel.
     :return: A regex expression.
     """
     return rf"[{{}}\w:\s,'\"\.\[\]{EXTRA_ALLOWED_CHARS}]+"
 
 
-def get_handle_label_regex(name: str, required_char: str = "+") -> str:
-    return rf"(?P<{name}_handle>\w*)\s*:\s*(?P<{name}_label>\w{required_char})"
+def get_handle_label_regex(name: str, required_chars: bool = True) -> str:
+    """
+    Get the regex for a node or relationship handle and label.
+    :param name: The Node/Rel name
+    :param required_chars: If the handel and label are required.
+    :return: A regex expression.
+    """
+    first = "" if required_chars else "?"
+    second = "+" if required_chars else "*"
+
+    return rf"(?P<{name}_handle>\w*)\s*:{first}\s*(?P<{name}_label>\w{second})"
 
 
 def get_node_pattern_regex(node_name: str) -> str:
@@ -31,8 +39,8 @@ def get_rel_pattern_regex(rel_name: str) -> str:
     :param rel_name: The name of the Rel.
     :return: A regex expression.
     """
-    handle_label_regex = get_handle_label_regex(f"{rel_name}_rel", "*")
-    return rf"\s*(?P<{rel_name}_rel><?-*\[\s*{handle_label_regex}\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]-*>?\s*)"
+    handle_label_regex = get_handle_label_regex(f"{rel_name}_rel", False)
+    return rf"\s*(?P<{rel_name}_rel><?-+\[\s*{handle_label_regex}\s*(?P<{rel_name}_rel_props>{get_all_params_regex()})?\s*]-+>?\s*)"
 
 
 def get_nodes_rels_pattern_regex() -> str:

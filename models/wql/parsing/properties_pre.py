@@ -2,16 +2,16 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from exceptions.wql.make import MakePropertyTypeAssignmentError
+from exceptions.wql.parsing import PropertyTypeAssignmentError
 from models.wql.enums.property_type import PropertyType
 
 
-class ExtractedProperty(BaseModel):
+class ExtractedPropertyPre(BaseModel):
     property_value: str
     property_type: PropertyType
 
 
-class MakeProperty(BaseModel):
+class WiggleGraphPropertyPre(BaseModel):
     property_name: str
     property_value: str
     none_type: Optional[str]
@@ -21,13 +21,13 @@ class MakeProperty(BaseModel):
     list_type: Optional[str]
     string_type: Optional[str]
 
-    def yield_extracted_property(self) -> ExtractedProperty:
+    def yield_extracted_property(self) -> ExtractedPropertyPre:
         """
-        Allows for dynamic fetching the extracted property from ALL_PARAMS_KEY_VALUE_REGEX.
+        Allows for dynamic fetching the extracted property from ALL_PROPERTIES_KEY_VALUE_REGEX.
 
         This is then fed into handle_extracted_property which correctly assigns the property type.
 
-        :return: An ExtractedProperty
+        :return: An ExtractedPropertyPre
         """
         skips = {"property_name", "property_value"}
 
@@ -37,12 +37,12 @@ class MakeProperty(BaseModel):
             if prop_type not in skips
         ]
         if len(output) != 1:
-            raise MakePropertyTypeAssignmentError(
+            raise PropertyTypeAssignmentError(
                 f"{self.property_name} {self.property_value} was {output}, should be only one"
             )
 
         prop_type_enum = PropertyType[output[0].upper()]
 
-        return ExtractedProperty(
+        return ExtractedPropertyPre(
             property_value=self.property_value, property_type=prop_type_enum
         )

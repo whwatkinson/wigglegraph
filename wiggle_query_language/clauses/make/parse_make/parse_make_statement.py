@@ -3,10 +3,14 @@ from typing import Optional
 from models.wql import ParsedMake
 from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
     check_make_clause_spelling,
-    validate_make_statement,
 )
-from wiggle_query_language.clauses.regexes.make_patterns import (
+from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
+    validate_statement,
+)
+from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_ALL_REGEX,
+)
+from wiggle_query_language.clauses.regexes.patterns.patterns import (
     NODES_RELS_PATTERN_REGEX,
 )
 
@@ -56,7 +60,7 @@ def parse_make_statement_from_query_string(
     make_matches = extract_all_make_statements(query_string)
     if not make_matches:
         return None
-    if not validate_make_statement(make_matches):
+    if not validate_statement(make_matches):
         raise Exception("make_matches says no")
 
     if make_matches:
