@@ -37,10 +37,6 @@ MAKE_STATEMENT_CHECK_PARAMS_SYNTAX_REGEX = compile(
 )
 
 
-# ()-->()
-# UNNAMED_RELATIONSHIP_REGEX = compile(r"\)(?P<unnamed_rel><?-*>?)\(", flags=IGNORECASE)
-
-
 # int: 1, float: 3.14, bool: true, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [...]
 ALL_PARAMS_KEY_VALUE_REGEX = compile(
     (
