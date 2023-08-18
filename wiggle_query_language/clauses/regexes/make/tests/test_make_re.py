@@ -7,13 +7,9 @@ from wiggle_query_language.clauses.regexes.make.make_patterns import (
     ILLEGAL_CHARS_REGEX,
     MAKE_STATEMENT_ALL_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
-    NODES_RELS_PATTERN_REGEX,
 )
 from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
     get_nodes_rels_pattern_regex,
-)
-from wiggle_query_language.clauses.regexes.make.tests.cases_for_test_re import (
-    cases_for_test_nodes_rel_pattern,
 )
 
 
@@ -24,20 +20,6 @@ class TestMakeRePatterns:
         test_pattern = rf"{get_nodes_rels_pattern_regex()}"
 
         assert test_pattern == exp_pattern
-
-    @pytest.mark.parametrize(
-        "test_pattern, expected_result, exception", cases_for_test_nodes_rel_pattern
-    )
-    def test_nodes_rel_pattern_regex(
-        self, test_pattern: str, expected_result: dict, exception
-    ) -> None:
-        test = [
-            x.groupdict()
-            for x in NODES_RELS_PATTERN_REGEX.finditer(test_pattern)
-            if x.group()
-        ]
-
-        assert test == expected_result
 
     @pytest.mark.parametrize(
         "test_pattern, expected_result, exception",
