@@ -9,7 +9,6 @@ from exceptions.wql.parsing import (
     RelationshipNameSyntaxError,
 )
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
-    ILLEGAL_CHARS_REGEX,
     MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
 )
 
@@ -20,6 +19,7 @@ from wiggle_query_language.clauses.regexes.patterns.properties import (
 from wiggle_query_language.clauses.regexes.patterns.relationships import (
     RELATIONSHIP_DIR_CHECK_REGEX,
 )
+from wiggle_query_language.clauses.regexes.patterns.utilities import ILLEGAL_CHARS_REGEX
 
 
 def check_property_syntax(params_string: str) -> bool:

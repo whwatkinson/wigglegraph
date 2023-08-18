@@ -1,6 +1,5 @@
 from re import IGNORECASE, compile
 
-from wiggle_query_language.clauses.regexes import ILLEGAL_CHARS
 
 from wiggle_query_language.clauses.regexes.patterns.clause_helpers import (
     get_clause_all_regex,
@@ -18,6 +17,3 @@ MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX = compile(
     pattern=rf"{get_clause_permutations_regex('MAKE')}",
     flags=IGNORECASE,
 )
-
-# #%&*
-ILLEGAL_CHARS_REGEX = compile(pattern=rf"[{ILLEGAL_CHARS}]", flags=IGNORECASE)
