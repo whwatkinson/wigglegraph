@@ -166,7 +166,11 @@ def handle_list_property(value_in: str) -> list[WG_ALLOWED_TYPES]:
     :return: A Python list.
     """
     # params validation happens in check_node_rel_properties
-    value = value_in.replace("true", "True").replace("false", "False")
+    value = (
+        value_in.replace("true", "True")
+        .replace("false", "False")
+        .replace("null", "None")
+    )
     try:
         found_list = literal_eval(value)
     except SyntaxError:
