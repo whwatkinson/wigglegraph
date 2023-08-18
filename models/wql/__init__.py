@@ -15,7 +15,7 @@ from models.wql.data.relationship import Relationship
 from models.wql.data.wiggle_metadata import WiggleGraphMetalData
 from models.wql.enums.clauses import Clause
 from models.wql.enums.property_type import PropertyType
-from models.wql.parsed_query import ParsedMake, ParsedPattern, ParsedQuery
+from models.wql.parsed_query import ParsedMake, ParsedPattern, ParsedQuery, ParsedFind
 
 __all__ = [
     "Clause",
@@ -26,6 +26,7 @@ __all__ = [
     "WiggleGraphPropertyPre",
     "Node",
     "NodePre",
+    "ParsedFind",
     "ParsedMake",
     "ParsedPattern",
     "ParsedQuery",

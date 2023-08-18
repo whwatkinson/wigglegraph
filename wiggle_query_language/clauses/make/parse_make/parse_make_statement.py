@@ -1,11 +1,11 @@
 from typing import Optional
 
 from models.wql import ParsedMake
-from wiggle_query_language.clauses.make.parse_make.parse_make_statement_checks import (
-    check_make_clause_spelling,
-)
+
+from models.wql.enums.clauses import Clause
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
     validate_statement,
+    check_clause_spelling,
 )
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_ALL_REGEX,
@@ -44,7 +44,7 @@ def extract_all_make_statements(query_string: str) -> Optional[list[str]]:
     ]:
         return make_matches
 
-    check_make_clause_spelling(query_string)
+    check_clause_spelling(query_string, Clause.MAKE)
 
     return None
 

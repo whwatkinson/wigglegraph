@@ -1,5 +1,7 @@
 import pytest
 
+
+from models.wql.enums.clauses import Clause
 from exceptions.wql.parsing import (
     ClauseSyntaxError,
     IllegalCharacterError,
@@ -7,17 +9,17 @@ from exceptions.wql.parsing import (
     ParamSyntaxError,
     RelationshipNameSyntaxError,
 )
-
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
     check_illegal_characters,
     check_node_rel_properties,
     check_relationships,
     check_statement_syntax,
+    check_clause_spelling,
 )
 
 
-class TestWqlStmtChecks:
+class TestParseStatementChecks:
     @pytest.mark.parametrize(
         "test_make_stmt, exception",
         [
@@ -222,4 +224,39 @@ class TestWqlStmtChecks:
     def test_check_statement_syntax(self, test_make_matches: list[str], exception):
         with exception:
             test = check_statement_syntax(test_make_matches)
+            assert test is True
+
+    @pytest.mark.parametrize(
+        "test_make_stmt, exception",
+        [
+            pytest.param(
+                "MAEK (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "eMAk (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "EMka (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "KMAe (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "EKAM (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+        ],
+    )
+    def test_check_make_clause_spelling(self, test_make_stmt: str, exception) -> None:
+        with exception:
+            test = check_clause_spelling(test_make_stmt, Clause.MAKE)
             assert test is True
