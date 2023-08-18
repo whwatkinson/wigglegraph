@@ -109,6 +109,7 @@ def add_nodes_to_graph(
 
     # Write to the database
     add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+    # todo add NodeLabel to index file
     add_items_to_relationship_index(
         dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
     )

@@ -1,3 +1,4 @@
+from ast import literal_eval
 from re import split
 
 from exceptions.wql.parsing import (
@@ -90,7 +91,7 @@ def check_node_rel_properties(stmt_matches: list[str]) -> True:
             if params_lists := PROPERTIES_LIST_VALUE_REGEX.findall(param_match):
                 for params_list in params_lists:
                     try:
-                        eval(params_list)
+                        literal_eval(params_list)
                     except SyntaxError:
                         raise ParamSyntaxError(
                             message=f"SyntaxError: {params_lists} missing a comma?"
