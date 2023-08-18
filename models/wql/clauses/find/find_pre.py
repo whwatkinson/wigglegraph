@@ -6,4 +6,4 @@ from pydantic import BaseModel
 class NodeFindPre(BaseModel):
     node_label: str
     node_handle: Optional[str]
-    props_string: Optional[str]
+    props_dict: Optional[dict]
