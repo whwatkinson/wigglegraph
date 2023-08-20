@@ -90,8 +90,14 @@ class ParsedFind(BaseModel):
     parsed_pattern_list: list[ParsedPattern]
 
 
+class ParsedCriteria(BaseModel):
+    raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
+    clause: Clause = Clause.CRITERIA
+    # parsed_pattern_list: list[ParsedPattern]
+
+
 class ParsedQuery(BaseModel):
     make_parsed: Optional[list[ParsedMake]]
-    find_parsed: Optional[dict] = None
-    criteria_parsed: Optional[dict] = None
+    find_parsed: Optional[list[ParsedFind]]
+    criteria_parsed: Optional[list[ParsedCriteria]]
     report_parsed: Optional[dict] = None

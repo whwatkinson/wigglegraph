@@ -20,6 +20,7 @@ from models.wql.parsing.parsed_query import (
     ParsedPattern,
     ParsedQuery,
     ParsedFind,
+    ParsedCriteria,
 )
 
 __all__ = [
@@ -32,6 +33,7 @@ __all__ = [
     "Node",
     "NodePre",
     "ParsedFind",
+    "ParsedCriteria",
     "ParsedMake",
     "ParsedPattern",
     "ParsedQuery",

@@ -1,19 +1,24 @@
+from typing import Optional
+
 from models.wql import ParsedFind, MakePre, Clause
-
 from models.wql.clauses.find.find_pre import NodeFindPre
-
 from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )
 
 
-def process_parsed_find_list(parsed_find_list: list[ParsedFind]):
+def process_parsed_find_list(
+    parsed_find_list: list[ParsedFind], parsed_criteria_list: Optional[list] = None
+):
     for parsed_find in parsed_find_list:
         if parsed_find.clause is not Clause.FIND:
             raise Exception(f"Expecting FIND but got {parsed_find.clause}")
 
         for parsed_pattern in parsed_find.parsed_pattern_list:
             mp = MakePre()
+
+            # TODO consider criteria
+            print(parsed_criteria_list)
 
             # FOR ONE NODE
             # Left Node

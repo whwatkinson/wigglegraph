@@ -41,10 +41,14 @@ def parse_query_string(query_string: str) -> ParsedQuery:
 
 def execute_query(parsed_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> bool:
     if query_make := parsed_query.make_parsed:
-        make(query_make, dbms_file_path)
+        make(parsed_make_list=query_make, dbms_file_path=dbms_file_path)
 
-    if query_make := parsed_query.find_parsed:
-        find()
+    if query_find := parsed_query.find_parsed:
+        find(
+            parsed_find_list=query_find,
+            dbms_file_path=dbms_file_path,
+            parsed_criteria_list=parsed_query.criteria_parsed,
+        )
 
     return True
 
