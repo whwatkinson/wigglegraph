@@ -1,25 +1,26 @@
 import pytest
 
+from exceptions.wql.find import MultipleFindStatementsError
 from exceptions.wql.parsing import ClauseSyntaxError
 from testing.test_helpers import does_not_raise
-from wiggle_query_language.clauses.make.parse_make.parse_make_statement import (
-    build_parsed_make,
-    parse_make_statement_from_query_string,
+from wiggle_query_language.clauses.find.parse_find.parse_find_statement import (
+    build_parsed_find,
+    parse_find_statement_from_query_string,
 )
 
 
 class TestParseMake:
     @pytest.mark.parametrize(
-        "test_make_stmt, expected_value, exception",
+        "test_find_stmt, expected_value, exception",
         [
             pytest.param(
-                "MAKE (:NodeLabel)-[:]->(:NodeLabel);",
+                "FIND (:NodeLabel)-[:]->(:NodeLabel);",
                 {"left_node_label": "NodeLabel", "middle_node_label": "NodeLabel"},
                 does_not_raise(),
                 id="EXP PASS: Simple case",
             ),
             pytest.param(
-                "MAKE (foo:NodeLabel{int: 1, str: '2', none: null, bool: true})-[:]->(foo2:NodeLabel);",
+                "FIND (foo:NodeLabel{int: 1, str: '2', none: null, bool: true})-[:]->(foo2:NodeLabel);",
                 {
                     "left_node_handle": "foo",
                     "left_node_props": "{int: 1, str: '2', none: null, bool: true}",
@@ -29,7 +30,7 @@ class TestParseMake:
                 id="EXP PASS: NodeHandles, NodeLabels and NodeParams",
             ),
             pytest.param(
-                """MAKE (:NodeLabel)-[r:REL{float: 3.14, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]->(:NodeLabel);""",
+                """FIND (:NodeLabel)-[r:REL{float: 3.14, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]->(:NodeLabel);""",
                 {
                     "left_middle_rel_handle": "r",
                     "left_middle_rel_label": "REL",
@@ -41,12 +42,12 @@ class TestParseMake:
         ],
     )
     def test_build_parsed_make(
-        self, test_make_stmt: str, expected_value: dict, exception
+        self, test_find_stmt: str, expected_value: dict, exception
     ) -> None:
         with exception:
-            test = build_parsed_make(test_make_stmt)
+            test = build_parsed_find(test_find_stmt)
 
-            test_parsed_make = test.parsed_pattern_list[0]
+            test_parsed_make = test.parsed_pattern_list
 
             for test_key, test_value in expected_value.items():
                 assert getattr(test_parsed_make, test_key) == test_value
@@ -55,7 +56,7 @@ class TestParseMake:
         "test_make_stmt, expected_value, exception",
         [
             pytest.param(
-                "MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
+                "FIND (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
                 1,
                 does_not_raise(),
                 id="EXP PASS: Simple case",
@@ -81,9 +82,9 @@ class TestParseMake:
                 CRITERIA p.name = "Bar" or q.name = "Bar;
                 REPORT wn(p), wn(q);
                 """,
-                2,
+                1,
                 does_not_raise(),
-                id="EXP PASS: Multiline query, two MAKES",
+                id="EXP PASS: Multiline query, one FIND",
             ),
             pytest.param(
                 """
@@ -95,19 +96,33 @@ class TestParseMake:
                 """,
                 1,
                 does_not_raise(),
-                id="EXP PASS:  Multiline query, One make, two patterns",
+                id="EXP PASS:  Multiline query, One FIND, two patterns",
             ),
             pytest.param(
-                "FIND (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
+                "MAKE (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
                 None,
                 does_not_raise(),
-                id="EXP PASS: Not a MAKE stmt",
+                id="EXP PASS: Not a FIND stmt",
             ),
             pytest.param(
-                "MAEK (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
+                "FIDN (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
                 0,
                 pytest.raises(ClauseSyntaxError),
-                id="EXP EXEC: MAKE clause sp error",
+                id="EXP EXEC: FIND clause sp error",
+            ),
+            pytest.param(
+                """
+                MAKE (n:NodeLabel)-[r:REL]->(m:NodeLabel), (n:NodeLabel2)-[r:REL]->(m:NodeLabel2);
+                ADJUST n.name = "h" and m.name = "Wig";
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                REPORT wn(p), wn(q);
+                """,
+                0,
+                pytest.raises(MultipleFindStatementsError),
+                id="EXP EXEC: FIND clause sp error",
             ),
         ],
     )
@@ -115,7 +130,7 @@ class TestParseMake:
         self, test_make_stmt: str, expected_value: None, exception
     ) -> None:
         with exception:
-            test = parse_make_statement_from_query_string(test_make_stmt)
+            test = parse_find_statement_from_query_string(test_make_stmt)
             if test:
                 assert len(test) == expected_value
             else:

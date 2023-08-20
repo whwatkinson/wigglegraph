@@ -8,3 +8,7 @@ class NodeFindPre(BaseModel):
     node_handle: Optional[str]
     props_dict: Optional[dict]
     criteria_dict: Optional[dict]
+
+
+class FindPre(BaseModel):
+    left_node: Optional[NodeFindPre]

@@ -1,37 +1,42 @@
 from typing import Optional
 
-from models.wql import ParsedFind, MakePre, Clause
-from models.wql.clauses.find.find_pre import NodeFindPre
+from models.wql import ParsedFind, ParsedCriteria, Clause
+from models.wql.clauses.find.find_pre import NodeFindPre, FindPre
 from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )
 
 
 def process_parsed_find_list(
-    parsed_find_list: list[ParsedFind], parsed_criteria_list: Optional[list] = None
+    parsed_find_list: list[ParsedFind],
+    parsed_criteria_list: Optional[list[ParsedCriteria]] = None,
 ):
     for parsed_find in parsed_find_list:
         if parsed_find.clause is not Clause.FIND:
             raise Exception(f"Expecting FIND but got {parsed_find.clause}")
 
         for parsed_pattern in parsed_find.parsed_pattern_list:
-            mp = MakePre()
-
+            find_pre = FindPre()
             # TODO consider criteria
             print(parsed_criteria_list)
 
-            # FOR ONE NODE
+            # FOR ONE NODE FOR NOW!
+
             # Left Node
             left_handle = parsed_pattern.left_node_handle
             left_node_label = parsed_pattern.left_node_label
             left_props_dict = get_property_dict(parsed_pattern.left_node_props)
+
+            if parsed_criteria_list:
+                # todo add an id to both the find a criteria stmt for this process
+                left_props_dict.update({"1": "1"})
 
             left = NodeFindPre(
                 node_handle=left_handle,
                 node_label=left_node_label,
                 props_dict=left_props_dict,
             )
-            mp.left_node = left
+            find_pre.left_node = left
             # Middle Node
             if parsed_pattern.middle_node:
                 pass

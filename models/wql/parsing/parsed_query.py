@@ -87,13 +87,17 @@ class ParsedMake(BaseModel):
 class ParsedFind(BaseModel):
     raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
     clause: Clause = Clause.FIND
-    parsed_pattern_list: list[ParsedPattern]
+    parsed_pattern_list: ParsedPattern
+
+    def __len__(self) -> int:
+        return 1
 
 
 class ParsedCriteria(BaseModel):
     raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
     clause: Clause = Clause.CRITERIA
-    # parsed_pattern_list: list[ParsedPattern]
+    criteria_handle_props: dict
+    # should be a dict with {handle: {props: 1}}
 
 
 class ParsedQuery(BaseModel):

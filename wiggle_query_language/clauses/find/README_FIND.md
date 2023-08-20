@@ -10,6 +10,7 @@ INSERT FIND PIC HERE:
 
 ## Introduction
 * The WQL FIND clause is how data is found on the graph.
+* For this version of WiggleGraph only one FIND statement is permitted per query.
 * The syntax of FIND is similar to the MAKE clause and is declarative.
 * By expressing the nodes and patterns
 * Currently only support for patterns of a maximum of three node and two relationships per MAKE statement. However, multiple make statements can be used

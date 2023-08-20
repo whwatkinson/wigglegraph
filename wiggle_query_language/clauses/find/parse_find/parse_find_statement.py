@@ -1,5 +1,6 @@
 from typing import Optional
 
+from exceptions.wql.find import MultipleFindStatementsError
 from models.wql import ParsedFind, Clause
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
     validate_statement,
@@ -13,7 +14,7 @@ from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
 )
 
 
-def build_parsed_make(statement: str) -> ParsedFind:
+def build_parsed_find(statement: str) -> ParsedFind:
     """
     Handles building of the ParsedMake.
     :param statement: The raw FIND statement.
@@ -24,7 +25,7 @@ def build_parsed_make(statement: str) -> ParsedFind:
     ]
 
     parsed_make = ParsedFind(
-        raw_statement=statement, parsed_pattern_list=parsed_pattern_dict
+        raw_statement=statement, parsed_pattern_list=parsed_pattern_dict[0]
     )
 
     return parsed_make
@@ -32,20 +33,24 @@ def build_parsed_make(statement: str) -> ParsedFind:
 
 def parse_find_statement_from_query_string(
     query_string: str,
-) -> Optional[list[ParsedFind]]:
+) -> Optional[ParsedFind]:
     """
     Extracts the FIND statement from the query body.
     :param query_string: The raw query.
     :return: A list of ParsedFind.
     """
-    make_matches = extract_all_statements(query_string, Clause.FIND)
-    if not make_matches:
+    find_matches = extract_all_statements(query_string, Clause.FIND)
+    if not find_matches:
         return None
-    if not validate_statement(make_matches):
+    if len(find_matches) > 1:
+        raise MultipleFindStatementsError(
+            "Only one FIND clause is allowed per statement"
+        )
+    if not validate_statement(find_matches):
         raise Exception("find_matches says no")
 
-    if make_matches:
-        return [build_parsed_make(statement=stmt) for stmt in make_matches]
+    if find_matches:
+        return build_parsed_find(statement=find_matches[0])
     else:
         return None
 
