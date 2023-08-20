@@ -7,39 +7,73 @@ from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
 )
 
 
+def update_find_properties(find: dict, criteria: dict) -> dict:
+    # todo implement this
+    return find
+
+
 def process_parsed_find_list(
-    parsed_find_list: list[ParsedFind],
-    parsed_criteria_list: Optional[list[ParsedCriteria]] = None,
-):
-    for parsed_find in parsed_find_list:
-        if parsed_find.clause is not Clause.FIND:
-            raise Exception(f"Expecting FIND but got {parsed_find.clause}")
+    parsed_find: ParsedFind,
+    parsed_criteria: Optional[ParsedCriteria] = None,
+) -> FindPre:
+    # for parsed_find, parsed_criteria_ in zip(parsed_find, parsed_criteria):
+    if parsed_find.clause is not Clause.FIND:
+        raise Exception(f"Expecting FIND but got {parsed_find.clause}")
 
-        for parsed_pattern in parsed_find.parsed_pattern_list:
-            find_pre = FindPre()
-            # TODO consider criteria
-            print(parsed_criteria_list)
+    parsed_pattern = parsed_find.parsed_pattern_list
+    find_pre = FindPre()
 
-            # FOR ONE NODE FOR NOW!
+    # Left Node, FOR ONE NODE FOR NOW!
+    left_handle = parsed_pattern.left_node_handle
+    left_props_dict = get_property_dict(parsed_pattern.left_node_props)
 
-            # Left Node
-            left_handle = parsed_pattern.left_node_handle
-            left_node_label = parsed_pattern.left_node_label
-            left_props_dict = get_property_dict(parsed_pattern.left_node_props)
+    if parsed_criteria:
+        left_props_dict.update(
+            parsed_criteria.criteria_handle_props.get(left_handle, None)
+        )
 
-            if parsed_criteria_list:
-                # todo add an id to both the find a criteria stmt for this process
-                left_props_dict.update({"1": "1"})
+    left = NodeFindPre(
+        node_handle=left_handle,
+        node_label=parsed_pattern.left_node_label,
+        props_dict=left_props_dict,
+    )
+    find_pre.left_node = left
 
-            left = NodeFindPre(
-                node_handle=left_handle,
-                node_label=left_node_label,
-                props_dict=left_props_dict,
+    # Middle Node
+    if parsed_pattern.middle_node:
+        middle_handle = parsed_pattern.middle_node_handle
+        middle_props_dict = get_property_dict(parsed_pattern.middle_node_props)
+
+        if parsed_criteria:
+            middle_props_dict.update(
+                parsed_criteria.criteria_handle_props.get(middle_handle, None)
             )
-            find_pre.left_node = left
-            # Middle Node
-            if parsed_pattern.middle_node:
-                pass
+
+        middle = NodeFindPre(
+            node_handle=parsed_pattern.middle_node_handle,
+            node_label=parsed_pattern.middle_node_label,
+            props_dict=middle_props_dict,
+        )
+        find_pre.middle_node = middle
+
+    # Right Node
+    if parsed_pattern.middle_node:
+        right_handle = parsed_pattern.middle_node_handle
+        right_props_dict = get_property_dict(parsed_pattern.left_node_props)
+
+        if parsed_criteria:
+            right_props_dict.update(
+                parsed_criteria.criteria_handle_props.get(right_handle, None)
+            )
+
+        right = NodeFindPre(
+            node_handle=parsed_pattern.right_node_handle,
+            node_label=parsed_pattern.right_node_label,
+            props_dict=right_props_dict,
+        )
+        find_pre.right_node = right
+
+    return find_pre
 
 
 if __name__ == "__main__":

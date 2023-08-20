@@ -12,3 +12,5 @@ class NodeFindPre(BaseModel):
 
 class FindPre(BaseModel):
     left_node: Optional[NodeFindPre]
+    middle_node: Optional[NodeFindPre]
+    right_node: Optional[NodeFindPre]
