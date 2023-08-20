@@ -9,7 +9,7 @@ from wiggle_query_language.clauses.find.parse_find.parse_find_statement import (
 )
 
 
-class TestParseMake:
+class TestParseFind:
     @pytest.mark.parametrize(
         "test_find_stmt, expected_value, exception",
         [
