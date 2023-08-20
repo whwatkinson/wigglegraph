@@ -41,7 +41,7 @@ class TestParseFind:
             ),
         ],
     )
-    def test_build_parsed_make(
+    def test_build_parsed_find(
         self, test_find_stmt: str, expected_value: dict, exception
     ) -> None:
         with exception:
@@ -126,7 +126,7 @@ class TestParseFind:
             ),
         ],
     )
-    def test_extract_make_statement_from_query(
+    def test_extract_find_statement_from_query(
         self, test_make_stmt: str, expected_value: None, exception
     ) -> None:
         with exception:
