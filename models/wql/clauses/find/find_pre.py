@@ -1,21 +1,19 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class FindRelationshipPre(BaseModel):
     rel_name: Optional[str]
     rel_handle: Optional[str]
     props_dict: Optional[dict]
-    criteria_dict: Optional[dict]
 
 
 class FindNodePre(BaseModel):
     node_label: str
     node_handle: Optional[str]
     props_dict: Optional[dict]
-    criteria_dict: Optional[dict]
-    relationships: Optional[list[FindRelationshipPre]]
+    relationships: list[FindRelationshipPre] = Field(default=[])
 
 
 class FindPre(BaseModel):
