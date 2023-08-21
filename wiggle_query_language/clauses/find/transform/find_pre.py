@@ -1,10 +1,12 @@
 from typing import Optional
 
 from models.wql import ParsedFind, ParsedCriteria, Clause
-from models.wql.clauses.find.find_pre import NodeFindPre, FindPre
+from models.wql.clauses.find.find_pre import FindNodePre, FindPre
 from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )
+
+# from wiggle_query_language.clauses.transform_helpers.relationships import relationship_is_left_to_right
 
 
 def update_find_properties(find: dict, criteria: dict) -> dict:
@@ -32,7 +34,7 @@ def process_parsed_find_list(
             parsed_criteria.criteria_handle_props.get(left_handle, None)
         )
 
-    left = NodeFindPre(
+    left = FindNodePre(
         node_handle=left_handle,
         node_label=parsed_pattern.left_node_label,
         props_dict=left_props_dict,
@@ -49,7 +51,7 @@ def process_parsed_find_list(
                 parsed_criteria.criteria_handle_props.get(middle_handle, None)
             )
 
-        middle = NodeFindPre(
+        middle = FindNodePre(
             node_handle=parsed_pattern.middle_node_handle,
             node_label=parsed_pattern.middle_node_label,
             props_dict=middle_props_dict,
@@ -66,7 +68,7 @@ def process_parsed_find_list(
                 parsed_criteria.criteria_handle_props.get(right_handle, None)
             )
 
-        right = NodeFindPre(
+        right = FindNodePre(
             node_handle=parsed_pattern.right_node_handle,
             node_label=parsed_pattern.right_node_label,
             props_dict=right_props_dict,
