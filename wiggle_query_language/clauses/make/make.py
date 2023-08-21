@@ -1,3 +1,5 @@
+from itertools import chain
+
 from models.wigish import DbmsFilePath
 from models.wql import (
     EmitNode,
@@ -20,6 +22,9 @@ from wiggle_query_language.graph.database.indexes.node_relationship_index import
 )
 from wiggle_query_language.graph.database.indexes.node_labels_index import (
     add_items_to_node_labels_index,
+)
+from wiggle_query_language.graph.database.indexes.relationship_names_index import (
+    add_items_to_relationship_names_index,
 )
 from wiggle_query_language.graph.state.wiggle_number import (
     get_current_wiggle_number,
@@ -104,24 +109,30 @@ def add_nodes_to_graph(
     """
     # Export Nodes and Rels
     nodes_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
+
+    # Write data to the database
+    add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+
+    # Add indexes
     rel_indexes_to_add_dict = {
         str(node.wn): {rel.wn for rel in node.relations}
         for node in nodes_list
         if node.relations
     }
 
-    # Write to the database
-    add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
-
     node_labels_set_to_add = {node.node_label for node in nodes_list}
-    # relationship_names = {}
 
-    # todo add NodeLabel to index file
+    foo = [node.node_relationship_names() for node in nodes_list if node.relations]
+    relationship_names_set_to_add = set(chain.from_iterable(foo))
+
     add_items_to_node_relationship_index(
         dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
     )
     add_items_to_node_labels_index(
         dbms_file_path.indexes_file_path, node_labels_set_to_add
+    )
+    add_items_to_relationship_names_index(
+        dbms_file_path.indexes_file_path, relationship_names_set_to_add
     )
 
     # Update WiggleNumber

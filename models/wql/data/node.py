@@ -30,6 +30,11 @@ class Node(BaseModel):
     def __repr__(self) -> str:
         return f"|{self.__class__.__name__}| {self.node_label}: {self.node_metadata.wn}"
 
+    def node_relationship_names(self) -> Optional[list[str]]:
+        if not self.relations:
+            return None
+        return [rel.relationship_name for rel in self.relations]
+
     def export_node(
         self, exclude_unset: bool = False, exclude_none: bool = False
     ) -> dict[str, dict[str, Any]]:

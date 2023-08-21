@@ -90,7 +90,7 @@ def process_parsed_make_list(
 
                 middle_right_relationship = RelationshipPre(
                     wn=current_wiggle_number,
-                    rel_name=parsed_pattern.left_middle_rel_label,
+                    rel_name=parsed_pattern.middle_right_rel_label,
                     rel_handle=parsed_pattern.middle_right_rel_handle,
                     props_string=parsed_pattern.middle_right_rel_props,
                     wn_from_node=wn_from_node,
