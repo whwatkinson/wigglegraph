@@ -1,6 +1,4 @@
 from models.wql.clauses.make.make_pre import (
-    EmitNode,
-    EmitNodes,
     MakePre,
     NodePre,
     RelationshipPre,
@@ -25,8 +23,6 @@ from models.wql.parsing.properties_pre import (
 
 __all__ = [
     "Clause",
-    "EmitNode",
-    "EmitNodes",
     "ExtractedPropertyPre",
     "MakePre",
     "WiggleGraphPropertyPre",

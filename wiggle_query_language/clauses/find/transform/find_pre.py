@@ -108,7 +108,6 @@ def process_parsed_find(
 
         if relationship_is_left_to_right(parsed_pattern.left_middle_rel):
             find_pre.left_node.relationships.append(left_middle_relationship)
-
         else:
             find_pre.middle_node.relationships.append(left_middle_relationship)
 

@@ -1,25 +1,5 @@
 {
-    "node_relationships": {
-        "0": [
-            3
-        ],
-        "1": [
-            4
-        ],
-        "5": [
-            8
-        ],
-        "6": [
-            9
-        ]
-    },
-    "node_labels": [
-        "RightNodeLabel",
-        "LeftNodeLabel",
-        "MiddleNodeLabel"
-    ],
-    "relationship_names": [
-        "RELMR",
-        "RELLM1"
-    ]
+    "node_relationships": {},
+    "node_labels": [],
+    "relationship_names": []
 }

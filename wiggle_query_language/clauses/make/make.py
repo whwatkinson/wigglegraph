@@ -2,8 +2,8 @@ from itertools import chain
 
 from models.wigish import DbmsFilePath
 from models.wql import (
-    EmitNode,
-    EmitNodes,
+    MakePre,
+    NodePre,
     Node,
     ParsedMake,
     Relationship,
@@ -32,38 +32,37 @@ from wiggle_query_language.graph.state.wiggle_number import (
 )
 
 
-def make_nodes(emit_node: EmitNodes) -> list[Node]:
+def make_nodes(make_pre: MakePre) -> list[Node]:
     """
     Handles the creation of the nodes.
-    :param emit_node: The pre-processed Node
+    :param make_pre: The pre-processed Nodes
     :return: A list of Nodes for loading onto the graph.
     """
     # Will always be a left node in a MAKE
-    nodes = [make_node(emit_node.left)]
+    nodes = [make_node(make_pre.left_node)]
 
-    if emit_node.middle:
-        nodes.append(make_node(emit_node.middle))
+    if make_pre.middle_node:
+        nodes.append(make_node(make_pre.middle_node))
 
-    if emit_node.right:
-        nodes.append(make_node(emit_node.right))
+    if make_pre.right_node:
+        nodes.append(make_node(make_pre.left_node))
 
     return nodes
 
 
-def make_node(emit_node: EmitNode) -> Node:
+def make_node(emit_node: NodePre) -> Node:
     """
     Makes the Node object for a node.
     :param emit_node: The pre-processed node.
     :return: A WiggleGraph Node.
     """
-    node_pre = emit_node.node_pre
-    node_metadata = WiggleGraphMetalData(wn=node_pre.wn)
-    node_label = node_pre.node_label
-    properties = get_property_dict(node_pre.props_string)
-    if emit_node.relationship_pre:
+    node_metadata = WiggleGraphMetalData(wn=emit_node.wn)
+    node_label = emit_node.node_label
+    properties = get_property_dict(emit_node.props_string)
+    if emit_node.relationships_pre:
         relations = [
             make_relationship(relationship_pre)
-            for relationship_pre in emit_node.relationship_pre
+            for relationship_pre in emit_node.relationships_pre
             if relationship_pre
         ]
     else:
