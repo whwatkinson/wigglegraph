@@ -24,7 +24,7 @@ def create_new_indexes_file(
 
     new_indexes_file_path.touch()
 
-    new_index_dict = {"relationships": {}, "node_labels": []}
+    new_index_dict = {"relationships": {}, "node_labels": [], "relationship_names": []}
 
     with open(new_indexes_file_path, "w") as file_handle:
         file_handle.write(dumps(new_index_dict))
