@@ -10,8 +10,17 @@ from wiggle_query_language.clauses.transform_helpers.relationships import (
 )
 
 
-def update_find_properties(find: dict, criteria: dict) -> dict:
-    # todo implement this
+def update_properties_with_criteria(find: dict, criteria: dict) -> dict:
+    """
+    Handles the updating of the FIND props from CRITERIA.
+    :param find: The FIND statement lookup properties.
+    :param criteria: The CRITERIA statement lookup properties.
+    :return: A combined dict.
+    """
+
+    if criteria:
+        find.update(criteria)
+
     return find
 
 
@@ -19,6 +28,12 @@ def process_parsed_find(
     parsed_find: ParsedFind,
     parsed_criteria: Optional[ParsedCriteria] = None,
 ) -> FindPre:
+    """
+    Processes the parsed find.
+    :param parsed_find: The extracted FIND statement.
+    :param parsed_criteria: The extracted CRITERIA statement.
+    :return: A processed find pre.
+    """
     if parsed_find.clause is not Clause.FIND:
         raise Exception(f"Expecting FIND but got {parsed_find.clause}")
 
@@ -28,10 +43,10 @@ def process_parsed_find(
     # Left Node, FOR ONE NODE FOR NOW!
     left_handle = parsed_pattern.left_node_handle
     left_props_dict = get_property_dict(parsed_pattern.left_node_props)
-
     if parsed_criteria:
-        left_props_dict.update(
-            parsed_criteria.criteria_handle_props.get(left_handle, None)
+        update_properties_with_criteria(
+            left_props_dict,
+            parsed_criteria.criteria_handle_props.get(left_handle, None),
         )
 
     left = FindNodePre(
