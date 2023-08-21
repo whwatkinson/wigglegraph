@@ -22,7 +22,7 @@ def add_items_to_node_relationship_index(
     """
     Adds the data to the database.
     :param indexes_file_path: The file path to the Indexes file.
-    :param items_to_add: The items to be added to the relationship index file.
+    :param items_to_add: The items to be added to the node relationship index file.
     :return: A bool.
     """
 
@@ -62,12 +62,12 @@ def load_node_relationship_index(
         with open(indexes_file_path, "r") as file_handle:
             indexes = load(file_handle)
 
-            rel_indexes_json = indexes["node_relationships"]
+            node_rel_indexes_json = indexes["node_relationships"]
             graph_logger.info("Successfully loaded node_relationships index")
 
-            rel_indexes_python = json_to_dict(rel_indexes_json, wn_of_nodes)
+            node_rel_indexes_python = json_to_dict(node_rel_indexes_json, wn_of_nodes)
 
-            return rel_indexes_python
+            return node_rel_indexes_python
 
     except JSONDecodeError:
         graph_logger.exception("Empty relationship indexes,returning a new one")
