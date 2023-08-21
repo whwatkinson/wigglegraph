@@ -1,14 +1,5 @@
 {
-    "node_relationships": {
-        "1": [
-            3,
-            4
-        ]
-    },
-    "node_labels": [
-        "RightNodeLabel",
-        "MiddleNodeLabel",
-        "LeftNodeLabel"
-    ],
+    "node_relationships": {},
+    "node_labels": [],
     "relationship_names": []
 }
