@@ -1,10 +1,9 @@
-from re import compile, IGNORECASE
+from re import IGNORECASE, compile
 
 from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
     get_all_params_regex,
     get_rel_pattern_regex,
 )
-
 
 # -[r:Rel]->
 RELATIONSHIP_DIR_CHECK_REGEX = compile(

@@ -4,11 +4,11 @@ from pydantic import BaseModel, Field, root_validator
 
 from exceptions.wql.make import MakeDuplicateHandlesError
 from models.wql import Clause
-from wiggle_query_language.clauses.regexes.make.make_patterns import (
-    MAKE_STATEMENT_ALL_REGEX,
-)
 from wiggle_query_language.clauses.regexes.find.find_patterns import (
     FIND_STATEMENT_ALL_REGEX,
+)
+from wiggle_query_language.clauses.regexes.make.make_patterns import (
+    MAKE_STATEMENT_ALL_REGEX,
 )
 
 

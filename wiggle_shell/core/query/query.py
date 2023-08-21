@@ -6,13 +6,13 @@ from graph_logger.graph_logger import graph_logger
 from models.wigish import DbmsFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
-from wiggle_query_language.clauses.make import (
-    make,
-    parse_make_statement_from_query_string,
-)
 from wiggle_query_language.clauses.find import (
     find,
     parse_find_statement_from_query_string,
+)
+from wiggle_query_language.clauses.make import (
+    make,
+    parse_make_statement_from_query_string,
 )
 
 #  todo docstrings

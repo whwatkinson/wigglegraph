@@ -1,7 +1,5 @@
 import pytest
 
-
-from models.wql.enums.clauses import Clause
 from exceptions.wql.parsing import (
     ClauseSyntaxError,
     IllegalCharacterError,
@@ -9,13 +7,14 @@ from exceptions.wql.parsing import (
     ParamSyntaxError,
     RelationshipNameSyntaxError,
 )
+from models.wql.enums.clauses import Clause
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
+    check_clause_spelling,
     check_illegal_characters,
     check_node_rel_properties,
     check_relationships,
     check_statement_syntax,
-    check_clause_spelling,
 )
 
 

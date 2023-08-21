@@ -3,7 +3,6 @@ import sys
 
 from graph_logger import GRAPH_LOGGER_FILEPATH
 
-
 graph_logger = logging.getLogger()
 graph_logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s | %(levelname)s | %(message)s")

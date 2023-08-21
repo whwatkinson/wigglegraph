@@ -3,7 +3,7 @@ from typing import Optional
 
 from exceptions.wql.parsing import WiggleGraphIllegalPropertyValue
 from graph_logger.graph_logger import graph_logger
-from models.wql import WG_ALLOWED_TYPES, WiggleGraphPropertyPre, PropertyType
+from models.wql import WG_ALLOWED_TYPES, PropertyType, WiggleGraphPropertyPre
 from wiggle_query_language.clauses.regexes.patterns.properties import (
     ALL_PROPERTIES_KEY_VALUE_REGEX,
 )

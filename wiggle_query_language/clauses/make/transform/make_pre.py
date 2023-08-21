@@ -1,5 +1,4 @@
 from models.wql import Clause, EmitNodes, MakePre, NodePre, ParsedMake, RelationshipPre
-
 from wiggle_query_language.clauses.transform_helpers.relationships import (
     relationship_is_left_to_right,
 )

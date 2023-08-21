@@ -1,4 +1,4 @@
-from re import compile, IGNORECASE
+from re import IGNORECASE, compile
 
 from wiggle_query_language.clauses.regexes.patterns.patterns_helpers import (
     get_nodes_rels_pattern_regex,

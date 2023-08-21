@@ -1,11 +1,10 @@
 from typing import Optional
 
-from models.wql import ParsedFind, ParsedCriteria, Clause
+from models.wql import Clause, ParsedCriteria, ParsedFind
 from models.wql.clauses.find.find_pre import FindNodePre, FindPre, FindRelationshipPre
 from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )
-
 from wiggle_query_language.clauses.transform_helpers.relationships import (
     relationship_is_left_to_right,
 )

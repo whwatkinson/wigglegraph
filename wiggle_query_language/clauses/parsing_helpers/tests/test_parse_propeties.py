@@ -3,13 +3,13 @@ import pytest
 from exceptions.wql.parsing import WiggleGraphIllegalPropertyValue
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
+    get_property_dict,
     handle_bool_property,
     handle_float_property,
     handle_int_property,
     handle_list_property,
     handle_null_property,
     handle_string_property,
-    get_property_dict,
 )
 
 

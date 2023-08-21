@@ -2,7 +2,6 @@ import pytest
 
 from models.wql import Clause
 from testing.test_helpers import does_not_raise
-
 from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
     extract_all_statements,
 )

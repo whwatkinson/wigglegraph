@@ -9,11 +9,11 @@ from exceptions.wql.parsing import (
     RelationshipNameSyntaxError,
 )
 from models.wql import Clause
-from wiggle_query_language.clauses.regexes.make.make_patterns import (
-    MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
-)
 from wiggle_query_language.clauses.regexes.find.find_patterns import (
     FIND_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
+)
+from wiggle_query_language.clauses.regexes.make.make_patterns import (
+    MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
 )
 from wiggle_query_language.clauses.regexes.patterns.properties import (
     CHECK_PROPERTIES_SYNTAX_REGEX,

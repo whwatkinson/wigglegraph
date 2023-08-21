@@ -1,6 +1,5 @@
 from re import IGNORECASE, compile
 
-
 from wiggle_query_language.clauses.regexes.patterns.clause_helpers import (
     get_clause_all_regex,
     get_clause_permutations_regex,

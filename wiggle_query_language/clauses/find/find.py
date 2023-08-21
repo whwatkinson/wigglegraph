@@ -1,10 +1,8 @@
 from typing import Optional
 
 from models.wigish import DbmsFilePath
-from models.wql import ParsedFind, ParsedCriteria
-from wiggle_query_language.clauses.find.transform.find_pre import (
-    process_parsed_find,
-)
+from models.wql import ParsedCriteria, ParsedFind
+from wiggle_query_language.clauses.find.transform.find_pre import process_parsed_find
 
 
 def find(

@@ -1,16 +1,14 @@
 from typing import Optional
 
-
 from models.wql import Clause
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
     check_clause_spelling,
 )
-from wiggle_query_language.clauses.regexes.make.make_patterns import (
-    MAKE_STATEMENT_ALL_REGEX,
-)
-
 from wiggle_query_language.clauses.regexes.find.find_patterns import (
     FIND_STATEMENT_ALL_REGEX,
+)
+from wiggle_query_language.clauses.regexes.make.make_patterns import (
+    MAKE_STATEMENT_ALL_REGEX,
 )
 
 

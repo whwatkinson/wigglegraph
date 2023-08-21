@@ -1,4 +1,4 @@
-from re import compile, IGNORECASE
+from re import IGNORECASE, compile
 
 from wiggle_query_language.clauses.regexes import EXTRA_ALLOWED_CHARS
 

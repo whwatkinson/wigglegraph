@@ -1,16 +1,15 @@
 from typing import Optional
 
 from exceptions.wql.find import MultipleFindStatementsError
-from models.wql import ParsedFind, Clause
+from models.wql import Clause, ParsedFind
+from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
+    extract_all_statements,
+)
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
     validate_statement,
 )
-
 from wiggle_query_language.clauses.regexes.patterns.patterns import (
     NODES_RELS_PATTERN_REGEX,
-)
-from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
-    extract_all_statements,
 )
 
 
