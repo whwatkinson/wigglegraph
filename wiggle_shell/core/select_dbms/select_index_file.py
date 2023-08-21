@@ -24,7 +24,11 @@ def create_new_indexes_file(
 
     new_indexes_file_path.touch()
 
-    new_index_dict = {"relationships": {}, "node_labels": [], "relationship_names": []}
+    new_index_dict = {
+        "node_relationships": {},
+        "node_labels": [],
+        "relationship_names": [],
+    }
 
     with open(new_indexes_file_path, "w") as file_handle:
         file_handle.write(dumps(new_index_dict))
@@ -50,6 +54,4 @@ def get_existing_indexes_file_path(
 
 
 if __name__ == "__main__":
-    from testing import TEST_DBMS_FOLDER_PATH
-
-    create_new_indexes_file("foo", TEST_DBMS_FOLDER_PATH)
+    create_new_indexes_file("foo", DBMS_FOLDER)

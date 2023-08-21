@@ -1,3 +1,5 @@
 {
-    "relationships": {}
+    "node_relationships": {},
+    "node_labels": [],
+    "relationship_names": []
 }

@@ -1,7 +1,7 @@
 from typing import Generator
 
 from testing import INDEXES_TEST_FILE_PATH
-from wiggle_query_language.graph.database.indexes.relationship_index import (
+from wiggle_query_language.graph.database.indexes.node_relationship_index import (
     add_items_to_relationship_index,
     load_relationship_index,
 )

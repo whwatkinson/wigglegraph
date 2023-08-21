@@ -31,7 +31,7 @@ def load_relationship_index(
         with open(indexes_file_path, "r") as file_handle:
             indexes = load(file_handle)
 
-            rel_indexes = indexes["relationships"]
+            rel_indexes = indexes["node_relationships"]
             graph_logger.info("Successfully loaded database")
 
             rel_indexes_py = json_to_dict(rel_indexes, wn_of_nodes)
@@ -55,7 +55,7 @@ def add_items_to_relationship_index(
 
     with open(indexes_file_path, "r+") as file_handle:
         indexes_dict = load(file_handle)
-        rel_indexes_dict = indexes_dict["relationships"]
+        rel_indexes_dict = indexes_dict["node_relationships"]
 
         for node_wn, new_rels_wn_set in items_to_add.items():
             if node_wn in rel_indexes_dict:
@@ -67,7 +67,7 @@ def add_items_to_relationship_index(
 
             file_handle.seek(0)
 
-        indexes_dict["relationships"] = rel_indexes_dict
+        indexes_dict["node_relationships"] = rel_indexes_dict
 
         dump(indexes_dict, file_handle, indent=4)
         file_handle.truncate()
@@ -86,7 +86,7 @@ def wipe_relationship_index(indexes_file_path: Path, im_sure: bool = False) -> b
         graph_logger.info("Dropping relationship indexes")
         with open(indexes_file_path, "r+") as file_handle:
             indexes_dict = load(file_handle)
-            indexes_dict["relationships"] = {}
+            indexes_dict["node_relationships"] = {}
             file_handle.seek(0)
             dump(indexes_dict, file_handle, indent=4)
             file_handle.truncate()

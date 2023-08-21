@@ -34,7 +34,7 @@ class TestRelationshipIndex:
             data = load(file)
 
         assert data == {
-            "relationships": {},
+            "node_relationships": {},
             "node_labels": [],
             "relationship_names": [],
         }
