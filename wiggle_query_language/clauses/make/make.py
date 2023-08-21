@@ -16,7 +16,7 @@ from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
 from wiggle_query_language.graph.database.indexes.node_relationship_index import (
-    add_items_to_relationship_index,
+    add_items_to_node_relationship_index,
 )
 from wiggle_query_language.graph.state.wiggle_number import (
     get_current_wiggle_number,
@@ -109,8 +109,12 @@ def add_nodes_to_graph(
 
     # Write to the database
     add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+
+    # node_labels = {node.node_label for node in nodes_list}
+    # relationship_names = {}
+
     # todo add NodeLabel to index file
-    add_items_to_relationship_index(
+    add_items_to_node_relationship_index(
         dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
     )
 

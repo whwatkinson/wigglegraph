@@ -17,7 +17,7 @@ def dict_to_json(rel_indexes: dict) -> dict[int, list[int]]:
     return {k: list(v) for k, v in rel_indexes.items()}
 
 
-def load_relationship_index(
+def load_node_relationship_index(
     indexes_file_path: Path, wn_of_nodes: Optional[set[int]] = None
 ) -> dict[int, set[int]]:
     """
@@ -43,7 +43,7 @@ def load_relationship_index(
         return {}
 
 
-def add_items_to_relationship_index(
+def add_items_to_node_relationship_index(
     indexes_file_path: Path, items_to_add: dict[str, set[int]]
 ) -> bool:
     """
@@ -75,7 +75,9 @@ def add_items_to_relationship_index(
     return True
 
 
-def wipe_relationship_index(indexes_file_path: Path, im_sure: bool = False) -> bool:
+def wipe_node_relationship_index(
+    indexes_file_path: Path, im_sure: bool = False
+) -> bool:
     """
     Wipes the database, must set im_sure to true.
     :param indexes_file_path: The file path to the Indexes file.
@@ -97,7 +99,7 @@ def wipe_relationship_index(indexes_file_path: Path, im_sure: bool = False) -> b
 
 
 if __name__ == "__main__":
-    wipe_relationship_index(INDEXES_TEST_FILE_PATH, True)
+    wipe_node_relationship_index(INDEXES_TEST_FILE_PATH, True)
 
     # add_items_to_relationship_index(
     #     INDEXES_TEST_FILE_PATH,
