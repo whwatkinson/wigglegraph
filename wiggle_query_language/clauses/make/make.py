@@ -3,8 +3,8 @@ from itertools import chain
 from models.wigish import DbmsFilePath
 from models.wql import (
     MakePre,
-    NodePre,
     Node,
+    NodePre,
     ParsedMake,
     Relationship,
     RelationshipPre,
@@ -17,11 +17,11 @@ from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
-from wiggle_query_language.graph.database.indexes.node_relationship_index import (
-    add_items_to_node_relationship_index,
-)
 from wiggle_query_language.graph.database.indexes.node_labels_index import (
     add_items_to_node_labels_index,
+)
+from wiggle_query_language.graph.database.indexes.node_relationship_index import (
+    add_items_to_node_relationship_index,
 )
 from wiggle_query_language.graph.database.indexes.relationship_names_index import (
     add_items_to_relationship_names_index,

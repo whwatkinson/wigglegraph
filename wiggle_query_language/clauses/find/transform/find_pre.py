@@ -1,7 +1,13 @@
 from typing import Optional
 
-from models.wql import Clause, ParsedCriteria, ParsedFind
-from models.wql.clauses.find.find_pre import FindNodePre, FindPre, FindRelationshipPre
+from models.wql import (
+    Clause,
+    FindNodePre,
+    FindPre,
+    FindRelationshipPre,
+    ParsedCriteria,
+    ParsedFind,
+)
 from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )

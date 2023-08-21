@@ -1,7 +1,6 @@
-from json import load, dump
+from json import dump, load
 from json.decoder import JSONDecodeError
 from pathlib import Path
-
 
 from graph_logger.graph_logger import graph_logger
 
