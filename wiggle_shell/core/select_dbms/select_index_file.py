@@ -1,3 +1,4 @@
+from json import dumps
 from pathlib import Path
 
 from wiggle_shell import DBMS_FOLDER
@@ -23,8 +24,10 @@ def create_new_indexes_file(
 
     new_indexes_file_path.touch()
 
+    new_index_dict = {"relationships": {}, "node_labels": []}
+
     with open(new_indexes_file_path, "w") as file_handle:
-        file_handle.write("""{"relationships": {}}""")
+        file_handle.write(dumps(new_index_dict))
 
     return new_indexes_file_path
 
