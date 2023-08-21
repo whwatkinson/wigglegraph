@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Optional
 
 from graph_logger.graph_logger import graph_logger
-from testing import INDEXES_TEST_FILE_PATH
 
 
 def json_to_dict(
@@ -15,32 +14,6 @@ def json_to_dict(
 
 def dict_to_json(rel_indexes: dict) -> dict[int, list[int]]:
     return {k: list(v) for k, v in rel_indexes.items()}
-
-
-def load_node_relationship_index(
-    indexes_file_path: Path, wn_of_nodes: Optional[set[int]] = None
-) -> dict[int, set[int]]:
-    """
-    Loads the relationship indexes into memory.
-    :param indexes_file_path: The file path to the Indexes file.
-    :param wn_of_nodes:
-    :return: A database dict.
-    """
-    graph_logger.info("Attempting to loading Relationship indexes")
-    try:
-        with open(indexes_file_path, "r") as file_handle:
-            indexes = load(file_handle)
-
-            rel_indexes = indexes["node_relationships"]
-            graph_logger.info("Successfully loaded database")
-
-            rel_indexes_py = json_to_dict(rel_indexes, wn_of_nodes)
-
-            return rel_indexes_py
-
-    except JSONDecodeError:
-        graph_logger.exception("Empty relationship indexes,returning a new one")
-        return {}
 
 
 def add_items_to_node_relationship_index(
@@ -75,6 +48,32 @@ def add_items_to_node_relationship_index(
     return True
 
 
+def load_node_relationship_index(
+    indexes_file_path: Path, wn_of_nodes: Optional[set[int]] = None
+) -> dict[int, set[int]]:
+    """
+    Loads the relationship indexes into memory.
+    :param indexes_file_path: The file path to the Indexes file.
+    :param wn_of_nodes:
+    :return: A database dict.
+    """
+    graph_logger.info("Attempting to loading Relationship indexes")
+    try:
+        with open(indexes_file_path, "r") as file_handle:
+            indexes = load(file_handle)
+
+            rel_indexes = indexes["node_relationships"]
+            graph_logger.info("Successfully loaded database")
+
+            rel_indexes_py = json_to_dict(rel_indexes, wn_of_nodes)
+
+            return rel_indexes_py
+
+    except JSONDecodeError:
+        graph_logger.exception("Empty relationship indexes,returning a new one")
+        return {}
+
+
 def wipe_node_relationship_index(
     indexes_file_path: Path, im_sure: bool = False
 ) -> bool:
@@ -99,6 +98,8 @@ def wipe_node_relationship_index(
 
 
 if __name__ == "__main__":
+    from testing import INDEXES_TEST_FILE_PATH
+
     wipe_node_relationship_index(INDEXES_TEST_FILE_PATH, True)
 
     # add_items_to_relationship_index(
