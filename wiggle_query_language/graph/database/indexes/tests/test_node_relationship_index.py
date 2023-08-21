@@ -1,9 +1,9 @@
 from typing import Generator
 
 from testing import INDEXES_TEST_FILE_PATH
-from wiggle_query_language.graph.database.indexes.node_relationship_index import (
-    add_items_to_node_relationship_index,
-    load_node_relationship_index,
+from wiggle_query_language.graph.database.indexes.node_relationships_index import (
+    add_items_to_node_relationships_index,
+    load_node_relationships_index,
 )
 
 
@@ -12,7 +12,7 @@ class TestNodeRelationshipIndex:
         self, clear_node_relationship_index_test: Generator
     ) -> None:
         # Check the indexes is empty
-        test_before = load_node_relationship_index(
+        test_before = load_node_relationships_index(
             indexes_file_path=INDEXES_TEST_FILE_PATH
         )
 
@@ -20,12 +20,12 @@ class TestNodeRelationshipIndex:
 
         # Insert some records
         items = {"500": {503}, "501": {504}}
-        test_add = add_items_to_node_relationship_index(
+        test_add = add_items_to_node_relationships_index(
             indexes_file_path=INDEXES_TEST_FILE_PATH, items_to_add=items
         )
         assert test_add is True
 
-        test_load1 = load_node_relationship_index(
+        test_load1 = load_node_relationships_index(
             indexes_file_path=INDEXES_TEST_FILE_PATH
         )
         assert len(test_load1) == 2
@@ -38,12 +38,12 @@ class TestNodeRelationshipIndex:
 
         items = {"500": {503, 505}, "501": {504, 607}}
 
-        test_add_again = add_items_to_node_relationship_index(
+        test_add_again = add_items_to_node_relationships_index(
             indexes_file_path=INDEXES_TEST_FILE_PATH, items_to_add=items
         )
         assert test_add_again is True
 
-        test_load2 = load_node_relationship_index(
+        test_load2 = load_node_relationships_index(
             indexes_file_path=INDEXES_TEST_FILE_PATH
         )
         assert len(test_load2) == 2

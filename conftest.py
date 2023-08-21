@@ -11,8 +11,8 @@ from wiggle_query_language.graph.database.database import wipe_database
 from wiggle_query_language.graph.database.indexes.node_labels_index import (
     wipe_node_labels_index,
 )
-from wiggle_query_language.graph.database.indexes.node_relationship_index import (
-    wipe_node_relationship_index,
+from wiggle_query_language.graph.database.indexes.node_relationships_index import (
+    wipe_node_relationships_index,
 )
 from wiggle_query_language.graph.database.indexes.relationship_names_index import (
     wipe_relationship_names_index,
@@ -30,11 +30,11 @@ def clear_database_test() -> Generator:
 
 @pytest.fixture
 def clear_node_relationship_index_test() -> Generator:
-    wipe_node_relationship_index(INDEXES_TEST_FILE_PATH, im_sure=True)
+    wipe_node_relationships_index(INDEXES_TEST_FILE_PATH, im_sure=True)
 
     yield None
 
-    wipe_node_relationship_index(INDEXES_TEST_FILE_PATH, im_sure=True)
+    wipe_node_relationships_index(INDEXES_TEST_FILE_PATH, im_sure=True)
 
 
 @pytest.fixture
@@ -69,7 +69,7 @@ def clear_wiggle_number_test() -> Generator:
 @pytest.fixture
 def clear_dbms_test() -> Generator:
     wipe_database(DATABASE_TEST_FILE_PATH, im_sure=True)
-    wipe_node_relationship_index(INDEXES_TEST_FILE_PATH, im_sure=True)
+    wipe_node_relationships_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     wipe_node_labels_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     wipe_relationship_names_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     with open(WIGGLE_NUMBER_TEST_FILE_PATH, "w") as file_handle:
@@ -78,7 +78,7 @@ def clear_dbms_test() -> Generator:
     yield None
 
     wipe_database(DATABASE_TEST_FILE_PATH, im_sure=True)
-    wipe_node_relationship_index(WIGGLE_NUMBER_TEST_FILE_PATH, im_sure=True)
+    wipe_node_relationships_index(WIGGLE_NUMBER_TEST_FILE_PATH, im_sure=True)
     wipe_node_labels_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     wipe_relationship_names_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     with open(INDEXES_TEST_FILE_PATH, "w") as file_handle:

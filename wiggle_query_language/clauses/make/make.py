@@ -20,8 +20,8 @@ from wiggle_query_language.graph.database.database import add_item_to_database
 from wiggle_query_language.graph.database.indexes.node_labels_index import (
     add_items_to_node_labels_index,
 )
-from wiggle_query_language.graph.database.indexes.node_relationship_index import (
-    add_items_to_node_relationship_index,
+from wiggle_query_language.graph.database.indexes.node_relationships_index import (
+    add_items_to_node_relationships_index,
 )
 from wiggle_query_language.graph.database.indexes.relationship_names_index import (
     add_items_to_relationship_names_index,
@@ -127,7 +127,7 @@ def add_nodes_to_graph(
         )
     )
 
-    add_items_to_node_relationship_index(
+    add_items_to_node_relationships_index(
         dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
     )
     add_items_to_node_labels_index(
