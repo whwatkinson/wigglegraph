@@ -1,1 +1,121 @@
-{}
+{
+    "5": {
+        "node_metadata": {
+            "wn": 5,
+            "created_at": 1692621777.924936,
+            "updated_at": null
+        },
+        "node_label": "LeftNodeLabel",
+        "properties": {
+            "none": null,
+            "int": 1,
+            "str": "2",
+            "str2": "2_4",
+            "float": 3.14,
+            "list": [
+                1,
+                "2",
+                "2_4",
+                "3 4",
+                3.14
+            ]
+        },
+        "relations": [
+            {
+                "relationship_metadata": {
+                    "wn": 8,
+                    "created_at": 1692621777.924936,
+                    "updated_at": null
+                },
+                "relationship_name": "RELLM1",
+                "wn_from_node": 5,
+                "wn_to_node": 6,
+                "properties": {
+                    "int": 1,
+                    "str": "2",
+                    "str2": "2_4",
+                    "float": 3.14,
+                    "bool": false,
+                    "none": null,
+                    "list": [
+                        1,
+                        "2",
+                        "2_4",
+                        "3 4",
+                        3.14
+                    ]
+                }
+            }
+        ]
+    },
+    "6": {
+        "node_metadata": {
+            "wn": 6,
+            "created_at": 1692621777.924936,
+            "updated_at": null
+        },
+        "node_label": "MiddleNodeLabel",
+        "properties": {
+            "int": 1,
+            "str": "2",
+            "str2": "2_4",
+            "float": 3.14,
+            "list": [
+                1,
+                "2",
+                "2_4",
+                "3 4",
+                3.14
+            ]
+        },
+        "relations": [
+            {
+                "relationship_metadata": {
+                    "wn": 9,
+                    "created_at": 1692621777.924936,
+                    "updated_at": null
+                },
+                "relationship_name": "RELMR",
+                "wn_from_node": 6,
+                "wn_to_node": 7,
+                "properties": {
+                    "int": 1,
+                    "str": "2",
+                    "str2": "2_4",
+                    "float": 3.14,
+                    "list": [
+                        1,
+                        "2",
+                        "2_4",
+                        "3 4",
+                        3.14
+                    ]
+                }
+            }
+        ]
+    },
+    "7": {
+        "node_metadata": {
+            "wn": 7,
+            "created_at": 1692621777.924936,
+            "updated_at": null
+        },
+        "node_label": "RightNodeLabel",
+        "properties": {
+            "int": 1,
+            "str": "2",
+            "str2": "2_4",
+            "float": 3.14,
+            "bool": true,
+            "none": null,
+            "list": [
+                1,
+                "2",
+                "2_4",
+                "3 4",
+                3.14
+            ]
+        },
+        "relations": null
+    }
+}

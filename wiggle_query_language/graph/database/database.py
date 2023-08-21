@@ -37,11 +37,10 @@ def add_item_to_database(
     :param items_to_add: The items to be added to the Database file.
     :return: A bool.
     """
-    # database = load_database(database_file_path)
 
     with open(database_file_path, "r+") as file_handle:
         database = load(file_handle)
-
+        graph_logger.info("writing to db")
         for wiggle_number_to_add, node in items_to_add.items():
             if wiggle_number_to_add in database:
                 raise NodeExistsError(
@@ -50,13 +49,12 @@ def add_item_to_database(
             else:
                 database[wiggle_number_to_add] = node
 
-    #  todo replace with https://stackoverflow.com/questions/21035762/python-read-json-file-and-modify
-    database.update(items_to_add)
+        file_handle.seek(0)
+        dump(database, file_handle, indent=4)
 
-    with open(database_file_path, "w") as file_handle:
-        graph_logger.info("writing to db")
-        dump(database, file_handle, ensure_ascii=False)
-        graph_logger.info("Done")
+    graph_logger.info(
+        f"Successfully added {len(items_to_add)} records to the database."
+    )
 
     return True
 
@@ -71,7 +69,11 @@ def wipe_database(database_file_path: Path, im_sure: bool = False) -> bool:
     if im_sure:
         graph_logger.info("Dropping database")
         with open(database_file_path, "w") as file_handle:
-            file_handle.write("{}")
+            database = dict()
+            file_handle.seek(0)
+            dump(database, file_handle, indent=4)
+            file_handle.truncate()
+
         graph_logger.info("Database successfully dropped.")
         return True
     graph_logger.debug(f"Did not drop database as {im_sure=}")
