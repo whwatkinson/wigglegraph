@@ -102,6 +102,6 @@ class ParsedCriteria(BaseModel):
 
 class ParsedQuery(BaseModel):
     make_parsed: Optional[list[ParsedMake]]
-    find_parsed: Optional[list[ParsedFind]]
-    criteria_parsed: Optional[list[ParsedCriteria]]
+    find_parsed: Optional[ParsedFind]
+    criteria_parsed: Optional[ParsedCriteria]
     report_parsed: Optional[dict] = None

@@ -1,6 +1,8 @@
+import logging
 from pathlib import Path
 
 from exceptions.wiggleshell.query import NotAValidQueryError
+from graph_logger.graph_logger import graph_logger
 from models.wigish import DbmsFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
@@ -14,6 +16,8 @@ from wiggle_query_language.clauses.find import (
 )
 
 #  todo docstrings
+
+graph_logger.setLevel(logging.WARNING)
 
 
 def parse_query_string(query_string: str) -> ParsedQuery:
@@ -44,9 +48,9 @@ def execute_query(parsed_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> bo
 
     if query_find := parsed_query.find_parsed:
         find(
-            parsed_find_list=query_find,
+            parsed_find=query_find,
             dbms_file_path=dbms_file_path,
-            parsed_criteria_list=parsed_query.criteria_parsed,
+            parsed_criteria=parsed_query.criteria_parsed,
         )
 
     return True
@@ -88,16 +92,6 @@ if __name__ == "__main__":
     FIND (:NodeLabel{str: '2'})<-[]-(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});
     """
 
-    # qry = """
-    #
-    # MAKE (:NodeLabel{int: 1})<-[rel1:REL{str: '2'}]-(:NodeLabel{str2:"2_4"})-[rel1:REL{str: '2'}]->(:NodeLabel{str2:"2_4"});
-    # """
-    #
-    # qry = """MAKE (c:NodeLabel {int: 1, float: 3.14, bool: true, bool2: false, none: null, str: '2', str2:"2_4", str3: "3 4 5", email: 'foo@bar.net',  list: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"], list2: [1, 3.14, true, false, '2', "2_4", "3 4", "foo@bar.net"]});"""
-
-    # qry = """
-    #     MAKE (:NodeLabel1), (:NodeLabel2);
-    #     MAKE (:NodeLabel3);
-    #     """
+    qry = """FIND (left_node_handle:LeftNodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[lm:RELLM{int: 1, str: '2', str2:"2_4", float: 3.14, bool: false, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]-(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]} );"""
 
     query(qry, TEST_DBMS)
