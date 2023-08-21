@@ -62,12 +62,12 @@ def load_node_relationship_index(
         with open(indexes_file_path, "r") as file_handle:
             indexes = load(file_handle)
 
-            rel_indexes = indexes["node_relationships"]
-            graph_logger.info("Successfully loaded database")
+            rel_indexes_json = indexes["node_relationships"]
+            graph_logger.info("Successfully loaded node_relationships index")
 
-            rel_indexes_py = json_to_dict(rel_indexes, wn_of_nodes)
+            rel_indexes_python = json_to_dict(rel_indexes_json, wn_of_nodes)
 
-            return rel_indexes_py
+            return rel_indexes_python
 
     except JSONDecodeError:
         graph_logger.exception("Empty relationship indexes,returning a new one")
@@ -78,7 +78,7 @@ def wipe_node_relationship_index(
     indexes_file_path: Path, im_sure: bool = False
 ) -> bool:
     """
-    Wipes the database, must set im_sure to true.
+    Wipes the node_relationships index, must set im_sure to true.
     :param indexes_file_path: The file path to the Indexes file.
     :param im_sure: Flag for making sure.
     :return:
