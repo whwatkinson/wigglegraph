@@ -19,13 +19,9 @@ def add_items_to_node_labels_index(
     with open(indexes_file_path, "r+") as file_handle:
         indexes_dict = load(file_handle)
         node_label_indexes = set(indexes_dict[index_name])
-
         updated_index = node_label_indexes.union(items_to_add)
-
         file_handle.seek(0)
-
         indexes_dict[index_name] = list(updated_index)
-
         dump(indexes_dict, file_handle, indent=4)
         file_handle.truncate()
 
@@ -43,10 +39,8 @@ def load_node_labels_index(indexes_file_path: Path) -> set:
     try:
         with open(indexes_file_path, "r") as file_handle:
             indexes = load(file_handle)
-
             rel_indexes_json = indexes[index_name]
             graph_logger.info("Successfully loaded node_labels index")
-
             rel_indexes_python = set(rel_indexes_json)
 
             return rel_indexes_python
