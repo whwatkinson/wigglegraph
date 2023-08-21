@@ -3,7 +3,7 @@ from typing import Optional
 
 from exceptions.wql.parsing import WiggleGraphIllegalPropertyValue
 from graph_logger.graph_logger import graph_logger
-from models.wql import WG_ALLOWED_TYPES, WiggleGraphPropertyPre, PropertyType
+from models.wql import WG_ALLOWED_TYPES, PropertyType, WiggleGraphPropertyPre
 from wiggle_query_language.clauses.regexes.patterns.properties import (
     ALL_PROPERTIES_KEY_VALUE_REGEX,
 )
@@ -166,7 +166,11 @@ def handle_list_property(value_in: str) -> list[WG_ALLOWED_TYPES]:
     :return: A Python list.
     """
     # params validation happens in check_node_rel_properties
-    value = value_in.replace("true", "True").replace("false", "False")
+    value = (
+        value_in.replace("true", "True")
+        .replace("false", "False")
+        .replace("null", "None")
+    )
     try:
         found_list = literal_eval(value)
     except SyntaxError:

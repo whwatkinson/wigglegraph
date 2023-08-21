@@ -7,9 +7,10 @@ from exceptions.wql.parsing import (
     ParamSyntaxError,
     RelationshipNameSyntaxError,
 )
-
+from models.wql.enums.clauses import Clause
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import (
+    check_clause_spelling,
     check_illegal_characters,
     check_node_rel_properties,
     check_relationships,
@@ -17,7 +18,7 @@ from wiggle_query_language.clauses.parsing_helpers.parse_statement_checks import
 )
 
 
-class TestWqlStmtChecks:
+class TestParseStatementChecks:
     @pytest.mark.parametrize(
         "test_make_stmt, exception",
         [
@@ -222,4 +223,74 @@ class TestWqlStmtChecks:
     def test_check_statement_syntax(self, test_make_matches: list[str], exception):
         with exception:
             test = check_statement_syntax(test_make_matches)
+            assert test is True
+
+    @pytest.mark.parametrize(
+        "test_make_stmt, exception",
+        [
+            pytest.param(
+                "MAEK (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "eMAk (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "EMka (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "KMAe (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "EKAM (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+        ],
+    )
+    def test_check_make_clause_spelling(self, test_make_stmt: str, exception) -> None:
+        with exception:
+            test = check_clause_spelling(test_make_stmt, Clause.MAKE)
+            assert test is True
+
+    @pytest.mark.parametrize(
+        "test_make_stmt, exception",
+        [
+            pytest.param(
+                "DIFN (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "FIDN (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "FNID (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "DNIF (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "IFND (node:NodeLabel);",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+        ],
+    )
+    def test_check_find_clause_spelling(self, test_make_stmt: str, exception) -> None:
+        with exception:
+            test = check_clause_spelling(test_make_stmt, Clause.FIND)
             assert test is True

@@ -8,11 +8,11 @@ from models.wql import (
     RelationshipPre,
     WiggleGraphMetalData,
 )
-from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
-    get_property_dict,
-)
 from wiggle_query_language.clauses.make.transform.make_pre import (
     process_parsed_make_list,
+)
+from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
+    get_property_dict,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
 from wiggle_query_language.graph.database.relationship_index import (
@@ -109,6 +109,7 @@ def add_nodes_to_graph(
 
     # Write to the database
     add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+    # todo add NodeLabel to index file
     add_items_to_relationship_index(
         dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
     )

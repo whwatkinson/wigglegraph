@@ -3,7 +3,6 @@ import pytest
 from wiggle_query_language.clauses.regexes.patterns.patterns import (
     NODES_RELS_PATTERN_REGEX,
 )
-
 from wiggle_query_language.clauses.regexes.patterns.tests.cases_for_test_nodes_regex import (
     cases_for_test_nodes_rel_pattern,
 )

@@ -3,7 +3,10 @@ from typing import Optional
 from pydantic import BaseModel, Field, root_validator
 
 from exceptions.wql.make import MakeDuplicateHandlesError
-from models.wql.enums.clauses import Clause
+from models.wql import Clause
+from wiggle_query_language.clauses.regexes.find.find_patterns import (
+    FIND_STATEMENT_ALL_REGEX,
+)
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_ALL_REGEX,
 )
@@ -82,13 +85,23 @@ class ParsedMake(BaseModel):
 
 
 class ParsedFind(BaseModel):
-    raw_statement: str = Field(regex=MAKE_STATEMENT_ALL_REGEX.pattern)
+    raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
     clause: Clause = Clause.FIND
-    parsed_pattern_list: list[ParsedPattern]
+    parsed_pattern_list: ParsedPattern
+
+    def __len__(self) -> int:
+        return 1
+
+
+class ParsedCriteria(BaseModel):
+    raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
+    clause: Clause = Clause.CRITERIA
+    criteria_handle_props: dict
+    # should be a dict with {handle: {props: 1}}
 
 
 class ParsedQuery(BaseModel):
     make_parsed: Optional[list[ParsedMake]]
-    find_parsed: Optional[dict] = None
-    criteria_parsed: Optional[dict] = None
+    find_parsed: Optional[ParsedFind]
+    criteria_parsed: Optional[ParsedCriteria]
     report_parsed: Optional[dict] = None

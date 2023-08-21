@@ -1,13 +1,7 @@
 from models.wql import Clause, EmitNodes, MakePre, NodePre, ParsedMake, RelationshipPre
-
-
-def relationship_is_left_to_right(parsed_relationship_pattern: str) -> bool:
-    """
-    Checks the direction of the relationship.
-    :param parsed_relationship_pattern: The extracted relationship expression.
-    :return: Ture if LTR, False if RTL.
-    """
-    return True if parsed_relationship_pattern[-1] == ">" else False
+from wiggle_query_language.clauses.transform_helpers.relationships import (
+    relationship_is_left_to_right,
+)
 
 
 def process_parsed_make_list(

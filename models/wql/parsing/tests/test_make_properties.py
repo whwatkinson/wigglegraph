@@ -1,11 +1,11 @@
 import pytest
 
 from exceptions.wql.parsing import PropertyTypeAssignmentError
+from models.wql.enums.property_type import PropertyType
 from models.wql.parsing.properties_pre import (
     ExtractedPropertyPre,
     WiggleGraphPropertyPre,
 )
-from models.wql.enums.property_type import PropertyType
 from testing.test_helpers import does_not_raise
 
 

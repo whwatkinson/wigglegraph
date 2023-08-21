@@ -37,8 +37,9 @@ class MakePre(BaseModel):
     left_middle_relationship: Optional[RelationshipPre]
     middle_right_relationship: Optional[RelationshipPre]
 
+    @staticmethod
     def get_relationships(
-        self, node_pre: NodePre, relationship_pre: RelationshipPre
+        node_pre: NodePre, relationship_pre: RelationshipPre
     ) -> RelationshipPre:
         return (
             relationship_pre if relationship_pre.wn_from_node == node_pre.wn else None
