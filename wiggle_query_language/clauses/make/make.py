@@ -122,8 +122,11 @@ def add_nodes_to_graph(
 
     node_labels_set_to_add = {node.node_label for node in nodes_list}
 
-    foo = [node.node_relationship_names() for node in nodes_list if node.relations]
-    relationship_names_set_to_add = set(chain.from_iterable(foo))
+    relationship_names_set_to_add = set(
+        chain.from_iterable(
+            [node.node_relationship_names() for node in nodes_list if node.relations]
+        )
+    )
 
     add_items_to_node_relationship_index(
         dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
