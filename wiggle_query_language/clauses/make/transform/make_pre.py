@@ -1,4 +1,4 @@
-from models.wql import Clause, EmitNodes, MakePre, NodePre, ParsedMake, RelationshipPre
+from models.wql import Clause, MakePre, NodePre, ParsedMake, RelationshipPre
 from wiggle_query_language.clauses.transform_helpers.relationships import (
     relationship_is_left_to_right,
 )
@@ -6,7 +6,7 @@ from wiggle_query_language.clauses.transform_helpers.relationships import (
 
 def process_parsed_make_list(
     parsed_make_list: list[ParsedMake], current_wiggle_number: int
-) -> tuple[int, list[EmitNodes]]:
+) -> tuple[int, list[MakePre]]:
     """
     Turns a ParsedMake into a MakePre.
     :param parsed_make_list: The list of parsed make statements.
@@ -74,7 +74,16 @@ def process_parsed_make_list(
                     wn_from_node=wn_from_node,
                     wn_to_node=wn_to_node,
                 )
-                make_pre.left_middle_relationship = left_middle_relationship
+
+                if lm_rel_dir:
+                    make_pre.left_node.relationships_pre.append(
+                        left_middle_relationship
+                    )
+                else:
+                    make_pre.middle_node.relationships_pre.append(
+                        left_middle_relationship
+                    )
+
                 current_wiggle_number += 1
 
             # MiddleRight Relationship
@@ -90,17 +99,25 @@ def process_parsed_make_list(
 
                 middle_right_relationship = RelationshipPre(
                     wn=current_wiggle_number,
-                    rel_name=parsed_pattern.left_middle_rel_label,
+                    rel_name=parsed_pattern.middle_right_rel_label,
                     rel_handle=parsed_pattern.middle_right_rel_handle,
                     props_string=parsed_pattern.middle_right_rel_props,
                     wn_from_node=wn_from_node,
                     wn_to_node=wn_to_node,
                 )
-                make_pre.middle_right_relationship = middle_right_relationship
+
+                if mr_rel_dir:
+                    make_pre.middle_node.relationships_pre.append(
+                        middle_right_relationship
+                    )
+                else:
+                    make_pre.right_node.relationships_pre.append(
+                        middle_right_relationship
+                    )
 
                 current_wiggle_number += 1
 
-            emit_nodes_pre = make_pre.emit_nodes()
-            emit_nodes_list.append(emit_nodes_pre)
+            # emit_nodes_pre = make_pre.emit_nodes()
+            emit_nodes_list.append(make_pre)
 
     return current_wiggle_number, emit_nodes_list

@@ -1,3 +1,4 @@
+from json import dumps
 from pathlib import Path
 
 from wiggle_shell import DBMS_FOLDER
@@ -21,8 +22,10 @@ def create_new_database(dbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) ->
 
     new_database_file_path.touch()
 
+    new_db_dict = dict()
+
     with open(new_database_file_path, "w") as file_handle:
-        file_handle.write("""{}""")
+        file_handle.write(dumps(new_db_dict))
 
     return new_database_file_path
 

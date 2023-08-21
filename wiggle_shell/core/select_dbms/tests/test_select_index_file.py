@@ -33,7 +33,11 @@ class TestRelationshipIndex:
         with open(test_after, "r") as file:
             data = load(file)
 
-        assert data == {"relationships": {}}
+        assert data == {
+            "node_relationships": {},
+            "node_labels": [],
+            "relationship_names": [],
+        }
 
         # Create the rel index file again
         with pytest.raises(ValueError):

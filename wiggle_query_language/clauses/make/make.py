@@ -1,8 +1,10 @@
+from itertools import chain
+
 from models.wigish import DbmsFilePath
 from models.wql import (
-    EmitNode,
-    EmitNodes,
+    MakePre,
     Node,
+    NodePre,
     ParsedMake,
     Relationship,
     RelationshipPre,
@@ -15,8 +17,14 @@ from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
-from wiggle_query_language.graph.database.relationship_index import (
-    add_items_to_relationship_index,
+from wiggle_query_language.graph.database.indexes.node_labels_index import (
+    add_items_to_node_labels_index,
+)
+from wiggle_query_language.graph.database.indexes.node_relationships_index import (
+    add_items_to_node_relationships_index,
+)
+from wiggle_query_language.graph.database.indexes.relationship_names_index import (
+    add_items_to_relationship_names_index,
 )
 from wiggle_query_language.graph.state.wiggle_number import (
     get_current_wiggle_number,
@@ -24,38 +32,37 @@ from wiggle_query_language.graph.state.wiggle_number import (
 )
 
 
-def make_nodes(emit_node: EmitNodes) -> list[Node]:
+def make_nodes(make_pre: MakePre) -> list[Node]:
     """
     Handles the creation of the nodes.
-    :param emit_node: The pre-processed Node
+    :param make_pre: The pre-processed Nodes
     :return: A list of Nodes for loading onto the graph.
     """
     # Will always be a left node in a MAKE
-    nodes = [make_node(emit_node.left)]
+    nodes = [make_node(make_pre.left_node)]
 
-    if emit_node.middle:
-        nodes.append(make_node(emit_node.middle))
+    if make_pre.middle_node:
+        nodes.append(make_node(make_pre.middle_node))
 
-    if emit_node.right:
-        nodes.append(make_node(emit_node.right))
+    if make_pre.right_node:
+        nodes.append(make_node(make_pre.left_node))
 
     return nodes
 
 
-def make_node(emit_node: EmitNode) -> Node:
+def make_node(emit_node: NodePre) -> Node:
     """
     Makes the Node object for a node.
     :param emit_node: The pre-processed node.
     :return: A WiggleGraph Node.
     """
-    node_pre = emit_node.node_pre
-    node_metadata = WiggleGraphMetalData(wn=node_pre.wn)
-    node_label = node_pre.node_label
-    properties = get_property_dict(node_pre.props_string)
-    if emit_node.relationship_pre:
+    node_metadata = WiggleGraphMetalData(wn=emit_node.wn)
+    node_label = emit_node.node_label
+    properties = get_property_dict(emit_node.props_string)
+    if emit_node.relationships_pre:
         relations = [
             make_relationship(relationship_pre)
-            for relationship_pre in emit_node.relationship_pre
+            for relationship_pre in emit_node.relationships_pre
             if relationship_pre
         ]
     else:
@@ -101,17 +108,33 @@ def add_nodes_to_graph(
     """
     # Export Nodes and Rels
     nodes_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
+
+    # Write data to the database
+    add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+
+    # Add indexes
     rel_indexes_to_add_dict = {
         str(node.wn): {rel.wn for rel in node.relations}
         for node in nodes_list
         if node.relations
     }
 
-    # Write to the database
-    add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
-    # todo add NodeLabel to index file
-    add_items_to_relationship_index(
+    node_labels_set_to_add = {node.node_label for node in nodes_list}
+
+    relationship_names_set_to_add = set(
+        chain.from_iterable(
+            [node.node_relationship_names() for node in nodes_list if node.relations]
+        )
+    )
+
+    add_items_to_node_relationships_index(
         dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
+    )
+    add_items_to_node_labels_index(
+        dbms_file_path.indexes_file_path, node_labels_set_to_add
+    )
+    add_items_to_relationship_names_index(
+        dbms_file_path.indexes_file_path, relationship_names_set_to_add
     )
 
     # Update WiggleNumber
