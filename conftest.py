@@ -12,6 +12,10 @@ from wiggle_query_language.graph.database.indexes.node_relationship_index import
     wipe_node_relationship_index,
 )
 
+from wiggle_query_language.graph.database.indexes.node_labels_index import (
+    wipe_node_labels_index,
+)
+
 
 @pytest.fixture
 def clear_database_test() -> Generator:
@@ -23,12 +27,21 @@ def clear_database_test() -> Generator:
 
 
 @pytest.fixture
-def clear_relationship_index_test() -> Generator:
+def clear_node_relationship_index_test() -> Generator:
     wipe_node_relationship_index(INDEXES_TEST_FILE_PATH, im_sure=True)
 
     yield None
 
     wipe_node_relationship_index(INDEXES_TEST_FILE_PATH, im_sure=True)
+
+
+@pytest.fixture
+def clear_node_labels_index_test() -> Generator:
+    wipe_node_labels_index(INDEXES_TEST_FILE_PATH, im_sure=True)
+
+    yield None
+
+    wipe_node_labels_index(INDEXES_TEST_FILE_PATH, im_sure=True)
 
 
 @pytest.fixture
