@@ -7,7 +7,7 @@ def get_clause_all_regex(clause: str) -> str:
     :param clause: The WQL clause.
     :return: A regex expression.
     """
-    return rf"(?P<make_stmt_all>{clause}\s*\(.+\);)"
+    return rf"(?P<make_stmt_all>({clause}|{clause.lower()})\s*\(.+\);)"
 
 
 def get_clause_permutations_regex(clause: str) -> str:

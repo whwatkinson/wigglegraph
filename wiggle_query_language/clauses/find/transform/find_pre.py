@@ -24,8 +24,8 @@ def update_properties_with_criteria(find: dict, criteria: dict) -> dict:
     :return: A combined dict.
     """
 
-    if criteria:
-        find.update(criteria)
+    # if criteria:
+    #     find.update(criteria)
 
     return find
 
