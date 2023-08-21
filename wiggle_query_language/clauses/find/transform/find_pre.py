@@ -16,7 +16,7 @@ def update_find_properties(find: dict, criteria: dict) -> dict:
     return find
 
 
-def process_parsed_find_list(
+def process_parsed_find(
     parsed_find: ParsedFind,
     parsed_criteria: Optional[ParsedCriteria] = None,
 ) -> FindPre:
@@ -135,6 +135,6 @@ if __name__ == "__main__":
 
     finds = parse_find_statement_from_query_string(query_string)
 
-    process_parsed_find_list(finds)
+    process_parsed_find(finds)
 
     a = 1
