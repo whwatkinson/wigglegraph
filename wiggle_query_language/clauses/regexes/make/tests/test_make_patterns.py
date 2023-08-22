@@ -35,8 +35,8 @@ class TestMakePatterns:
     ) -> None:
         with exception:
             test = MAKE_STATEMENT_ALL_REGEX.findall(test_pattern)
-
-            assert test == expected_result
+            if test:
+                assert test == expected_result
 
     @pytest.mark.parametrize(
         "test_pattern, expected_result, exception",

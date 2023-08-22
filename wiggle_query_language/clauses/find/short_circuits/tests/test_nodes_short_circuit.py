@@ -13,7 +13,10 @@ class TestFindNodeShortCircuits:
 
     @pytest.mark.parametrize(
         "test_node_labels, expected_result, exception",
-        [pytest.param({"a"}, True, does_not_raise(), id="EXP PASS: Not in index")],
+        [
+            pytest.param({"foo"}, True, does_not_raise(), id="EXP PASS: In index"),
+            pytest.param({"a"}, False, does_not_raise(), id="EXP PASS: Not in index"),
+        ],
     )
     def test_node_label_is_in_index(
         self,

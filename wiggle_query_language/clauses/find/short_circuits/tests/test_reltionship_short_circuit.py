@@ -13,7 +13,10 @@ class TestFindNodeShortCircuits:
 
     @pytest.mark.parametrize(
         "test_relationship_names, expected_result, exception",
-        [pytest.param({"A"}, True, does_not_raise(), id="EXP PASS: Not in index")],
+        [
+            pytest.param({"FOO"}, True, does_not_raise(), id="EXP PASS: Not in index"),
+            pytest.param({"A"}, False, does_not_raise(), id="EXP PASS: Not in index"),
+        ],
     )
     def test_relationship_name_is_in_index(
         self,

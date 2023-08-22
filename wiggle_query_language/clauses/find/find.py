@@ -10,7 +10,12 @@ def find(
     dbms_file_path: DbmsFilePath,
     parsed_criteria: Optional[ParsedCriteria] = None,
 ) -> bool:
-    foo = process_parsed_find(parsed_find=parsed_find, parsed_criteria=parsed_criteria)
-    print(foo)
+    who_what_where = process_parsed_find(
+        parsed_find=parsed_find, parsed_criteria=parsed_criteria
+    )
+
+    # Short Circuits!
+
+    print(who_what_where)
 
     return True

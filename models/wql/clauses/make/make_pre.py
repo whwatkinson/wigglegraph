@@ -17,10 +17,12 @@ class NodePre(BaseModel):
     node_label: str
     node_handle: Optional[str]
     props_string: Optional[str]
-    relationships_pre: list[RelationshipPre] = Field(default=[])
+    relationships_pre: list[RelationshipPre] = Field(default=list)
 
 
 class MakePre(BaseModel):
     left_node: Optional[NodePre]
     middle_node: Optional[NodePre]
     right_node: Optional[NodePre]
+    node_labels: set[str] = Field(default=set)
+    relationship_names: set[str] = Field(default=set)
