@@ -21,4 +21,4 @@ class FindPre(BaseModel):
     middle_node: Optional[FindNodePre]
     right_node: Optional[FindNodePre]
     node_labels: set[str] = Field(default=set())
-    relationship_names: set[str] = Field(default=set())
+    relationship_names: set[Optional[str]] = Field(default=set())

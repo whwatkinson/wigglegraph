@@ -24,6 +24,7 @@ class Rel(BaseModel):
     rel_props: Optional[str]
 
 
+# TODO foo_rel_label -> foo_rel_name
 class ParsedPattern(BaseModel):
     left_node: Optional[str]
     left_node_handle: Optional[str]

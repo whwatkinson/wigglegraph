@@ -21,8 +21,8 @@ class NodePre(BaseModel):
 
 
 class MakePre(BaseModel):
-    left_node: Optional[NodePre]
+    left_node: NodePre
     middle_node: Optional[NodePre]
     right_node: Optional[NodePre]
     node_labels: set[str] = Field(default=set())
-    relationship_names: set[str] = Field(default=set())
+    relationship_names: set[Optional[str]] = Field(default=set())

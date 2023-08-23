@@ -117,7 +117,8 @@ def process_parsed_find(
             props_dict=props_dict,
         )
 
-        find_pre.relationship_names.add(left_middle_rel_name)
+        if lm_rel_name := parsed_pattern.left_middle_rel_label:
+            find_pre.relationship_names.add(lm_rel_name)
 
         if relationship_is_left_to_right(parsed_pattern.left_middle_rel):
             find_pre.left_node.relationships.append(left_middle_relationship)
@@ -141,12 +142,15 @@ def process_parsed_find(
             props_dict=props_dict,
         )
 
-        find_pre.relationship_names.add(middle_right_rel_name)
+        if mr_rel_name := parsed_pattern.middle_right_rel_label:
+            find_pre.relationship_names.add(mr_rel_name)
 
         if relationship_is_left_to_right(parsed_pattern.middle_right_rel):
             find_pre.middle_node.relationships.append(middle_right_relationship)
         else:
             find_pre.right_node.relationships.append(middle_right_relationship)
+
+    find_pre.relationship_names.discard(None)
 
     return find_pre
 
