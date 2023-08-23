@@ -16,7 +16,7 @@ def add_items_to_node_labels_index(
     """
     Adds the data to the database.
     :param indexes_file_path: The file path to the Indexes file.
-    :param items_to_add: The items to be added to the relationship index file.
+    :param items_to_add: The items to be added to the node_labels index file.
     :return: A bool.
     """
 

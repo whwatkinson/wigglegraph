@@ -28,7 +28,7 @@ def add_items_to_relationship_names_index(
 
 def load_relationship_names_index(indexes_file_path: Path) -> set:
     """
-    Loads the relationship indexes into memory.
+    Loads the relationship_name indexes into memory.
     :param indexes_file_path: The file path to the Indexes file.
     :return: A database dict.
     """
