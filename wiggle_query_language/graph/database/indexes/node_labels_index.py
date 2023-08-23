@@ -1,8 +1,13 @@
-from json import dump, load
-from json.decoder import JSONDecodeError
 from pathlib import Path
 
-from graph_logger.graph_logger import graph_logger
+
+from wiggle_query_language.graph.database.indexes.index_helpers import (
+    add_items_set_to_index_by_name,
+    load_index_set_by_name,
+    wipe_index_set_by_name,
+)
+
+INDEX_NAME = "node_labels"
 
 
 def add_items_to_node_labels_index(
@@ -14,40 +19,23 @@ def add_items_to_node_labels_index(
     :param items_to_add: The items to be added to the relationship index file.
     :return: A bool.
     """
-    index_name = "node_labels"
-    with open(indexes_file_path, "r+") as file_handle:
-        indexes_dict = load(file_handle)
-        node_label_indexes = set(indexes_dict[index_name])
-        updated_index = node_label_indexes.union(items_to_add)
-        file_handle.seek(0)
-        indexes_dict[index_name] = list(updated_index)
-        dump(indexes_dict, file_handle, indent=4)
-        file_handle.truncate()
 
-    return True
+    return add_items_set_to_index_by_name(
+        indexes_file_path=indexes_file_path,
+        items_to_add=items_to_add,
+        index_name=INDEX_NAME,
+    )
 
 
 def load_node_labels_index(indexes_file_path: Path) -> set:
     """
-    Loads the relationship indexes into memory.
+    Loads the node_labels indexes into memory.
     :param indexes_file_path: The file path to the Indexes file.
     :return: A database dict.
     """
-    index_name = "node_labels"
-    graph_logger.info("Attempting to loading Relationship indexes")
-    try:
-        with open(indexes_file_path, "r") as file_handle:
-            indexes = load(file_handle)
-            rel_indexes_json = indexes[index_name]
-            graph_logger.info("Successfully loaded node_labels index")
-            rel_indexes_python = set(rel_indexes_json)
-
-            return rel_indexes_python
-
-    except JSONDecodeError:
-        graph_logger.exception("Empty node_labels indexes, returning a new one")
-
-    return set()
+    return load_index_set_by_name(
+        indexes_file_path=indexes_file_path, index_name=INDEX_NAME
+    )
 
 
 def wipe_node_labels_index(indexes_file_path: Path, im_sure: bool = False) -> bool:
@@ -55,21 +43,12 @@ def wipe_node_labels_index(indexes_file_path: Path, im_sure: bool = False) -> bo
     Wipes the node_labels index, must set im_sure to true.
     :param indexes_file_path: The file path to the Indexes file.
     :param im_sure: Flag for making sure.
-    :return:
+    :return: A bool.
     """
-    index_name = "node_labels"
-    if im_sure:
-        graph_logger.info("Dropping node_labels indexes")
-        with open(indexes_file_path, "r+") as file_handle:
-            indexes_dict = load(file_handle)
-            indexes_dict[index_name] = []
-            file_handle.seek(0)
-            dump(indexes_dict, file_handle, indent=4)
-            file_handle.truncate()
 
-        graph_logger.info("Relationship indexes successfully dropped.")
-        return True
-    graph_logger.debug(f"Did not drop relationship indexes as {im_sure=}")
+    return wipe_index_set_by_name(
+        indexes_file_path=indexes_file_path, index_name=INDEX_NAME, im_sure=im_sure
+    )
 
 
 if __name__ == "__main__":
