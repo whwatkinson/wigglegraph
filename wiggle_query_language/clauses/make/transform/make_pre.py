@@ -13,7 +13,7 @@ def process_parsed_make_list(
     :param current_wiggle_number: The next available WN.
     :return: The current WN and list of MakePres ready for turning into nodes.
     """
-    make_pre_nodes_list = []
+    emit_nodes_list = []
 
     for parsed_make in parsed_make_list:
         if parsed_make.clause is not Clause.MAKE:
@@ -123,6 +123,6 @@ def process_parsed_make_list(
                 current_wiggle_number += 1
 
             make_pre.relationship_names.discard(None)
-            make_pre_nodes_list.append(make_pre)
+            emit_nodes_list.append(make_pre)
 
-    return current_wiggle_number, make_pre_nodes_list
+    return current_wiggle_number, emit_nodes_list
