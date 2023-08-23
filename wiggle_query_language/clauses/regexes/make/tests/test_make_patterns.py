@@ -15,9 +15,15 @@ class TestMakePatterns:
         [
             pytest.param(
                 "MAKE (:NodeLabel{})-[:]->(foo:NodeLabel {} );",
-                ["MAKE (:NodeLabel{})-[:]->(foo:NodeLabel {} );"],
+                [("MAKE (:NodeLabel{})-[:]->(foo:NodeLabel {} );", "MAKE")],
                 does_not_raise(),
                 id="EXP PASS: 1 Match",
+            ),
+            pytest.param(
+                "make (:NodeLabel{})-[:]->(foo:NodeLabel {} );",
+                [("make (:NodeLabel{})-[:]->(foo:NodeLabel {} );", "make")],
+                does_not_raise(),
+                id="EXP PASS: 1 Match, MAKE lowercase",
             ),
             pytest.param(
                 "FIND (:NodeLabel{})-[:]->(foo:NodeLabel {} );",

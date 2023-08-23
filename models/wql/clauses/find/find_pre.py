@@ -13,12 +13,12 @@ class FindNodePre(BaseModel):
     node_label: str
     node_handle: Optional[str]
     props_dict: Optional[dict]
-    relationships: list[FindRelationshipPre] = Field(default=list)
+    relationships: list[FindRelationshipPre] = Field(default=list())
 
 
 class FindPre(BaseModel):
     left_node: FindNodePre
     middle_node: Optional[FindNodePre]
     right_node: Optional[FindNodePre]
-    node_labels: set[str] = Field(default=set)
-    relationship_names: set[str] = Field(default=set)
+    node_labels: set[str] = Field(default=set())
+    relationship_names: set[str] = Field(default=set())
