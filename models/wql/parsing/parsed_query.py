@@ -95,17 +95,17 @@ class ParsedFind(BaseModel):
 
 
 class ParsedCriteriaYesNo(BaseModel):
-    props_dict_yes: dict
-    props_dict_no: dict
+    # Needs to be a dict as is dynamic
 
-
-CRITERIA_STATEMENT_ALL_REGEX = ""
+    props_dict_yes_match: dict
+    props_dict_no_match: dict
 
 
 class ParsedCriteria(BaseModel):
+    # todo add CRITERIA_STATEMENT_ALL_REGEX
+    CRITERIA_STATEMENT_ALL_REGEX = r".+"
     raw_statement: str = Field(regex=CRITERIA_STATEMENT_ALL_REGEX)
     clause: Clause = Clause.CRITERIA
-
     criteria_handle_props: dict[str, ParsedCriteriaYesNo]
 
 

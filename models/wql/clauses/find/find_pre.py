@@ -6,15 +6,15 @@ from pydantic import BaseModel, Field
 class FindRelationshipPre(BaseModel):
     rel_name: Optional[str]
     rel_handle: Optional[str]
-    props_dict_yes: Optional[dict]
-    props_dict_no: Optional[dict]
+    props_dict_yes: Optional[dict] = Field(default=dict())
+    props_dict_no: Optional[dict] = Field(default=dict())
 
 
 class FindNodePre(BaseModel):
     node_label: str
     node_handle: Optional[str]
-    props_dict_yes: Optional[dict]
-    props_dict_no: Optional[dict]
+    props_dict_yes: Optional[dict] = Field(default=dict())
+    props_dict_no: Optional[dict] = Field(default=dict())
     relationships: list[FindRelationshipPre] = Field(default=list())
 
 

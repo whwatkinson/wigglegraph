@@ -17,20 +17,25 @@ from wiggle_query_language.clauses.transform_helpers.relationships import (
 )
 
 
-def update_properties_with_criteria(
-    find_pre_model: Union[FindNodePre, FindRelationshipPre], criteria: ParsedCriteria
+def add_criteria_yes_no_props(
+    find_pre_model: Union[FindNodePre, FindRelationshipPre],
+    criteria: ParsedCriteria,
+    handle: str,
 ) -> Union[FindNodePre, FindRelationshipPre]:
     """
     Handles the updating of the FIND props from CRITERIA.
     :param find_pre_model: The Node or Relationship FindPre.
     :param criteria: The CRITERIA statement lookup properties.
+    :param handle: The Nore/Relationship_handle.
     :return: A combined dict.
     """
 
-    if criteria:
-        find_pre_model.props_dict_yes.update(
-            criteria.criteria_handle_props.get(find_pre_model.node_label)
-        )
+    if criteria := criteria.criteria_handle_props.get(handle, None):
+        if props_dict_yes := criteria.props_dict_yes_match:
+            find_pre_model.props_dict_yes.update(props_dict_yes)
+        # no
+        if props_dict_no := criteria.props_dict_no_match:
+            find_pre_model.props_dict_no.update(props_dict_no)
 
     return find_pre_model
 
@@ -50,7 +55,7 @@ def process_parsed_find(
 
     parsed_pattern = parsed_find.parsed_pattern_list
 
-    # Left Node, FOR ONE NODE FOR NOW!
+    # Left Node
     left_handle = parsed_pattern.left_node_handle
     left_label = parsed_pattern.left_node_label
     left_props_dict = get_property_dict(parsed_pattern.left_node_props)
@@ -60,9 +65,11 @@ def process_parsed_find(
         node_label=left_label,
         props_dict_yes=left_props_dict,
     )
-
     if parsed_criteria:
-        update_properties_with_criteria(left, criteria=parsed_criteria)
+        # may need to assign left to the below
+        add_criteria_yes_no_props(
+            find_pre_model=left, criteria=parsed_criteria, handle=left_handle
+        )
 
     find_pre = FindPre(left_node=left)
     find_pre.node_labels.add(left_label)
@@ -73,16 +80,17 @@ def process_parsed_find(
         middle_label = parsed_pattern.middle_node_label
         middle_props_dict = get_property_dict(parsed_pattern.middle_node_props)
 
-        if parsed_criteria:
-            middle_props_dict.update(
-                parsed_criteria.criteria_handle_props.get(middle_handle, None)
-            )
-
         middle = FindNodePre(
             node_handle=parsed_pattern.middle_node_handle,
             node_label=middle_label,
-            props_dict=middle_props_dict,
+            props_dict_yes=middle_props_dict,
         )
+
+        if parsed_criteria:
+            add_criteria_yes_no_props(
+                find_pre_model=middle, criteria=parsed_criteria, handle=middle_handle
+            )
+
         find_pre.middle_node = middle
         find_pre.node_labels.add(middle_label)
 
@@ -99,8 +107,14 @@ def process_parsed_find(
         right = FindNodePre(
             node_handle=right_handle,
             node_label=right_label,
-            props_dict=right_props_dict,
+            props_dict_yes=right_props_dict,
         )
+
+        if parsed_criteria:
+            add_criteria_yes_no_props(
+                find_pre_model=right, criteria=parsed_criteria, handle=right_handle
+            )
+
         find_pre.right_node = right
         find_pre.node_labels.add(right_label)
 
@@ -110,16 +124,18 @@ def process_parsed_find(
         left_middle_rel_name = parsed_pattern.left_middle_rel_label
         props_dict = get_property_dict(parsed_pattern.left_middle_rel_props)
 
-        if parsed_criteria:
-            props_dict.update(
-                parsed_criteria.criteria_handle_props.get(left_middle_rel_handle, None)
-            )
-
         left_middle_relationship = FindRelationshipPre(
             rel_handle=left_middle_rel_handle,
             rel_name=left_middle_rel_name,
-            props_dict=props_dict,
+            props_dict_yes=props_dict,
         )
+
+        if parsed_criteria:
+            add_criteria_yes_no_props(
+                find_pre_model=left_middle_relationship,
+                criteria=parsed_criteria,
+                handle=left_middle_rel_handle,
+            )
 
         if lm_rel_name := parsed_pattern.left_middle_rel_label:
             find_pre.relationship_names.add(lm_rel_name)
@@ -135,16 +151,18 @@ def process_parsed_find(
         middle_right_rel_name = parsed_pattern.middle_right_rel_label
         props_dict = get_property_dict(parsed_pattern.middle_right_rel_props)
 
-        if parsed_criteria:
-            props_dict.update(
-                parsed_criteria.criteria_handle_props.get(middle_right_rel_handle, None)
-            )
-
         middle_right_relationship = FindRelationshipPre(
             rel_handle=middle_right_rel_handle,
             rel_name=middle_right_rel_name,
-            props_dict=props_dict,
+            props_dict_yes=props_dict,
         )
+
+        if parsed_criteria:
+            add_criteria_yes_no_props(
+                find_pre_model=middle_right_relationship,
+                criteria=parsed_criteria,
+                handle=middle_right_rel_handle,
+            )
 
         if mr_rel_name := parsed_pattern.middle_right_rel_label:
             find_pre.relationship_names.add(mr_rel_name)
