@@ -12,6 +12,7 @@ from models.wql.parsing.parsed_query import (
     ParsedMake,
     ParsedPattern,
     ParsedQuery,
+    ParsedCriteriaYesNo,
 )
 from models.wql.parsing.properties_pre import (
     ExtractedPropertyPre,
@@ -28,6 +29,7 @@ __all__ = [
     "WiggleGraphPropertyPre",
     "Node",
     "NodePre",
+    "ParsedCriteriaYesNo",
     "ParsedFind",
     "ParsedCriteria",
     "ParsedMake",

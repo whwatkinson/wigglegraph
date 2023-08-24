@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from models.wql import (
     Clause,
@@ -6,6 +6,7 @@ from models.wql import (
     FindPre,
     FindRelationshipPre,
     ParsedCriteria,
+    # ParsedCriteriaYesNo,
     ParsedFind,
 )
 from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
@@ -16,18 +17,22 @@ from wiggle_query_language.clauses.transform_helpers.relationships import (
 )
 
 
-def update_properties_with_criteria(find: dict, criteria: dict) -> dict:
+def update_properties_with_criteria(
+    find_pre_model: Union[FindNodePre, FindRelationshipPre], criteria: ParsedCriteria
+) -> Union[FindNodePre, FindRelationshipPre]:
     """
     Handles the updating of the FIND props from CRITERIA.
-    :param find: The FIND statement lookup properties.
+    :param find_pre_model: The Node or Relationship FindPre.
     :param criteria: The CRITERIA statement lookup properties.
     :return: A combined dict.
     """
 
-    # if criteria:
-    #     find.update(criteria)
+    if criteria:
+        find_pre_model.props_dict_yes.update(
+            criteria.criteria_handle_props.get(find_pre_model.node_label)
+        )
 
-    return find
+    return find_pre_model
 
 
 def process_parsed_find(
@@ -49,17 +54,16 @@ def process_parsed_find(
     left_handle = parsed_pattern.left_node_handle
     left_label = parsed_pattern.left_node_label
     left_props_dict = get_property_dict(parsed_pattern.left_node_props)
-    if parsed_criteria:
-        update_properties_with_criteria(
-            left_props_dict,
-            parsed_criteria.criteria_handle_props.get(left_handle, None),
-        )
 
     left = FindNodePre(
         node_handle=left_handle,
         node_label=left_label,
-        props_dict=left_props_dict,
+        props_dict_yes=left_props_dict,
     )
+
+    if parsed_criteria:
+        update_properties_with_criteria(left, criteria=parsed_criteria)
+
     find_pre = FindPre(left_node=left)
     find_pre.node_labels.add(left_label)
 

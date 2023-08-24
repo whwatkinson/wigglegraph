@@ -94,11 +94,19 @@ class ParsedFind(BaseModel):
         return 1
 
 
+class ParsedCriteriaYesNo(BaseModel):
+    props_dict_yes: dict
+    props_dict_no: dict
+
+
+CRITERIA_STATEMENT_ALL_REGEX = ""
+
+
 class ParsedCriteria(BaseModel):
-    raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
+    raw_statement: str = Field(regex=CRITERIA_STATEMENT_ALL_REGEX)
     clause: Clause = Clause.CRITERIA
-    criteria_handle_props: dict
-    # should be a dict with {handle: {props: 1}}
+
+    criteria_handle_props: dict[str, ParsedCriteriaYesNo]
 
 
 class ParsedQuery(BaseModel):
