@@ -8,11 +8,11 @@ from models.wql.enums.clauses import Clause
 from models.wql.enums.property_type import PropertyType
 from models.wql.parsing.parsed_query import (
     ParsedCriteria,
+    ParsedCriteriaYesNo,
     ParsedFind,
     ParsedMake,
     ParsedPattern,
     ParsedQuery,
-    ParsedCriteriaYesNo,
 )
 from models.wql.parsing.properties_pre import (
     ExtractedPropertyPre,

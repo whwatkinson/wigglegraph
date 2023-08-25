@@ -3,10 +3,9 @@ from typing import Optional, Union
 from models.wql import (
     Clause,
     FindNodePre,
-    FindPre,
+    FindPre,  # ParsedCriteriaYesNo,
     FindRelationshipPre,
     ParsedCriteria,
-    # ParsedCriteriaYesNo,
     ParsedFind,
 )
 from wiggle_query_language.clauses.parsing_helpers.parse_properties import (

@@ -2,14 +2,14 @@ from typing import Generator
 
 import pytest
 
-from testing.test_helpers import does_not_raise
 from models.wql import (
+    Clause,
     FindNodePre,
     FindRelationshipPre,
     ParsedCriteria,
-    Clause,
     ParsedCriteriaYesNo,
 )
+from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.find.transform.find_pre import (
     add_criteria_yes_no_props,
 )
