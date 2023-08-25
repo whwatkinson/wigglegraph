@@ -135,13 +135,13 @@ def get_existing_gdbms(path_to_gdbms_dir: Path = DBMS_FOLDER) -> GDBMSFilePath:
 
         try:
             db_path = get_existing_db_file_path(
-                dbms_name=existing_db_name, path_to_dbms_dir=path_to_gdbms_dir
+                gdbms_name=existing_db_name, path_to_dbms_dir=path_to_gdbms_dir
             )
             indexes_path = get_existing_indexes_file_path(
                 gdbms_name=existing_db_name, path_to_dbms_dir=path_to_gdbms_dir
             )
             wn_path = get_existing_wn_file_path(
-                dbms_name=existing_db_name, path_to_dbms_dir=path_to_gdbms_dir
+                gdbms_name=existing_db_name, path_to_dbms_dir=path_to_gdbms_dir
             )
             return GDBMSFilePath(
                 database_file_path=db_path,

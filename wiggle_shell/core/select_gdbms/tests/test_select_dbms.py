@@ -38,7 +38,9 @@ class TestSelectDatabase:
         assert "test" in test
 
         # Create the database file
-        create_new_database(dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+        create_new_database(
+            gdbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+        )
 
         test = list_existing_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
@@ -48,7 +50,7 @@ class TestSelectDatabase:
         # Create the database file again
         with pytest.raises(ValueError):
             create_new_database(
-                dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+                gdbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
 
         # Check that there are still 3 dbs

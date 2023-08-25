@@ -22,7 +22,7 @@ class TestSelectDatabase:
 
         # Create the database file
         test_after = create_new_database(
-            dbms_name=gdbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+            gdbms_name=gdbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
         )
         assert test_after == test_db_fp
         assert test_after.is_file() is True
@@ -36,7 +36,7 @@ class TestSelectDatabase:
         # Create the database file again
         with pytest.raises(ValueError):
             create_new_database(
-                dbms_name=gdbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+                gdbms_name=gdbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
 
     def test_get_existing_db_file(self) -> None:
@@ -44,12 +44,12 @@ class TestSelectDatabase:
             "sample_gdbms/database_sample_gdbms.json"
         )
         test_db_fp = get_existing_db_file_path(
-            dbms_name="sample_gdbms", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+            gdbms_name="sample_gdbms", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
         )
 
         assert exp_db_fp == test_db_fp
 
         with pytest.raises(FileNotFoundError):
             get_existing_db_file_path(
-                dbms_name="NOT A DB", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+                gdbms_name="NOT A DB", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )

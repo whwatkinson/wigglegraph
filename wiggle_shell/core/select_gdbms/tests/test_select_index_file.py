@@ -14,17 +14,17 @@ class TestRelationshipIndex:
     def test_create_new_relationship_index(
         self, wigsh_setup_databases: Generator
     ) -> None:
-        dbms_name = "foo2"
+        gdbms_name = "foo2"
         # Check that the rel index does not exit
 
         test_ri_fp = TEST_DBMS_FOLDER_PATH.joinpath(
-            f"{dbms_name}/indexes_{dbms_name}.json"
+            f"{gdbms_name}/indexes_{gdbms_name}.json"
         )
         assert test_ri_fp.is_file() is False
 
         # Create the rel index file
         test_after = create_new_indexes_file(
-            dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+            gdbms_name=gdbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
         )
         assert test_after == test_ri_fp
         assert test_after.is_file() is True
@@ -42,7 +42,7 @@ class TestRelationshipIndex:
         # Create the rel index file again
         with pytest.raises(ValueError):
             create_new_indexes_file(
-                dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+                gdbms_name=gdbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
 
     def test_get_existing_relationship_index_file_path(self) -> None:
