@@ -6,8 +6,7 @@ from wiggle_query_language.graph.database.indexes.index_helpers import (
     load_index_set_by_name,
     wipe_index_set_by_name,
 )
-
-INDEX_NAME = "node_labels"
+from wiggle_query_language.graph.database.indexes import NODE_LABELS_INDEX_NAME
 
 
 def add_items_to_node_labels_index(
@@ -23,7 +22,7 @@ def add_items_to_node_labels_index(
     return add_items_set_to_index_by_name(
         indexes_file_path=indexes_file_path,
         items_to_add=items_to_add,
-        index_name=INDEX_NAME,
+        index_name=NODE_LABELS_INDEX_NAME,
     )
 
 
@@ -34,7 +33,7 @@ def load_node_labels_index(indexes_file_path: Path) -> set:
     :return: A database dict.
     """
     return load_index_set_by_name(
-        indexes_file_path=indexes_file_path, index_name=INDEX_NAME
+        indexes_file_path=indexes_file_path, index_name=NODE_LABELS_INDEX_NAME
     )
 
 
@@ -47,7 +46,9 @@ def wipe_node_labels_index(indexes_file_path: Path, im_sure: bool = False) -> bo
     """
 
     return wipe_index_set_by_name(
-        indexes_file_path=indexes_file_path, index_name=INDEX_NAME, im_sure=im_sure
+        indexes_file_path=indexes_file_path,
+        index_name=NODE_LABELS_INDEX_NAME,
+        im_sure=im_sure,
     )
 
 

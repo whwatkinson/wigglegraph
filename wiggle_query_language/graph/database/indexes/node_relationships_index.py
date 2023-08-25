@@ -4,8 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 from graph_logger.graph_logger import graph_logger
-
-INDEX_NAME = "node_relationships"
+from wiggle_query_language.graph.database.indexes import NODE_RELATIONSHIPS_INDEX_NAME
 
 
 def json_to_dict(
@@ -30,7 +29,7 @@ def add_items_to_node_relationships_index(
 
     with open(indexes_file_path, "r+") as file_handle:
         indexes_dict = load(file_handle)
-        rel_indexes_dict = indexes_dict[INDEX_NAME]
+        rel_indexes_dict = indexes_dict[NODE_RELATIONSHIPS_INDEX_NAME]
 
         for node_wn, new_rels_wn_set in items_to_add.items():
             if node_wn in rel_indexes_dict:
@@ -42,7 +41,7 @@ def add_items_to_node_relationships_index(
 
             file_handle.seek(0)
 
-        indexes_dict[INDEX_NAME] = rel_indexes_dict
+        indexes_dict[NODE_RELATIONSHIPS_INDEX_NAME] = rel_indexes_dict
 
         dump(indexes_dict, file_handle, indent=4)
         file_handle.truncate()
@@ -64,7 +63,7 @@ def load_node_relationships_index(
         with open(indexes_file_path, "r") as file_handle:
             indexes = load(file_handle)
 
-            node_rel_indexes_json = indexes[INDEX_NAME]
+            node_rel_indexes_json = indexes[NODE_RELATIONSHIPS_INDEX_NAME]
             graph_logger.info("Successfully loaded node_relationships index")
 
             node_rel_indexes_python = json_to_dict(node_rel_indexes_json, wn_of_nodes)
@@ -89,7 +88,7 @@ def wipe_node_relationships_index(
         graph_logger.info("Dropping relationship indexes")
         with open(indexes_file_path, "r+") as file_handle:
             indexes_dict = load(file_handle)
-            indexes_dict[INDEX_NAME] = {}
+            indexes_dict[NODE_RELATIONSHIPS_INDEX_NAME] = {}
             file_handle.seek(0)
             dump(indexes_dict, file_handle, indent=4)
             file_handle.truncate()
