@@ -3,6 +3,9 @@ from typing import Optional
 from models.wigish import GDBMSFilePath
 from models.wql import ParsedCriteria, ParsedFind
 from wiggle_query_language.clauses.find.transform.find_pre import process_parsed_find
+from wiggle_query_language.clauses.find.short_circuits.find_short_circuits import (
+    find_short_circuit,
+)
 
 
 def find(
@@ -15,6 +18,8 @@ def find(
     )
 
     # Short Circuits!
+    if not find_short_circuit(who_what_where, gdbms_file_path):
+        raise Exception("No results")
 
     print(who_what_where)
 
