@@ -1,4 +1,4 @@
-from models.wigish import DbmsFilePath
+from models.wigish import GDBMSFilePath
 from models.wql import FindPre
 from wiggle_query_language.graph.database.indexes.node_labels_index import (
     load_node_labels_index,
@@ -16,7 +16,7 @@ from wiggle_query_language.clauses.find.short_circuits.relationships import (
 
 def find_short_circuit(
     find_pre: FindPre,
-    dbms_file_path: DbmsFilePath,
+    dbms_file_path: GDBMSFilePath,
 ) -> bool:
     node_label_index = load_node_labels_index(dbms_file_path.indexes_file_path)
     relationship_name_index = load_relationship_names_index(

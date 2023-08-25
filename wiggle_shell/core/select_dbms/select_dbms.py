@@ -4,7 +4,7 @@ from pathlib import Path
 from string import ascii_uppercase
 from typing import Optional
 
-from models.wigish import DbmsFilePath
+from models.wigish import GDBMSFilePath
 from wiggle_shell import DBMS_FOLDER, INPUT_PROMPT_SPACING
 from wiggle_shell.core.select_dbms.select_database_file import (
     create_new_database,
@@ -66,7 +66,7 @@ def get_and_display_available_dbms(
     return letter_db_dict
 
 
-def create_new_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
+def create_new_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> GDBMSFilePath:
     """
     Handles creation of a new DBMS.
     :param path_to_dbms_dir The directory of the DBMS folder.
@@ -85,7 +85,7 @@ def create_new_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
 
 def get_new_dbms_file_paths(
     new_dbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
-) -> DbmsFilePath:
+) -> GDBMSFilePath:
     """
     Creates a new DBMS.
     :param new_dbms_name: The name of the new dbms.
@@ -99,7 +99,7 @@ def get_new_dbms_file_paths(
         indexes_path = create_new_indexes_file(new_dbms_name, path_to_dbms_dir)
         wn_path = create_new_wiggle_number_file(new_dbms_name, path_to_dbms_dir)
         print(f"Using {new_dbms_name}")
-        return DbmsFilePath(
+        return GDBMSFilePath(
             database_file_path=db_path,
             indexes_file_path=indexes_path,
             wiggle_number_file_path=wn_path,
@@ -109,7 +109,7 @@ def get_new_dbms_file_paths(
         raise
 
 
-def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
+def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> GDBMSFilePath:
     """
     Gets and existing DBMS by name
     :param path_to_dbms_dir: The directory of the DBMS folder.
@@ -143,7 +143,7 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
             wn_path = get_existing_wn_file_path(
                 dbms_name=existing_db_name, path_to_dbms_dir=path_to_dbms_dir
             )
-            return DbmsFilePath(
+            return GDBMSFilePath(
                 database_file_path=db_path,
                 indexes_file_path=indexes_path,
                 wiggle_number_file_path=wn_path,
@@ -155,7 +155,7 @@ def get_existing_dbms(path_to_dbms_dir: Path = DBMS_FOLDER) -> DbmsFilePath:
 
 def get_existing_dbms_file_paths(
     existing_db_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
-) -> DbmsFilePath:
+) -> GDBMSFilePath:
     pass
 
 
@@ -182,7 +182,7 @@ def delete_dbms(dbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER) -> int:
     return 0
 
 
-def select_dbms() -> DbmsFilePath:
+def select_dbms() -> GDBMSFilePath:
     """
     Select the DBMS to be used.
     :return: A filepath for both the db and wn.

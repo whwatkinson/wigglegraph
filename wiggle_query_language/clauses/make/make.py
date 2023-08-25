@@ -1,4 +1,4 @@
-from models.wigish import DbmsFilePath
+from models.wigish import GDBMSFilePath
 from models.wql import (
     MakePre,
     Node,
@@ -94,7 +94,7 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
 
 def add_nodes_to_graph(
     nodes_list: list[Node],
-    dbms_file_path: DbmsFilePath,
+    dbms_file_path: GDBMSFilePath,
 ) -> bool:
     """
     Adds the Nodes to the graph.
@@ -112,7 +112,9 @@ def add_nodes_to_graph(
 
 
 def add_indexes(
-    nodes_list: list[Node], emit_nodes_list: list[MakePre], dbms_file_path: DbmsFilePath
+    nodes_list: list[Node],
+    emit_nodes_list: list[MakePre],
+    dbms_file_path: GDBMSFilePath,
 ) -> bool:
     """
     Handles adding the indexes to the Indexes file.
@@ -149,7 +151,7 @@ def add_indexes(
     return True
 
 
-def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bool:
+def make(parsed_make_list: list[ParsedMake], dbms_file_path: GDBMSFilePath) -> bool:
     """
     Handles the loading from stmt to putting data in the DB.
     :param parsed_make_list: The list of parsed MAKE statements.

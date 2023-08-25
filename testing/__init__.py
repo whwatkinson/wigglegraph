@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from models.wigish import DbmsFilePath
+from models.wigish import GDBMSFilePath
 from project_root import get_project_root
 
 DATABASE_TEST_FILE_PATH = Path(
@@ -17,7 +17,7 @@ WIGGLE_NUMBER_TEST_FILE_PATH = Path(
 
 TEST_DBMS_FOLDER_PATH = Path(f"{get_project_root()}/testing/test_dbms/")
 
-TEST_DBMS = DbmsFilePath(
+TEST_DBMS = GDBMSFilePath(
     database_file_path=DATABASE_TEST_FILE_PATH,
     indexes_file_path=INDEXES_TEST_FILE_PATH,
     wiggle_number_file_path=WIGGLE_NUMBER_TEST_FILE_PATH,

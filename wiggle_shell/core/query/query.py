@@ -3,7 +3,7 @@ from pathlib import Path
 
 from exceptions.wiggleshell.query import NotAValidQueryError
 from graph_logger.graph_logger import graph_logger
-from models.wigish import DbmsFilePath
+from models.wigish import GDBMSFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
 from wiggle_query_language.clauses.find import (
@@ -42,7 +42,7 @@ def parse_query_string(query_string: str) -> ParsedQuery:
     return query_parsed
 
 
-def execute_query(parsed_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> bool:
+def execute_query(parsed_query: ParsedQuery, dbms_file_path: GDBMSFilePath) -> bool:
     if query_make := parsed_query.make_parsed:
         make(parsed_make_list=query_make, dbms_file_path=dbms_file_path)
 
@@ -63,7 +63,7 @@ def valid_query(query_string) -> bool:
     return bool(valid_query_set.intersection(query_string_set))
 
 
-def query(query_string: str, dbms_file_path: DbmsFilePath) -> bool:
+def query(query_string: str, dbms_file_path: GDBMSFilePath) -> bool:
     # todo remove \n and split on :
     # query_string.replace('\n', '').split(';')
     if not valid_query(query_string) and False:
