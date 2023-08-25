@@ -16,11 +16,11 @@ from wiggle_query_language.clauses.find.short_circuits.relationships import (
 
 def find_short_circuit(
     find_pre: FindPre,
-    dbms_file_path: GDBMSFilePath,
+    gdbms_file_path: GDBMSFilePath,
 ) -> bool:
-    node_label_index = load_node_labels_index(dbms_file_path.indexes_file_path)
+    node_label_index = load_node_labels_index(gdbms_file_path.indexes_file_path)
     relationship_name_index = load_relationship_names_index(
-        dbms_file_path.indexes_file_path
+        gdbms_file_path.indexes_file_path
     )
 
     if not node_label_is_in_index(find_pre.node_labels, node_label_index):

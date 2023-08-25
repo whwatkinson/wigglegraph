@@ -42,14 +42,14 @@ def parse_query_string(query_string: str) -> ParsedQuery:
     return query_parsed
 
 
-def execute_query(parsed_query: ParsedQuery, dbms_file_path: GDBMSFilePath) -> bool:
+def execute_query(parsed_query: ParsedQuery, gdbms_file_path: GDBMSFilePath) -> bool:
     if query_make := parsed_query.make_parsed:
-        make(parsed_make_list=query_make, dbms_file_path=dbms_file_path)
+        make(parsed_make_list=query_make, gdbms_file_path=gdbms_file_path)
 
     if query_find := parsed_query.find_parsed:
         find(
             parsed_find=query_find,
-            dbms_file_path=dbms_file_path,
+            gdbms_file_path=gdbms_file_path,
             parsed_criteria=parsed_query.criteria_parsed,
         )
 
@@ -63,7 +63,7 @@ def valid_query(query_string) -> bool:
     return bool(valid_query_set.intersection(query_string_set))
 
 
-def query(query_string: str, dbms_file_path: GDBMSFilePath) -> bool:
+def query(query_string: str, gdbms_file_path: GDBMSFilePath) -> bool:
     # todo remove \n and split on :
     # query_string.replace('\n', '').split(';')
     if not valid_query(query_string) and False:
@@ -73,7 +73,7 @@ def query(query_string: str, dbms_file_path: GDBMSFilePath) -> bool:
 
     raw_query = parse_query_string(query_string)
 
-    execute_query(raw_query, dbms_file_path)
+    execute_query(raw_query, gdbms_file_path)
 
     return True
 

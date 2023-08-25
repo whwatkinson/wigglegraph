@@ -7,7 +7,7 @@ from wiggle_query_language.clauses.find.transform.find_pre import process_parsed
 
 def find(
     parsed_find: ParsedFind,
-    dbms_file_path: GDBMSFilePath,
+    gdbms_file_path: GDBMSFilePath,
     parsed_criteria: Optional[ParsedCriteria] = None,
 ) -> bool:
     who_what_where = process_parsed_find(

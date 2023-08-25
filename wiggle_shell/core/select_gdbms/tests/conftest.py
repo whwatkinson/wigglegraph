@@ -3,21 +3,21 @@ from typing import Generator
 import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
-from wiggle_shell.core.select_dbms.select_dbms import (
+from wiggle_shell.core.select_gdbms.select_gdbms import (
     create_new_database,
-    delete_dbms,
+    delete_gdbms,
     list_existing_dbms,
 )
 
 
 def wigsh_clear_test_dbmss() -> None:
-    skips = {"sample_dbms"}
+    skips = {"sample_gdbms"}
     existing_databases = list_existing_dbms(
         skips=skips, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
     )
 
     for dbms_name in existing_databases:
-        delete_dbms(dbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
+        delete_gdbms(gdbms_name=dbms_name, path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
 
 @pytest.fixture

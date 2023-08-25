@@ -37,16 +37,16 @@ def create_new_indexes_file(
 
 
 def get_existing_indexes_file_path(
-    dbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
+    gdbms_name: str, path_to_dbms_dir: Path = DBMS_FOLDER
 ) -> Path:
     """
     Gets the filepath of an existing wiggle number file.
-    :param dbms_name: The name of the database.
+    :param gdbms_name: The name of the database.
     :param path_to_dbms_dir: The directory of the DBMS folder.
     :return:
     """
     rel_idx_file_path = path_to_dbms_dir.joinpath(
-        f"{dbms_name}/indexes_{dbms_name}.json"
+        f"{gdbms_name}/indexes_{gdbms_name}.json"
     )
     if not rel_idx_file_path.is_file():
         raise FileNotFoundError()

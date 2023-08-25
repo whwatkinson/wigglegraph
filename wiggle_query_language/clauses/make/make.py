@@ -94,19 +94,19 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
 
 def add_nodes_to_graph(
     nodes_list: list[Node],
-    dbms_file_path: GDBMSFilePath,
+    gdbms_file_path: GDBMSFilePath,
 ) -> bool:
     """
     Adds the Nodes to the graph.
     :param nodes_list: The list of constructed Nodes.
-    :param dbms_file_path: The path to the DBMS.
+    :param gdbms_file_path: The path to the DBMS.
     :return: A bool.
     """
     # Export Nodes and Rels
     nodes_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
 
     # Write data to the database
-    add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+    add_item_to_database(gdbms_file_path.database_file_path, nodes_to_add_dict)
 
     return True
 
@@ -114,13 +114,13 @@ def add_nodes_to_graph(
 def add_indexes(
     nodes_list: list[Node],
     emit_nodes_list: list[MakePre],
-    dbms_file_path: GDBMSFilePath,
+    gdbms_file_path: GDBMSFilePath,
 ) -> bool:
     """
     Handles adding the indexes to the Indexes file.
     :param nodes_list: The list of constructed Nodes.
     :param emit_nodes_list: The PreProcessed Node list
-    :param dbms_file_path: The path to the DBMS.
+    :param gdbms_file_path: The path to the DBMS.
     :return: a Bool.
     """
 
@@ -139,19 +139,19 @@ def add_indexes(
         )
 
     add_items_to_node_relationships_index(
-        dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
+        gdbms_file_path.indexes_file_path, rel_indexes_to_add_dict
     )
     add_items_to_node_labels_index(
-        dbms_file_path.indexes_file_path, node_labels_set_to_add
+        gdbms_file_path.indexes_file_path, node_labels_set_to_add
     )
     add_items_to_relationship_names_index(
-        dbms_file_path.indexes_file_path, relationship_names_set_to_add
+        gdbms_file_path.indexes_file_path, relationship_names_set_to_add
     )
 
     return True
 
 
-def make(parsed_make_list: list[ParsedMake], dbms_file_path: GDBMSFilePath) -> bool:
+def make(parsed_make_list: list[ParsedMake], gdbms_file_path: GDBMSFilePath) -> bool:
     """
     Handles the loading from stmt to putting data in the DB.
     :param parsed_make_list: The list of parsed MAKE statements.
@@ -160,7 +160,7 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: GDBMSFilePath) -> b
     """
     # Get the next available WN
     current_wiggle_number = get_current_wiggle_number(
-        dbms_file_path.wiggle_number_file_path
+        gdbms_file_path.wiggle_number_file_path
     )
     # create NodePre and RelationshipPre
     current_wiggle_number, emit_nodes_list = process_parsed_make_list(
@@ -174,19 +174,19 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: GDBMSFilePath) -> b
     # Commit if only not errors
     add_nodes_to_graph(
         nodes_list=nodes_list_flat,
-        dbms_file_path=dbms_file_path,
+        gdbms_file_path=gdbms_file_path,
     )
     # Add Indexes
     add_indexes(
         nodes_list=nodes_list_flat,
         emit_nodes_list=emit_nodes_list,
-        dbms_file_path=dbms_file_path,
+        gdbms_file_path=gdbms_file_path,
     )
 
     # Update WiggleNumber if no errors
     update_wiggle_number(
         new_wiggle_number=current_wiggle_number,
-        file_path=dbms_file_path.wiggle_number_file_path,
+        file_path=gdbms_file_path.wiggle_number_file_path,
     )
 
     return True

@@ -3,11 +3,11 @@ from typing import Generator
 import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
-from wiggle_shell.core.select_dbms import (
+from wiggle_shell.core.select_gdbms import (
     create_new_database,
     get_and_display_available_dbms,
-    get_existing_dbms_file_paths,
-    get_new_dbms_file_paths,
+    get_existing_gdbms_file_paths,
+    get_new_gdbms_file_paths,
     list_existing_dbms,
 )
 
@@ -25,7 +25,7 @@ class TestSelectDatabase:
         test = get_and_display_available_dbms(path_to_dbms_dir=TEST_DBMS_FOLDER_PATH)
 
         assert len(test) == 2
-        assert test["A"] == "sample_dbms"
+        assert test["A"] == "sample_gdbms"
         assert test["B"] == "test"
 
     def test_create_new_database(self, wigsh_setup_databases: Generator) -> None:
@@ -56,9 +56,9 @@ class TestSelectDatabase:
         assert len(test) == 3
         assert dbms_name in test
 
-    def test_get_new_dbms_file_paths(self, wigsh_setup_databases: Generator) -> None:
+    def test_get_new_gdbms_file_paths(self, wigsh_setup_databases: Generator) -> None:
         new_dbms_name = "test_foo"
-        test = get_new_dbms_file_paths(new_dbms_name, TEST_DBMS_FOLDER_PATH)
+        test = get_new_gdbms_file_paths(new_dbms_name, TEST_DBMS_FOLDER_PATH)
 
         exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
             f"{new_dbms_name}/database_{new_dbms_name}.json"
@@ -74,9 +74,9 @@ class TestSelectDatabase:
         assert test.wiggle_number_file_path == exp_wiggle_number_file_path
 
     @pytest.mark.xfail
-    def test_get_existing_dbms_file_paths(self, setup_databases: Generator) -> None:
+    def test_get_existing_gdbms_file_paths(self, setup_databases: Generator) -> None:
         existing_db_name = "test"
-        test = get_existing_dbms_file_paths(existing_db_name, TEST_DBMS_FOLDER_PATH)
+        test = get_existing_gdbms_file_paths(existing_db_name, TEST_DBMS_FOLDER_PATH)
 
         exp_database_file_path = TEST_DBMS_FOLDER_PATH.joinpath(
             f"{existing_db_name}/database_{existing_db_name}.json"

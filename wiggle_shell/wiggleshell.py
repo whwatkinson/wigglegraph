@@ -1,5 +1,5 @@
 from core.query.query import query
-from core.select_dbms.select_dbms import select_dbms
+from core.select_gdbms.select_gdbms import select_gdbms
 
 from wiggle_shell import INPUT_PROMPT_SPACING
 
@@ -16,8 +16,8 @@ def start_wiggle_shell() -> None:
 
     # Create/Use an existing DBMS
     while True:
-        dbms_file_path = select_dbms()
-        print(f"Using {dbms_file_path}\n")
+        gdbms_file_path = select_gdbms()
+        print(f"Using {gdbms_file_path}\n")
         break
 
     # Interact with the DB
@@ -35,10 +35,10 @@ def start_wiggle_shell() -> None:
             print("A helpful guide is on the way!\n")
             continue
 
-        # query(query_string=query_string, dbms_file_path=dbms_file_path)
+        # query(query_string=query_string, gdbms_file_path=dbms_file_path)
 
         try:
-            query(query_string=query_string, dbms_file_path=dbms_file_path)
+            query(query_string=query_string, gdbms_file_path=gdbms_file_path)
         except Exception as e:
             print(e)
             continue
