@@ -3,13 +3,15 @@ from pathlib import Path
 
 from exceptions.wiggleshell.query import NotAValidQueryError
 from graph_logger.graph_logger import graph_logger
-from models.wigish import DbmsFilePath
+from models.wigish import GDBMSFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
-from wiggle_query_language import (
+from wiggle_query_language.clauses.find import (
     find,
-    make,
     parse_find_statement_from_query_string,
+)
+from wiggle_query_language.clauses.make import (
+    make,
     parse_make_statement_from_query_string,
 )
 
@@ -40,14 +42,14 @@ def parse_query_string(query_string: str) -> ParsedQuery:
     return query_parsed
 
 
-def execute_query(parsed_query: ParsedQuery, dbms_file_path: DbmsFilePath) -> bool:
+def execute_query(parsed_query: ParsedQuery, gdbms_file_path: GDBMSFilePath) -> bool:
     if query_make := parsed_query.make_parsed:
-        make(parsed_make_list=query_make, dbms_file_path=dbms_file_path)
+        make(parsed_make_list=query_make, gdbms_file_path=gdbms_file_path)
 
     if query_find := parsed_query.find_parsed:
         find(
             parsed_find=query_find,
-            dbms_file_path=dbms_file_path,
+            gdbms_file_path=gdbms_file_path,
             parsed_criteria=parsed_query.criteria_parsed,
         )
 
@@ -61,7 +63,7 @@ def valid_query(query_string) -> bool:
     return bool(valid_query_set.intersection(query_string_set))
 
 
-def query(query_string: str, dbms_file_path: DbmsFilePath) -> bool:
+def query(query_string: str, gdbms_file_path: GDBMSFilePath) -> bool:
     # todo remove \n and split on :
     # query_string.replace('\n', '').split(';')
     if not valid_query(query_string) and False:
@@ -71,7 +73,7 @@ def query(query_string: str, dbms_file_path: DbmsFilePath) -> bool:
 
     raw_query = parse_query_string(query_string)
 
-    execute_query(raw_query, dbms_file_path)
+    execute_query(raw_query, gdbms_file_path)
 
     return True
 
@@ -90,6 +92,6 @@ if __name__ == "__main__":
     FIND (:NodeLabel{str: '2'})<-[]-(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});
     """
 
-    qry = """MAKE (left_node_handle:LeftNodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[lm:RELLM1{int: 1, str: '2', str2:"2_4", float: 3.14, bool: false, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]->(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]} );"""
+    qry = """FIND (left_node_handle:LeftNodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[lm:{int: 1, str: '2', str2:"2_4", float: 3.14, bool: false, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]-(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]} );"""
 
     query(qry, TEST_DBMS)

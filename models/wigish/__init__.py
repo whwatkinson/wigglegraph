@@ -1,3 +1,3 @@
-from models.wigish.dbms import DbmsFilePath
+from models.wigish.dbms import GDBMSFilePath
 
-__all__ = ["DbmsFilePath"]
+__all__ = ["GDBMSFilePath"]

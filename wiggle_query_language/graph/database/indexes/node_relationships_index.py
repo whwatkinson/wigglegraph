@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 from graph_logger.graph_logger import graph_logger
+from wiggle_query_language.graph.database.indexes import NODE_RELATIONSHIPS_INDEX_NAME
 
 
 def json_to_dict(
@@ -20,15 +21,15 @@ def add_items_to_node_relationships_index(
     indexes_file_path: Path, items_to_add: dict[str, set[int]]
 ) -> bool:
     """
-    Adds the data to the database.
+    Adds the data to the node_relationship index.
     :param indexes_file_path: The file path to the Indexes file.
-    :param items_to_add: The items to be added to the node relationship index file.
+    :param items_to_add: The items to be added to the node node_relationship index file.
     :return: A bool.
     """
 
     with open(indexes_file_path, "r+") as file_handle:
         indexes_dict = load(file_handle)
-        rel_indexes_dict = indexes_dict["node_relationships"]
+        rel_indexes_dict = indexes_dict[NODE_RELATIONSHIPS_INDEX_NAME]
 
         for node_wn, new_rels_wn_set in items_to_add.items():
             if node_wn in rel_indexes_dict:
@@ -40,7 +41,7 @@ def add_items_to_node_relationships_index(
 
             file_handle.seek(0)
 
-        indexes_dict["node_relationships"] = rel_indexes_dict
+        indexes_dict[NODE_RELATIONSHIPS_INDEX_NAME] = rel_indexes_dict
 
         dump(indexes_dict, file_handle, indent=4)
         file_handle.truncate()
@@ -52,7 +53,7 @@ def load_node_relationships_index(
     indexes_file_path: Path, wn_of_nodes: Optional[set[int]] = None
 ) -> dict[int, set[int]]:
     """
-    Loads the relationship indexes into memory.
+    Loads the node_relationship indexes into memory.
     :param indexes_file_path: The file path to the Indexes file.
     :param wn_of_nodes:
     :return: A database dict.
@@ -62,7 +63,7 @@ def load_node_relationships_index(
         with open(indexes_file_path, "r") as file_handle:
             indexes = load(file_handle)
 
-            node_rel_indexes_json = indexes["node_relationships"]
+            node_rel_indexes_json = indexes[NODE_RELATIONSHIPS_INDEX_NAME]
             graph_logger.info("Successfully loaded node_relationships index")
 
             node_rel_indexes_python = json_to_dict(node_rel_indexes_json, wn_of_nodes)
@@ -70,7 +71,7 @@ def load_node_relationships_index(
             return node_rel_indexes_python
 
     except JSONDecodeError:
-        graph_logger.exception("Empty relationship indexes,returning a new one")
+        graph_logger.exception("Empty relationship indexes, returning a new one")
         return {}
 
 
@@ -78,7 +79,7 @@ def wipe_node_relationships_index(
     indexes_file_path: Path, im_sure: bool = False
 ) -> bool:
     """
-    Wipes the node_relationships index, must set im_sure to true.
+    Wipes the node_relationship index, must set im_sure to true.
     :param indexes_file_path: The file path to the Indexes file.
     :param im_sure: Flag for making sure.
     :return:
@@ -87,7 +88,7 @@ def wipe_node_relationships_index(
         graph_logger.info("Dropping relationship indexes")
         with open(indexes_file_path, "r+") as file_handle:
             indexes_dict = load(file_handle)
-            indexes_dict["node_relationships"] = {}
+            indexes_dict[NODE_RELATIONSHIPS_INDEX_NAME] = {}
             file_handle.seek(0)
             dump(indexes_dict, file_handle, indent=4)
             file_handle.truncate()

@@ -1,8 +1,11 @@
-from json import dump, load
-from json.decoder import JSONDecodeError
 from pathlib import Path
 
-from graph_logger.graph_logger import graph_logger
+from wiggle_query_language.graph.database.indexes import RELATIONSHIP_NAMES_INDEX_NAME
+from wiggle_query_language.graph.database.indexes.index_helpers import (
+    add_items_set_to_index_by_name,
+    load_index_set_by_name,
+    wipe_index_set_by_name,
+)
 
 
 def add_items_to_relationship_names_index(
@@ -14,40 +17,23 @@ def add_items_to_relationship_names_index(
     :param items_to_add: The items to be added to the relationship_names index.
     :return: A bool.
     """
-    index_name = "relationship_names"
-    with open(indexes_file_path, "r+") as file_handle:
-        indexes_dict = load(file_handle)
-        relationship_names_indexes = set(indexes_dict[index_name])
-        updated_index = relationship_names_indexes.union(items_to_add)
-        file_handle.seek(0)
-        indexes_dict[index_name] = list(updated_index)
-        dump(indexes_dict, file_handle, indent=4)
-        file_handle.truncate()
-
-    return True
+    return add_items_set_to_index_by_name(
+        indexes_file_path=indexes_file_path,
+        items_to_add=items_to_add,
+        index_name=RELATIONSHIP_NAMES_INDEX_NAME,
+    )
 
 
 def load_relationship_names_index(indexes_file_path: Path) -> set:
     """
-    Loads the relationship indexes into memory.
+    Loads the relationship_name indexes into memory.
     :param indexes_file_path: The file path to the Indexes file.
     :return: A database dict.
     """
-    index_name = "relationship_names"
-    graph_logger.info("Attempting to loading Relationship indexes")
-    try:
-        with open(indexes_file_path, "r") as file_handle:
-            indexes = load(file_handle)
-            relationship_names_json = indexes[index_name]
-            graph_logger.info("Successfully loaded relationship_names index")
-            relationship_names_python = set(relationship_names_json)
 
-            return relationship_names_python
-
-    except JSONDecodeError:
-        graph_logger.exception("Empty relationship_names indexes, returning a new one")
-
-    return set()
+    return load_index_set_by_name(
+        indexes_file_path=indexes_file_path, index_name=RELATIONSHIP_NAMES_INDEX_NAME
+    )
 
 
 def wipe_relationship_names_index(
@@ -59,19 +45,11 @@ def wipe_relationship_names_index(
     :param im_sure: Flag for making sure.
     :return:
     """
-    index_name = "relationship_names"
-    if im_sure:
-        graph_logger.info("Dropping relationship_names indexes")
-        with open(indexes_file_path, "r+") as file_handle:
-            indexes_dict = load(file_handle)
-            indexes_dict[index_name] = []
-            file_handle.seek(0)
-            dump(indexes_dict, file_handle, indent=4)
-            file_handle.truncate()
-
-        graph_logger.info("Relationship indexes successfully dropped.")
-        return True
-    graph_logger.debug(f"Did not drop relationship indexes as {im_sure=}")
+    return wipe_index_set_by_name(
+        indexes_file_path=indexes_file_path,
+        index_name=RELATIONSHIP_NAMES_INDEX_NAME,
+        im_sure=im_sure,
+    )
 
 
 if __name__ == "__main__":

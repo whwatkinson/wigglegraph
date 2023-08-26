@@ -1,6 +1,4 @@
-from itertools import chain
-
-from models.wigish import DbmsFilePath
+from models.wigish import GDBMSFilePath
 from models.wql import (
     MakePre,
     Node,
@@ -96,54 +94,64 @@ def make_relationship(relationship_pre: RelationshipPre) -> Relationship:
 
 def add_nodes_to_graph(
     nodes_list: list[Node],
-    current_wiggle_number: int,
-    dbms_file_path: DbmsFilePath,
+    gdbms_file_path: GDBMSFilePath,
 ) -> bool:
     """
     Adds the Nodes to the graph.
     :param nodes_list: The list of constructed Nodes.
-    :param current_wiggle_number: The most recent WiggleNumber.
-    :param dbms_file_path: The path to the DBMS.
+    :param gdbms_file_path: The path to the DBMS.
     :return: A bool.
     """
     # Export Nodes and Rels
     nodes_to_add_dict = {str(node.wn): node.dict() for node in nodes_list}
 
     # Write data to the database
-    add_item_to_database(dbms_file_path.database_file_path, nodes_to_add_dict)
+    add_item_to_database(gdbms_file_path.database_file_path, nodes_to_add_dict)
 
-    # Add indexes
+    return True
+
+
+def add_indexes(
+    nodes_list: list[Node],
+    emit_nodes_list: list[MakePre],
+    gdbms_file_path: GDBMSFilePath,
+) -> bool:
+    """
+    Handles adding the indexes to the Indexes file.
+    :param nodes_list: The list of constructed Nodes.
+    :param emit_nodes_list: The PreProcessed Node list
+    :param gdbms_file_path: The path to the DBMS.
+    :return: a Bool.
+    """
+
     rel_indexes_to_add_dict = {
         str(node.wn): {rel.wn for rel in node.relations}
         for node in nodes_list
         if node.relations
     }
+    node_labels_set_to_add = set()
+    relationship_names_set_to_add = set()
 
-    node_labels_set_to_add = {node.node_label for node in nodes_list}
-
-    relationship_names_set_to_add = set(
-        chain.from_iterable(
-            [node.node_relationship_names() for node in nodes_list if node.relations]
+    for make_pre in emit_nodes_list:
+        node_labels_set_to_add = node_labels_set_to_add.union(make_pre.node_labels)
+        relationship_names_set_to_add = relationship_names_set_to_add.union(
+            make_pre.relationship_names
         )
-    )
 
     add_items_to_node_relationships_index(
-        dbms_file_path.indexes_file_path, rel_indexes_to_add_dict
+        gdbms_file_path.indexes_file_path, rel_indexes_to_add_dict
     )
     add_items_to_node_labels_index(
-        dbms_file_path.indexes_file_path, node_labels_set_to_add
+        gdbms_file_path.indexes_file_path, node_labels_set_to_add
     )
     add_items_to_relationship_names_index(
-        dbms_file_path.indexes_file_path, relationship_names_set_to_add
+        gdbms_file_path.indexes_file_path, relationship_names_set_to_add
     )
-
-    # Update WiggleNumber
-    update_wiggle_number(dbms_file_path.wiggle_number_file_path, current_wiggle_number)
 
     return True
 
 
-def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bool:
+def make(parsed_make_list: list[ParsedMake], gdbms_file_path: GDBMSFilePath) -> bool:
     """
     Handles the loading from stmt to putting data in the DB.
     :param parsed_make_list: The list of parsed MAKE statements.
@@ -152,7 +160,7 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bo
     """
     # Get the next available WN
     current_wiggle_number = get_current_wiggle_number(
-        dbms_file_path.wiggle_number_file_path
+        gdbms_file_path.wiggle_number_file_path
     )
     # create NodePre and RelationshipPre
     current_wiggle_number, emit_nodes_list = process_parsed_make_list(
@@ -166,8 +174,19 @@ def make(parsed_make_list: list[ParsedMake], dbms_file_path: DbmsFilePath) -> bo
     # Commit if only not errors
     add_nodes_to_graph(
         nodes_list=nodes_list_flat,
-        current_wiggle_number=current_wiggle_number,
-        dbms_file_path=dbms_file_path,
+        gdbms_file_path=gdbms_file_path,
+    )
+    # Add Indexes
+    add_indexes(
+        nodes_list=nodes_list_flat,
+        emit_nodes_list=emit_nodes_list,
+        gdbms_file_path=gdbms_file_path,
+    )
+
+    # Update WiggleNumber if no errors
+    update_wiggle_number(
+        new_wiggle_number=current_wiggle_number,
+        file_path=gdbms_file_path.wiggle_number_file_path,
     )
 
     return True

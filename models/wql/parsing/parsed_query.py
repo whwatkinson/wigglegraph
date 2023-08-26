@@ -24,6 +24,7 @@ class Rel(BaseModel):
     rel_props: Optional[str]
 
 
+# TODO foo_rel_label -> foo_rel_name
 class ParsedPattern(BaseModel):
     left_node: Optional[str]
     left_node_handle: Optional[str]
@@ -93,11 +94,19 @@ class ParsedFind(BaseModel):
         return 1
 
 
+class ParsedCriteriaYesNo(BaseModel):
+    # Needs to be a dict as is dynamic
+
+    props_dict_yes_match: dict
+    props_dict_no_match: dict
+
+
 class ParsedCriteria(BaseModel):
-    raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
+    # todo add CRITERIA_STATEMENT_ALL_REGEX
+    CRITERIA_STATEMENT_ALL_REGEX = r".+"
+    raw_statement: str = Field(regex=CRITERIA_STATEMENT_ALL_REGEX)
     clause: Clause = Clause.CRITERIA
-    criteria_handle_props: dict
-    # should be a dict with {handle: {props: 1}}
+    criteria_handle_props: dict[str, ParsedCriteriaYesNo]
 
 
 class ParsedQuery(BaseModel):

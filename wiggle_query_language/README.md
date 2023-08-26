@@ -38,3 +38,44 @@ REPORT wn(p), wn(q);
 - Using
 - BuiltIns
 -
+
+
+```mermaid
+flowchart LR
+    %% Nodes
+    User[User]
+    WiggleGraph[WiggleGraph API]
+    ParseQuery{Parse Query}
+    Fail[Fail]
+    Pass[Pass]
+    Make[MAKE statement \n equivalent to a CQL CREATE]
+    Find[FIND statement \n equivalent to a CQL MATCH]
+    Criteria[CRITERIA statement \n equivalent to a CQL WHERE]
+    Report[RETURN statement \n equivalent to a CQL RETURN]
+    Database[Database]
+    Indexes[Indexes]
+    QueryResult[Query\n Result]
+
+    %% Relationships
+    User --> WiggleGraph-->ParseQuery
+    ParseQuery-->Fail
+    ParseQuery-->Pass
+
+    %% Unhappy path
+    Fail--Helpful Error \n message to \n  the User-->User
+
+    %% Happy path MAKE
+    Pass-->Make
+    Make-- Write nodes and rels to DB-->Database
+    Make-- NodesRels,\n NodeLabels \n and \n RelNames -->Indexes
+
+
+    %% Happy path FIND
+    Pass-->Find
+    Pass-->Criteria
+    Pass-->Report
+
+    Find-->QueryResult
+    Criteria-->QueryResult
+    Report-->QueryResult
+```

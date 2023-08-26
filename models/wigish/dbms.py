@@ -3,7 +3,7 @@ from pathlib import Path
 from pydantic import BaseModel
 
 
-class DbmsFilePath(BaseModel):
+class GDBMSFilePath(BaseModel):
     """
     Holds the file paths for the Database and Wiggle Number
     """

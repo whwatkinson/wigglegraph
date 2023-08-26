@@ -8,6 +8,7 @@ from models.wql.enums.clauses import Clause
 from models.wql.enums.property_type import PropertyType
 from models.wql.parsing.parsed_query import (
     ParsedCriteria,
+    ParsedCriteriaYesNo,
     ParsedFind,
     ParsedMake,
     ParsedPattern,
@@ -28,6 +29,7 @@ __all__ = [
     "WiggleGraphPropertyPre",
     "Node",
     "NodePre",
+    "ParsedCriteriaYesNo",
     "ParsedFind",
     "ParsedCriteria",
     "ParsedMake",

@@ -3,7 +3,7 @@ from typing import Generator
 import pytest
 
 from testing import TEST_DBMS_FOLDER_PATH
-from wiggle_shell.core.select_dbms.select_wiggle_number_file import (
+from wiggle_shell.core.select_gdbms.select_wiggle_number_file import (
     create_new_wiggle_number_file,
     get_existing_wn_file_path,
 )
@@ -36,15 +36,15 @@ class TestSelectWiggleNumberFile:
 
     def test_get_existing_wn_file(self, wigsh_setup_databases: Generator) -> None:
         exp_wn_fp = TEST_DBMS_FOLDER_PATH.joinpath(
-            "sample_dbms/wiggle_number_sample_dbms.txt"
+            "sample_gdbms/wiggle_number_sample_gdbms.txt"
         )
         test_wn_fp = get_existing_wn_file_path(
-            dbms_name="sample_dbms", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+            gdbms_name="sample_gdbms", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
         )
 
         assert exp_wn_fp == test_wn_fp
 
         with pytest.raises(FileNotFoundError):
             get_existing_wn_file_path(
-                dbms_name="NOT A WN", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
+                gdbms_name="NOT A WN", path_to_dbms_dir=TEST_DBMS_FOLDER_PATH
             )
