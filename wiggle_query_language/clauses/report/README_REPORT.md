@@ -18,6 +18,7 @@ INSERT MAKE PIC HERE:
 
 1. Display all matches.
    ```
+   FIND *:
    REPORT *;
    ```
 
