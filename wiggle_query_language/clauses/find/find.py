@@ -19,8 +19,7 @@ def find(
 
     # Short Circuits!
     if not find_short_circuit(who_what_where, gdbms_file_path):
-        raise Exception("No results")
-
-    print(who_what_where)
+        print("\nNo results\n")
+        return False
 
     return True
