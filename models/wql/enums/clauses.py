@@ -5,3 +5,4 @@ class Clause(Enum):
     FIND = "FIND"
     MAKE = "MAKE"
     CRITERIA = "CRITERIA"
+    REPORT = "REPORT"

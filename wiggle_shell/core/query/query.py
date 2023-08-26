@@ -14,6 +14,10 @@ from wiggle_query_language.clauses.make import (
     make,
     parse_make_statement_from_query_string,
 )
+from wiggle_query_language.clauses.report import (
+    report,
+    parse_report_statement_from_query_string,
+)
 
 #  todo docstrings
 
@@ -29,7 +33,7 @@ def parse_query_string(query_string: str) -> ParsedQuery:
 
     make_parsed = parse_make_statement_from_query_string(query_string)
     find_parsed = parse_find_statement_from_query_string(query_string)
-    criteria_parsed = None
+    criteria_parsed = parse_report_statement_from_query_string(query_string)
     report_parsed = None
 
     query_parsed = ParsedQuery(
@@ -46,12 +50,16 @@ def execute_query(parsed_query: ParsedQuery, gdbms_file_path: GDBMSFilePath) -> 
     if query_make := parsed_query.make_parsed:
         make(parsed_make_list=query_make, gdbms_file_path=gdbms_file_path)
 
+    found = None
     if query_find := parsed_query.find_parsed:
-        find(
+        found = find(
             parsed_find=query_find,
             gdbms_file_path=gdbms_file_path,
             parsed_criteria=parsed_query.criteria_parsed,
         )
+
+    if query_report := parsed_query.report_parsed:
+        report(parsed_report=query_report, found=found, gdbms_file_path=gdbms_file_path)
 
     return True
 

@@ -101,6 +101,12 @@ class ParsedCriteriaYesNo(BaseModel):
     props_dict_no_match: dict
 
 
+class ParsedReport(BaseModel):
+    raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
+    clause: Clause = Clause.FIND
+    parsed_report: dict
+
+
 class ParsedCriteria(BaseModel):
     # todo add CRITERIA_STATEMENT_ALL_REGEX
     CRITERIA_STATEMENT_ALL_REGEX = r".+"
@@ -113,4 +119,4 @@ class ParsedQuery(BaseModel):
     make_parsed: Optional[list[ParsedMake]]
     find_parsed: Optional[ParsedFind]
     criteria_parsed: Optional[ParsedCriteria]
-    report_parsed: Optional[dict] = None
+    report_parsed: Optional[ParsedReport] = None

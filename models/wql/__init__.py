@@ -13,6 +13,7 @@ from models.wql.parsing.parsed_query import (
     ParsedMake,
     ParsedPattern,
     ParsedQuery,
+    ParsedReport,
 )
 from models.wql.parsing.properties_pre import (
     ExtractedPropertyPre,
@@ -35,6 +36,7 @@ __all__ = [
     "ParsedMake",
     "ParsedPattern",
     "ParsedQuery",
+    "ParsedReport",
     "PropertyType",
     "Relationship",
     "RelationshipPre",
