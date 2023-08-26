@@ -10,6 +10,9 @@ from wiggle_query_language.clauses.regexes.find.find_patterns import (
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_ALL_REGEX,
 )
+from wiggle_query_language.clauses.regexes.report.report_patterns import (
+    REPORT_STATEMENT_ALL_REGEX,
+)
 
 
 class Node(BaseModel):
@@ -102,9 +105,12 @@ class ParsedCriteriaYesNo(BaseModel):
 
 
 class ParsedReport(BaseModel):
-    raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
+    raw_statement: str = Field(regex=REPORT_STATEMENT_ALL_REGEX.pattern)
     clause: Clause = Clause.FIND
     parsed_report: dict
+
+    def __len__(self) -> int:
+        return 1
 
 
 class ParsedCriteria(BaseModel):

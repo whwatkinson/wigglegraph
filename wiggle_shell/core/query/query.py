@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 
 from exceptions.wiggleshell.query import NotAValidQueryError
-from graph_logger.graph_logger import graph_logger
+from wiggle_graph_logger.graph_logger import graph_logger
 from models.wigish import GDBMSFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
