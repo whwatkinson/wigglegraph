@@ -50,16 +50,19 @@ def execute_query(parsed_query: ParsedQuery, gdbms_file_path: GDBMSFilePath) -> 
     if query_make := parsed_query.make_parsed:
         make(parsed_make_list=query_make, gdbms_file_path=gdbms_file_path)
 
-    found = None
     if query_find := parsed_query.find_parsed:
         found = find(
             parsed_find=query_find,
             gdbms_file_path=gdbms_file_path,
             parsed_criteria=parsed_query.criteria_parsed,
         )
-
-    if query_report := parsed_query.report_parsed:
-        report(parsed_report=query_report, found=found, gdbms_file_path=gdbms_file_path)
+        # when theses a FIND there is a way
+        if query_report := parsed_query.report_parsed:
+            report(
+                parsed_report=query_report, found=found, gdbms_file_path=gdbms_file_path
+            )
+    else:
+        raise Exception("You must provide a FIND with a RETURN! FUBAR")
 
     return True
 
