@@ -22,44 +22,44 @@ INSERT MAKE PIC HERE:
    REPORT *;
    ```
 
-2. With a FIND and RETURN all node properties.
+2. With a FIND and REPORT all node properties.
    ```
    FIND (foo:Node);
-   RETURN foo;
+   REPORT foo;
    ```
 
-3. With a FIND and RETURN a specific node property.
+3. With a FIND and REPORT a specific node property.
    ```
    FIND (foo:Node);
-   RETURN foo.bar;
+   REPORT foo.bar;
    ```
 
-4. With a FIND and RETURN a multiple node properties.
+4. With a FIND and REPORT a multiple node properties.
    ```
    FIND (foo:Node);
-   RETURN foo.bar, foo.baz, foo.qux;
+   REPORT foo.bar, foo.baz, foo.qux;
    ```
 
-5. With a FIND and RETURN all relationship properties.
+5. With a FIND and REPORT all relationship properties.
    ```
    FIND (foo:Node)-[r:REL]->(foo2:Node2);
-   RETURN r;
+   REPORT r;
    ```
 
-6. With a FIND and RETURN a specific relationship property.
+6. With a FIND and REPORT a specific relationship property.
    ```
    FIND (foo:Node)-[r:REL]->(foo2:Node2);
-   RETURN foo.bar
+   REPORT r.bar;
    ```
 
-7. With a FIND and RETURN a multiple relationship properties.
+7. With a FIND and REPORT a multiple relationship properties.
    ```
    FIND (foo:Node)-[r:REL]->(bar:Node2);
-   RETURN r.bar, r.baz, r.qux;
+   REPORT r.bar, r.baz, r.qux;
    ```
 
-8. With a FIND and RETURN a multiple node and relationship properties.
+8. With a FIND and REPORT a multiple node and relationship properties.
     ```
    FIND (foo:Node)-[r:REL]->(bar:Node2);
-   RETURN foo.bar, foo.baz, foo.qux, r.bar, r.baz, r.qux;
+   REPORT foo.bar, foo.baz, foo.qux, r.bar, r.baz, r.qux;
    ```

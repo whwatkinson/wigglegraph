@@ -52,7 +52,7 @@ def process_parsed_find(
     if parsed_find.clause is not Clause.FIND:
         raise Exception(f"Expecting FIND but got {parsed_find.clause}")
 
-    parsed_pattern = parsed_find.parsed_pattern_list
+    parsed_pattern = parsed_find.parsed_pattern
 
     # Left Node
     left_handle = parsed_pattern.left_node_handle

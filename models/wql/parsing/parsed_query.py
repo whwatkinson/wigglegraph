@@ -70,6 +70,10 @@ class ParsedPattern(BaseModel):
     def __repr__(self) -> str:
         return f"|{self.__class__.__name__}| Nodes: {self.number_of_nodes}, Rels: {self.number_of_relationships}"
 
+    @property
+    def pattern_handles(self) -> set[str]:
+        return {v for name, v in self.dict().items() if v and "handle" in name}
+
     @root_validator
     def validate_handles(cls, values: dict) -> dict:
         handle_names = [v for name, v in values.items() if v and "handle" in name]
@@ -91,7 +95,8 @@ class ParsedMake(BaseModel):
 class ParsedFind(BaseModel):
     raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
     clause: Clause = Clause.FIND
-    parsed_pattern_list: ParsedPattern
+    parsed_pattern: ParsedPattern
+    parsed_pattern_handles: set[str] = Field(default=set())
 
     def __len__(self) -> int:
         return 1
@@ -104,21 +109,21 @@ class ParsedCriteriaYesNo(BaseModel):
     props_dict_no_match: dict
 
 
-class ParsedReport(BaseModel):
-    raw_statement: str = Field(regex=REPORT_STATEMENT_ALL_REGEX.pattern)
-    clause: Clause = Clause.FIND
-    parsed_report: dict
-
-    def __len__(self) -> int:
-        return 1
-
-
 class ParsedCriteria(BaseModel):
     # todo add CRITERIA_STATEMENT_ALL_REGEX
     CRITERIA_STATEMENT_ALL_REGEX = r".+"
     raw_statement: str = Field(regex=CRITERIA_STATEMENT_ALL_REGEX)
     clause: Clause = Clause.CRITERIA
     criteria_handle_props: dict[str, ParsedCriteriaYesNo]
+
+
+class ParsedReport(BaseModel):
+    raw_statement: str = Field(regex=REPORT_STATEMENT_ALL_REGEX.pattern)
+    clause: Clause = Clause.FIND
+    extracted_report: str
+
+    def __len__(self) -> int:
+        return 1
 
 
 class ParsedQuery(BaseModel):

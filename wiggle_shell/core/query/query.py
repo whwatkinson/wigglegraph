@@ -33,8 +33,12 @@ def parse_query_string(query_string: str) -> ParsedQuery:
 
     make_parsed = parse_make_statement_from_query_string(query_string)
     find_parsed = parse_find_statement_from_query_string(query_string)
-    criteria_parsed = parse_report_statement_from_query_string(query_string)
-    report_parsed = None
+    criteria_parsed = None
+
+    find_query_handles = find_parsed.parsed_pattern.pattern_handles
+    report_parsed = parse_report_statement_from_query_string(
+        query_string, find_handles=find_query_handles
+    )
 
     query_parsed = ParsedQuery(
         make_parsed=make_parsed,
