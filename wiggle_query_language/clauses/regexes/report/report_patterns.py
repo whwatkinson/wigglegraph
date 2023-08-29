@@ -8,7 +8,7 @@ CLAUSE = "REPORT"
 
 # REPORT .*;
 REPORT_STATEMENT_ALL_REGEX = compile(
-    pattern=rf"\s*(?P<report_stmt_all>({CLAUSE.upper()}|{CLAUSE.lower()}).+;)",
+    pattern=rf"(?P<report_stmt_all>({CLAUSE.upper()}|{CLAUSE.lower()}).+;)",
     flags=IGNORECASE,
 )
 

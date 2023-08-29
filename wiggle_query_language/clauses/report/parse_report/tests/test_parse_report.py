@@ -57,7 +57,18 @@ class TestParseReport:
                 id="EXP PASS: Mix of Node and rels with props",
             ),
             pytest.param(
-                "REPORT bar; ",
+                """
+                FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+                CRITERIA p.name = "Bar" or q.name = "Bar;
+                REPORT p, r2, q;
+                """,
+                {"p", "r2", "q"},
+                1,
+                does_not_raise(),
+                id="EXP PASS: Mix of Node and rels with props",
+            ),
+            pytest.param(
+                "REPORT bar;",
                 {"foo"},
                 0,
                 pytest.raises(FindReportHandleMissmatch),

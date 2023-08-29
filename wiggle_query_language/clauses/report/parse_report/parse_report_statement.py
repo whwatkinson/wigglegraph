@@ -36,8 +36,16 @@ def parse_report_statement_from_query_string(
                     f"FIND handle {find_handle} was not found not in the ---> {extracted_report} <---"
                 )
 
-    return ParsedReport(raw_statement=query_string, extracted_report=extracted_report)
+    return ParsedReport(
+        raw_statement=extracted_report, extracted_report=extracted_report
+    )
 
 
 if __name__ == "__main__":
-    parse_report_statement_from_query_string("REPORT bar;", {"foo"})
+    q = """
+        FIND (p:NodeLabel)-[r2:REL]->(q:NodeLabel);
+        CRITERIA p.name = "Bar" or q.name = "Bar;
+        REPORT p, r2, q;
+    """
+
+    parse_report_statement_from_query_string(q, {"p", "r2", "q"})

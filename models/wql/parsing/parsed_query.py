@@ -119,7 +119,7 @@ class ParsedCriteria(BaseModel):
 
 class ParsedReport(BaseModel):
     raw_statement: str = Field(regex=REPORT_STATEMENT_ALL_REGEX.pattern)
-    clause: Clause = Clause.FIND
+    clause: Clause = Clause.REPORT
     extracted_report: str
 
     def __len__(self) -> int:
