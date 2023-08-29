@@ -8,6 +8,23 @@ from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
 )
 
 
+def check_find_report_handles(find_handles: set[str], extracted_report: str) -> True:
+    if find_handles:
+        for find_handle in find_handles:
+            if find_handle not in extracted_report:
+                raise FindReportHandleMissmatch(
+                    f"FIND handle {find_handle} was not found not in the ---> {extracted_report} <---"
+                )
+
+    return True
+
+
+def validate_report_statement(find_handles: set[str], extracted_report: str) -> True:
+    check_find_report_handles(find_handles, extracted_report)
+
+    return True
+
+
 def parse_report_statement_from_query_string(
     query_string: str,
     find_handles: Optional[set[str]] = None,
@@ -29,12 +46,8 @@ def parse_report_statement_from_query_string(
 
     extracted_report = report_matches[0]
 
-    if find_handles:
-        for find_handle in find_handles:
-            if find_handle not in extracted_report:
-                raise FindReportHandleMissmatch(
-                    f"FIND handle {find_handle} was not found not in the ---> {extracted_report} <---"
-                )
+    if not validate_report_statement(find_handles, extracted_report):
+        raise Exception()
 
     return ParsedReport(
         raw_statement=extracted_report, extracted_report=extracted_report

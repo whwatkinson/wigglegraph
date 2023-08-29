@@ -261,7 +261,7 @@ class TestParseStatementChecks:
             assert test is True
 
     @pytest.mark.parametrize(
-        "test_make_stmt, exception",
+        "test_find_stmt, exception",
         [
             pytest.param(
                 "DIFN (node:NodeLabel);",
@@ -290,7 +290,44 @@ class TestParseStatementChecks:
             ),
         ],
     )
-    def test_check_find_clause_spelling(self, test_make_stmt: str, exception) -> None:
+    def test_check_find_clause_spelling(self, test_find_stmt: str, exception) -> None:
         with exception:
-            test = check_clause_spelling(test_make_stmt, Clause.FIND)
+            test = check_clause_spelling(test_find_stmt, Clause.FIND)
+            assert test is True
+
+    @pytest.mark.parametrize(
+        "test_report_stmt, exception",
+        [
+            pytest.param(
+                "TROPER foo;",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "troper bar;",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "REPOTR baz;",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "REPTOR",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+            pytest.param(
+                "EPORT",
+                pytest.raises(ClauseSyntaxError),
+                id="EXP EXEC",
+            ),
+        ],
+    )
+    def test_check_report_clause_spelling(
+        self, test_report_stmt: str, exception
+    ) -> None:
+        with exception:
+            test = check_clause_spelling(test_report_stmt, Clause.REPORT)
             assert test is True
