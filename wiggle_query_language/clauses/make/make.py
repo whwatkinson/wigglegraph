@@ -43,7 +43,7 @@ def make_nodes(make_pre: MakePre) -> list[Node]:
         nodes.append(make_node(make_pre.middle_node))
 
     if make_pre.right_node:
-        nodes.append(make_node(make_pre.left_node))
+        nodes.append(make_node(make_pre.right_node))
 
     return nodes
 

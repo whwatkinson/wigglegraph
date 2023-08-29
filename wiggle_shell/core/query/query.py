@@ -103,15 +103,7 @@ if __name__ == "__main__":
         f"{get_project_root()}/wiggle_query_language/example_queries/make_long.wql"
     )
 
-    # with open(sample_query_fp, "r") as file:
-    #     qry = file.read()
-
-    qry = """
-    FIND (:NodeLabel{str: '2'})<-[]-(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});
-    """
-
-    qry = """FIND (left_node_handle:LeftNodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[lm:{int: 1, str: '2', str2:"2_4", float: 3.14, bool: false, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]-(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]} );"""
-    qry = """FIND (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14});"""
     qry = """MAKE (:NodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});"""
+    qry = """MAKE (:Foo{none: null, int: 1})-[r:REL1{float: 3.14}]->(:Bar{str: '2', str2:"2_4"})-[r2:REL2{list: [1, '2', "2_4", "3 4", 3.14]}]->(:Baz{bool:true, bool2: false});"""
 
     query(qry, TEST_GDBMS)
