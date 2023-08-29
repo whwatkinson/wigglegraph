@@ -104,6 +104,6 @@ if __name__ == "__main__":
     )
 
     qry = """MAKE (:NodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});"""
-    qry = """MAKE (:Foo{none: null, int: 1})-[r:REL1{float: 3.14}]->(:Bar{str: '2', str2:"2_4"})-[r2:REL2{list: [1, '2', "2_4", "3 4", 3.14]}]->(:Baz{bool:true, bool2: false});"""
+    qry = """MAKE (:Foo{none: null, int: 1})-[r:REL1{float: 3.14}]->(:Foo{str: '2', str2:"2_4"})-[r2:REL2{list: [1, '2', "2_4", "3 4", 3.14]}]->(:Baz{bool:true, bool2: false});"""
 
     query(qry, TEST_GDBMS)

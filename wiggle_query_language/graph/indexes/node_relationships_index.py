@@ -5,16 +5,7 @@ from typing import Optional
 
 from wiggle_graph_logger.graph_logger import graph_logger
 from wiggle_query_language.graph.indexes import NODE_RELATIONSHIPS_INDEX_NAME
-
-
-def json_to_dict(
-    rel_indexes: dict, wn_of_nodes: Optional[set[int]] = None
-) -> dict[int, set[int]]:
-    return {k: set(v) for k, v in rel_indexes.items()}
-
-
-def dict_to_json(rel_indexes: dict) -> dict[int, list[int]]:
-    return {k: list(v) for k, v in rel_indexes.items()}
+from wiggle_query_language.graph.indexes.index_helpers import json_to_dict
 
 
 def add_items_to_node_relationships_index(

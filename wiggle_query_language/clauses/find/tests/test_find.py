@@ -75,7 +75,7 @@ class TestFind:
             },
         }
         rel_indexes_to_add_dict = {"0": {3}, "1": {4}}
-        node_labels_set_to_add = {"Foo", "Bar", "Baz"}
+        node_labels_to_add = {"Foo": {0, 1}, "Baz": {2}}
         relationship_names_set_to_add = {"REL2", "REL1"}
 
         add_item_to_database(TEST_GDBMS.database_file_path, items_to_add=items_to_add)
@@ -83,9 +83,7 @@ class TestFind:
         add_items_to_node_relationships_index(
             TEST_GDBMS.indexes_file_path, rel_indexes_to_add_dict
         )
-        add_items_to_node_labels_index(
-            TEST_GDBMS.indexes_file_path, node_labels_set_to_add
-        )
+        add_items_to_node_labels_index(TEST_GDBMS.indexes_file_path, node_labels_to_add)
         add_items_to_relationship_names_index(
             TEST_GDBMS.indexes_file_path, relationship_names_set_to_add
         )

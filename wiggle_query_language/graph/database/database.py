@@ -20,6 +20,7 @@ def load_database(database_file_path: Path) -> DATABASE_SHAPE:
     try:
         with open(database_file_path, "r") as file_handle:
             database = load(file_handle)
+            database = {int(k): v for k, v in database.items()}
             graph_logger.info("Successfully loaded database")
             return database
 
@@ -80,4 +81,6 @@ def wipe_database(database_file_path: Path, im_sure: bool = False) -> bool:
 
 
 if __name__ == "__main__":
-    wipe_database(DATABASE_TEST_FILE_PATH, True)
+    # wipe_database(DATABASE_TEST_FILE_PATH, True)
+    a = load_database(DATABASE_TEST_FILE_PATH)
+    b = 1

@@ -1,11 +1,25 @@
-from typing import Optional
+from typing import Optional, Union
 
+
+from models.wql.data.node import Node
 from models.wigish import GDBMSFilePath
-from models.wql import ParsedCriteria, ParsedFind
+from models.wql import ParsedCriteria, ParsedFind, FindNodePre
 from wiggle_query_language.clauses.find.transform.find_pre import process_parsed_find
 from wiggle_query_language.clauses.find.short_circuits.find_short_circuits import (
     find_short_circuit,
 )
+
+DATABASE_SHAPE = dict[int, dict[str, Union[dict, list, str]]]
+
+
+def find_node(node_pre: FindNodePre, database: DATABASE_SHAPE) -> Optional[list[Node]]:
+    matches = []
+
+    # for wn, nodes in database.items():
+    #
+    #     pass
+
+    return matches
 
 
 def find(

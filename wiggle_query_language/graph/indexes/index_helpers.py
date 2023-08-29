@@ -1,8 +1,19 @@
 from json import dump, load
 from json.decoder import JSONDecodeError
+from typing import Optional, Union
 from pathlib import Path
 
 from wiggle_graph_logger.graph_logger import graph_logger
+
+
+def json_to_dict(
+    rel_indexes: dict, wn_of_nodes: Optional[set[int]] = None
+) -> dict[Union[int, str], set[int]]:
+    return {k: set(v) for k, v in rel_indexes.items()}
+
+
+def dict_to_json(rel_indexes: dict) -> dict[int, list[int]]:
+    return {k: list(v) for k, v in rel_indexes.items()}
 
 
 def add_items_set_to_index_by_name(
