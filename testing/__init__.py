@@ -15,9 +15,9 @@ WIGGLE_NUMBER_TEST_FILE_PATH = Path(
     f"{get_project_root()}/testing/test_gdbms/sample_gdbms/wiggle_number_sample_gdbms.txt"
 )
 
-TEST_DBMS_FOLDER_PATH = Path(f"{get_project_root()}/testing/test_gdbms/")
+TEST_GDBMS_FOLDER_PATH = Path(f"{get_project_root()}/testing/test_gdbms/")
 
-TEST_DBMS = GDBMSFilePath(
+TEST_GDBMS = GDBMSFilePath(
     database_file_path=DATABASE_TEST_FILE_PATH,
     indexes_file_path=INDEXES_TEST_FILE_PATH,
     wiggle_number_file_path=WIGGLE_NUMBER_TEST_FILE_PATH,

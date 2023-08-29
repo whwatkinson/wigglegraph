@@ -94,7 +94,7 @@ def query(query_string: str, gdbms_file_path: GDBMSFilePath) -> bool:
 
 
 if __name__ == "__main__":
-    from testing import TEST_DBMS
+    from testing import TEST_GDBMS
 
     sample_query_fp = Path(
         f"{get_project_root()}/wiggle_query_language/example_queries/make_long.wql"
@@ -108,5 +108,5 @@ if __name__ == "__main__":
     """
 
     qry = """FIND (left_node_handle:LeftNodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[lm:{int: 1, str: '2', str2:"2_4", float: 3.14, bool: false, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]-(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]} );"""
-
-    query(qry, TEST_DBMS)
+    qry = "FIND (:NodeLabel{int: 1});"
+    query(qry, TEST_GDBMS)
