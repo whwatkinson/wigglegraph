@@ -14,5 +14,5 @@ class TestFind:
         add_items_to_node_labels_index(TEST_GDBMS.indexes_file_path, {"NodeLabel"})
         yield None
 
-    def test_find_single_node(self) -> None:
-        pass
+    def test_find_single_node(self, setup_test_gdbms: Generator) -> None:
+        assert True

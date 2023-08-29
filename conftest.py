@@ -78,8 +78,8 @@ def clear_dbms_test() -> Generator:
     yield None
 
     wipe_database(DATABASE_TEST_FILE_PATH, im_sure=True)
-    wipe_node_relationships_index(WIGGLE_NUMBER_TEST_FILE_PATH, im_sure=True)
+    wipe_node_relationships_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     wipe_node_labels_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     wipe_relationship_names_index(INDEXES_TEST_FILE_PATH, im_sure=True)
-    with open(INDEXES_TEST_FILE_PATH, "w") as file_handle:
+    with open(WIGGLE_NUMBER_TEST_FILE_PATH, "w") as file_handle:
         file_handle.write("0")
