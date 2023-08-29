@@ -13,6 +13,7 @@ from wiggle_query_language.graph.indexes.node_relationships_index import (
     add_items_to_node_relationships_index,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
+from wiggle_query_language.clauses.find.find import find_node
 
 
 class TestFind:
@@ -89,5 +90,7 @@ class TestFind:
         )
         yield None
 
-    def test_find_single_node(self, setup_test_gdbms: Generator) -> None:
-        assert True
+    def test_find_node__single_node(self, setup_test_gdbms: Generator) -> None:
+        test = find_node()
+
+        assert test

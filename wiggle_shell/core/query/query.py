@@ -54,8 +54,10 @@ def parse_query_string(query_string: str) -> ParsedQuery:
 
 
 def execute_query(parsed_query: ParsedQuery, gdbms_file_path: GDBMSFilePath) -> bool:
+    okay_flag = False
     if query_make := parsed_query.make_parsed:
         make(parsed_make_list=query_make, gdbms_file_path=gdbms_file_path)
+        okay_flag = True
 
     if query_find := parsed_query.find_parsed:
         found = find(
@@ -69,7 +71,8 @@ def execute_query(parsed_query: ParsedQuery, gdbms_file_path: GDBMSFilePath) -> 
                 parsed_report=query_report, found=found, gdbms_file_path=gdbms_file_path
             )
     else:
-        raise Exception("You must provide a FIND with a RETURN! FUBAR")
+        if not okay_flag:
+            raise Exception("You must provide a FIND with a REPORT! FUBAR")
 
     return True
 
@@ -104,6 +107,6 @@ if __name__ == "__main__":
     )
 
     qry = """MAKE (:NodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});"""
-    qry = """MAKE (:Foo{none: null, int: 1})-[r:REL1{float: 3.14}]->(:Foo{str: '2', str2:"2_4"})-[r2:REL2{list: [1, '2', "2_4", "3 4", 3.14]}]->(:Baz{bool:true, bool2: false});"""
+    qry = """FIND (:Foo{none: null, int: 1})-[r:REL1{float: 3.14}]->(:Bar{str: '2', str2:"2_4"})-[r2:REL2{list: [1, '2', "2_4", "3 4", 3.14]}]->(:Baz{bool:true, bool2: false});"""
 
     query(qry, TEST_GDBMS)

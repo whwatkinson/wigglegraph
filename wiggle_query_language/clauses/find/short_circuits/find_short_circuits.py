@@ -23,7 +23,9 @@ def find_short_circuit(
         gdbms_file_path.indexes_file_path
     )
 
-    if not node_label_is_in_index(find_pre.node_labels, node_label_index):
+    node_label_index_set = set(node_label_index.keys())
+
+    if not node_label_is_in_index(find_pre.node_labels, node_label_index_set):
         return False
 
     if relationship_name_is_in_index(

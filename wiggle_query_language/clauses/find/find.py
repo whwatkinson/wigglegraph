@@ -8,11 +8,18 @@ from wiggle_query_language.clauses.find.transform.find_pre import process_parsed
 from wiggle_query_language.clauses.find.short_circuits.find_short_circuits import (
     find_short_circuit,
 )
+from wiggle_query_language.graph.indexes.node_labels_index import load_node_labels_index
 
 DATABASE_SHAPE = dict[int, dict[str, Union[dict, list, str]]]
 
 
-def find_node(node_pre: FindNodePre, database: DATABASE_SHAPE) -> Optional[list[Node]]:
+def find_node(
+    node_pre: FindNodePre, gdbms_file_path: GDBMSFilePath
+) -> Optional[list[Node]]:
+    node_labels_index = load_node_labels_index(gdbms_file_path.indexes_file_path)
+
+    _ = node_labels_index[node_pre.node_label]
+
     matches = []
 
     # for wn, nodes in database.items():
