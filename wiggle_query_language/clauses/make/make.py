@@ -15,13 +15,13 @@ from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
-from wiggle_query_language.graph.database.indexes.node_labels_index import (
+from wiggle_query_language.graph.indexes.node_labels_index import (
     add_items_to_node_labels_index,
 )
-from wiggle_query_language.graph.database.indexes.node_relationships_index import (
+from wiggle_query_language.graph.indexes.node_relationships_index import (
     add_items_to_node_relationships_index,
 )
-from wiggle_query_language.graph.database.indexes.relationship_names_index import (
+from wiggle_query_language.graph.indexes.relationship_names_index import (
     add_items_to_relationship_names_index,
 )
 from wiggle_query_language.graph.state.wiggle_number import (

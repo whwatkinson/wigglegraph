@@ -3,7 +3,7 @@ from typing import Generator
 import pytest
 
 from testing import TEST_GDBMS
-from wiggle_query_language.graph.database.indexes.node_labels_index import (
+from wiggle_query_language.graph.indexes.node_labels_index import (
     add_items_to_node_labels_index,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database

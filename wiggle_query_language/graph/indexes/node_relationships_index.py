@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 from wiggle_graph_logger.graph_logger import graph_logger
-from wiggle_query_language.graph.database.indexes import NODE_RELATIONSHIPS_INDEX_NAME
+from wiggle_query_language.graph.indexes import NODE_RELATIONSHIPS_INDEX_NAME
 
 
 def json_to_dict(

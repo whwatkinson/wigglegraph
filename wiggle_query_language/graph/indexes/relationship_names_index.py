@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from wiggle_query_language.graph.database.indexes import RELATIONSHIP_NAMES_INDEX_NAME
-from wiggle_query_language.graph.database.indexes.index_helpers import (
+from wiggle_query_language.graph.indexes import RELATIONSHIP_NAMES_INDEX_NAME
+from wiggle_query_language.graph.indexes.index_helpers import (
     add_items_set_to_index_by_name,
     load_index_set_by_name,
     wipe_index_set_by_name,

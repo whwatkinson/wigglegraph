@@ -1,9 +1,9 @@
 from models.wigish import GDBMSFilePath
 from models.wql import FindPre
-from wiggle_query_language.graph.database.indexes.node_labels_index import (
+from wiggle_query_language.graph.indexes.node_labels_index import (
     load_node_labels_index,
 )
-from wiggle_query_language.graph.database.indexes.relationship_names_index import (
+from wiggle_query_language.graph.indexes.relationship_names_index import (
     load_relationship_names_index,
 )
 from wiggle_query_language.clauses.find.short_circuits.nodes import (

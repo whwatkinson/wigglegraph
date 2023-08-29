@@ -1,7 +1,7 @@
 from typing import Generator
 
 from testing import INDEXES_TEST_FILE_PATH
-from wiggle_query_language.graph.database.indexes.node_labels_index import (
+from wiggle_query_language.graph.indexes.node_labels_index import (
     add_items_to_node_labels_index,
     load_node_labels_index,
 )

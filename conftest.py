@@ -8,13 +8,13 @@ from testing import (
     WIGGLE_NUMBER_TEST_FILE_PATH,
 )
 from wiggle_query_language.graph.database.database import wipe_database
-from wiggle_query_language.graph.database.indexes.node_labels_index import (
+from wiggle_query_language.graph.indexes.node_labels_index import (
     wipe_node_labels_index,
 )
-from wiggle_query_language.graph.database.indexes.node_relationships_index import (
+from wiggle_query_language.graph.indexes.node_relationships_index import (
     wipe_node_relationships_index,
 )
-from wiggle_query_language.graph.database.indexes.relationship_names_index import (
+from wiggle_query_language.graph.indexes.relationship_names_index import (
     wipe_relationship_names_index,
 )
 
