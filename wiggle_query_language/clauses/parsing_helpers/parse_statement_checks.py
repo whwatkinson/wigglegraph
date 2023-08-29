@@ -19,6 +19,9 @@ from wiggle_query_language.clauses.regexes.patterns.properties import (
     CHECK_PROPERTIES_SYNTAX_REGEX,
     PROPERTIES_LIST_VALUE_REGEX,
 )
+from wiggle_query_language.clauses.regexes.report.report_patterns import (
+    REPORT_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
+)
 from wiggle_query_language.clauses.regexes.patterns.relationships import (
     RELATIONSHIP_DIR_CHECK_REGEX,
 )
@@ -38,6 +41,8 @@ def check_clause_spelling(query_string: str, clause: Clause) -> bool:
             clause_syntax_regex = MAKE_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX
         case Clause.FIND:
             clause_syntax_regex = FIND_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX
+        case clause.REPORT:
+            clause_syntax_regex = REPORT_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX
         case _:
             raise Exception()
 

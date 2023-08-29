@@ -304,22 +304,22 @@ class TestParseStatementChecks:
                 id="EXP EXEC",
             ),
             pytest.param(
-                "troper bar;",
+                "RPEORT bar;",
                 pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "REPOTR baz;",
+                "REROPT baz;",
                 pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "REPTOR",
+                "REPTOR bar, baz, foo;",
                 pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
             pytest.param(
-                "EPORT",
+                "RPORTE r, r2;",
                 pytest.raises(ClauseSyntaxError),
                 id="EXP EXEC",
             ),
