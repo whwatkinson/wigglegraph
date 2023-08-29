@@ -35,7 +35,10 @@ def parse_query_string(query_string: str) -> ParsedQuery:
     find_parsed = parse_find_statement_from_query_string(query_string)
     criteria_parsed = None
 
-    find_query_handles = find_parsed.parsed_pattern.pattern_handles
+    if find_parsed:
+        find_query_handles = find_parsed.parsed_pattern.pattern_handles
+    else:
+        find_query_handles = None
     report_parsed = parse_report_statement_from_query_string(
         query_string, find_handles=find_query_handles
     )
@@ -108,5 +111,7 @@ if __name__ == "__main__":
     """
 
     qry = """FIND (left_node_handle:LeftNodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[lm:{int: 1, str: '2', str2:"2_4", float: 3.14, bool: false, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]-(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]} );"""
-    qry = "FIND (:NodeLabel{int: 1});"
+    qry = """FIND (:NodeLabel{int: 1, str: '2', str2:"2_4", float: 3.14});"""
+    qry = """MAKE (:NodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});"""
+
     query(qry, TEST_GDBMS)

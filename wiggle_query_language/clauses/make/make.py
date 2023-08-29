@@ -155,7 +155,7 @@ def make(parsed_make_list: list[ParsedMake], gdbms_file_path: GDBMSFilePath) -> 
     """
     Handles the loading from stmt to putting data in the DB.
     :param parsed_make_list: The list of parsed MAKE statements.
-    :param dbms_file_path: The path to the DBMS.
+    :param gdbms_file_path: The path to the DBMS.
     :return: A bool.
     """
     # Get the next available WN
