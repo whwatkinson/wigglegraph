@@ -10,6 +10,9 @@ from wiggle_query_language.clauses.regexes.find.find_patterns import (
 from wiggle_query_language.clauses.regexes.make.make_patterns import (
     MAKE_STATEMENT_ALL_REGEX,
 )
+from wiggle_query_language.clauses.regexes.report.report_patterns import (
+    REPORT_STATEMENT_ALL_REGEX,
+)
 
 
 class Node(BaseModel):
@@ -67,6 +70,10 @@ class ParsedPattern(BaseModel):
     def __repr__(self) -> str:
         return f"|{self.__class__.__name__}| Nodes: {self.number_of_nodes}, Rels: {self.number_of_relationships}"
 
+    @property
+    def pattern_handles(self) -> set[str]:
+        return {v for name, v in self.dict().items() if v and "handle" in name}
+
     @root_validator
     def validate_handles(cls, values: dict) -> dict:
         handle_names = [v for name, v in values.items() if v and "handle" in name]
@@ -88,7 +95,8 @@ class ParsedMake(BaseModel):
 class ParsedFind(BaseModel):
     raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
     clause: Clause = Clause.FIND
-    parsed_pattern_list: ParsedPattern
+    parsed_pattern: ParsedPattern
+    parsed_pattern_handles: set[str] = Field(default=set())
 
     def __len__(self) -> int:
         return 1
@@ -109,8 +117,17 @@ class ParsedCriteria(BaseModel):
     criteria_handle_props: dict[str, ParsedCriteriaYesNo]
 
 
+class ParsedReport(BaseModel):
+    raw_statement: str = Field(regex=REPORT_STATEMENT_ALL_REGEX.pattern)
+    clause: Clause = Clause.REPORT
+    extracted_report: str
+
+    def __len__(self) -> int:
+        return 1
+
+
 class ParsedQuery(BaseModel):
     make_parsed: Optional[list[ParsedMake]]
     find_parsed: Optional[ParsedFind]
     criteria_parsed: Optional[ParsedCriteria]
-    report_parsed: Optional[dict] = None
+    report_parsed: Optional[ParsedReport] = None

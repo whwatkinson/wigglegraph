@@ -6,7 +6,7 @@ INSERT MAKE PIC HERE:
 * To be simple and intuitive to use, the language itself is declarative in nature.
 * In the case of an Error providing helpful suggestions back to the User on how to fix the MAKE statement.
 * Flexable schema, add and remove as and when.
-* Multiple Nodee and Relationship creation at once.
+* Multiple Nodes and Relationship creation at once.
 
 
 ## Introduction

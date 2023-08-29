@@ -1,6 +1,6 @@
 import pytest
 
-from exceptions.wql.find import MultipleFindStatementsError
+from exceptions.wql.clauses import MultipleClauseStatementsError
 from exceptions.wql.parsing import ClauseSyntaxError
 from testing.test_helpers import does_not_raise
 from wiggle_query_language.clauses.find.parse_find.parse_find_statement import (
@@ -47,13 +47,13 @@ class TestParseFind:
         with exception:
             test = build_parsed_find(test_find_stmt)
 
-            test_parsed_make = test.parsed_pattern_list
+            test_parsed_make = test.parsed_pattern
 
             for test_key, test_value in expected_value.items():
                 assert getattr(test_parsed_make, test_key) == test_value
 
     @pytest.mark.parametrize(
-        "test_make_stmt, expected_value, exception",
+        "test_find_stmt, expected_value, exception",
         [
             pytest.param(
                 "FIND (:NodeLabel{int: 1})-[:]->(foo:NodeLabel);",
@@ -121,16 +121,16 @@ class TestParseFind:
                 REPORT wn(p), wn(q);
                 """,
                 0,
-                pytest.raises(MultipleFindStatementsError),
+                pytest.raises(MultipleClauseStatementsError),
                 id="EXP EXEC: FIND clause sp error",
             ),
         ],
     )
     def test_extract_find_statement_from_query(
-        self, test_make_stmt: str, expected_value: None, exception
+        self, test_find_stmt: str, expected_value: None, exception
     ) -> None:
         with exception:
-            test = parse_find_statement_from_query_string(test_make_stmt)
+            test = parse_find_statement_from_query_string(test_find_stmt)
             if test:
                 assert len(test) == expected_value
             else:

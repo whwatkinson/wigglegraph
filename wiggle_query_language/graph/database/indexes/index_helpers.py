@@ -2,7 +2,7 @@ from json import dump, load
 from json.decoder import JSONDecodeError
 from pathlib import Path
 
-from graph_logger.graph_logger import graph_logger
+from wiggle_graph_logger.graph_logger import graph_logger
 
 
 def add_items_set_to_index_by_name(

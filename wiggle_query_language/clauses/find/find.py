@@ -12,7 +12,7 @@ def find(
     parsed_find: ParsedFind,
     gdbms_file_path: GDBMSFilePath,
     parsed_criteria: Optional[ParsedCriteria] = None,
-) -> bool:
+) -> Optional[dict]:
     who_what_where = process_parsed_find(
         parsed_find=parsed_find, parsed_criteria=parsed_criteria
     )
@@ -20,6 +20,6 @@ def find(
     # Short Circuits!
     if not find_short_circuit(who_what_where, gdbms_file_path):
         print("\nNo results\n")
-        return False
+        return None
 
-    return True
+    return {True: False}
