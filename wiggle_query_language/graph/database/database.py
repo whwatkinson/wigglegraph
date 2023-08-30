@@ -7,7 +7,7 @@ from exceptions.wql.database import NodeExistsError
 from wiggle_graph_logger.graph_logger import graph_logger
 from testing import DATABASE_TEST_FILE_PATH
 
-DATABASE_SHAPE = dict[str, dict[str, Any]]
+DATABASE_SHAPE = dict[int, dict[str, Any]]
 
 
 def load_database(database_file_path: Path) -> DATABASE_SHAPE:
