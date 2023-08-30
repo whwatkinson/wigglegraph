@@ -1,9 +1,9 @@
 from typing import Optional, Union
 
+from models.wql import FindPre  # ParsedCriteriaYesNo,
 from models.wql import (
     Clause,
     FindNodePre,
-    FindPre,  # ParsedCriteriaYesNo,
     FindRelationshipPre,
     ParsedCriteria,
     ParsedFind,

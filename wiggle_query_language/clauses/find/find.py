@@ -1,15 +1,15 @@
 from typing import Optional, Union
 from uuid import uuid4
 
-from models.wql.data.node import Node
 from models.wigish import GDBMSFilePath
-from models.wql import ParsedCriteria, ParsedFind, FindNodePre
-from wiggle_query_language.clauses.find.transform.find_pre import process_parsed_find
+from models.wql import FindNodePre, ParsedCriteria, ParsedFind
+from models.wql.data.node import Node
 from wiggle_query_language.clauses.find.short_circuits.find_short_circuits import (
     find_short_circuit,
 )
-from wiggle_query_language.graph.indexes.node_labels_index import load_node_labels_index
+from wiggle_query_language.clauses.find.transform.find_pre import process_parsed_find
 from wiggle_query_language.graph.database.database import load_database
+from wiggle_query_language.graph.indexes.node_labels_index import load_node_labels_index
 
 DATABASE_SHAPE = dict[int, dict[str, Union[dict, list, str]]]
 

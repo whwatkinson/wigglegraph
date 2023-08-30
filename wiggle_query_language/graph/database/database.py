@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import Any
 
 from exceptions.wql.database import NodeExistsError
-from wiggle_graph_logger.graph_logger import graph_logger
 from testing import DATABASE_TEST_FILE_PATH
+from wiggle_graph_logger.graph_logger import graph_logger
 
 DATABASE_SHAPE = dict[int, dict[str, Any]]
 

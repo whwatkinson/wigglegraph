@@ -2,7 +2,7 @@ from typing import Optional
 
 from exceptions.wql.clauses import MultipleClauseStatementsError
 from exceptions.wql.report import FindReportHandleMissmatch
-from models.wql import ParsedReport, Clause
+from models.wql import Clause, ParsedReport
 from wiggle_query_language.clauses.parsing_helpers.extract_statements import (
     extract_all_statements,
 )

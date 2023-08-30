@@ -4,17 +4,17 @@ import pytest
 
 from models.wql import FindNodePre
 from testing import TEST_GDBMS
+from wiggle_query_language.clauses.find.find import find_node
+from wiggle_query_language.graph.database.database import add_item_to_database
 from wiggle_query_language.graph.indexes.node_labels_index import (
     add_items_to_node_labels_index,
-)
-from wiggle_query_language.graph.indexes.relationship_names_index import (
-    add_items_to_relationship_names_index,
 )
 from wiggle_query_language.graph.indexes.node_relationships_index import (
     add_items_to_node_relationships_index,
 )
-from wiggle_query_language.graph.database.database import add_item_to_database
-from wiggle_query_language.clauses.find.find import find_node
+from wiggle_query_language.graph.indexes.relationship_names_index import (
+    add_items_to_relationship_names_index,
+)
 
 
 class TestFind:

@@ -2,10 +2,10 @@ import logging
 from pathlib import Path
 
 from exceptions.wiggleshell.query import NotAValidQueryError
-from wiggle_graph_logger.graph_logger import graph_logger
 from models.wigish import GDBMSFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
+from wiggle_graph_logger.graph_logger import graph_logger
 from wiggle_query_language.clauses.find import (
     find,
     parse_find_statement_from_query_string,
@@ -15,8 +15,8 @@ from wiggle_query_language.clauses.make import (
     parse_make_statement_from_query_string,
 )
 from wiggle_query_language.clauses.report import (
-    report,
     parse_report_statement_from_query_string,
+    report,
 )
 
 #  todo docstrings

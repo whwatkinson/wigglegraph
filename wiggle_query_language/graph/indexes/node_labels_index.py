@@ -1,11 +1,11 @@
-from json import load, dump
+from json import dump, load
 from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import Optional
 
-from wiggle_query_language.graph.indexes.index_helpers import json_to_dict
-from wiggle_query_language.graph.indexes import NODE_LABELS_INDEX_NAME
 from wiggle_graph_logger.graph_logger import graph_logger
+from wiggle_query_language.graph.indexes import NODE_LABELS_INDEX_NAME
+from wiggle_query_language.graph.indexes.index_helpers import json_to_dict
 
 
 def add_items_to_node_labels_index(

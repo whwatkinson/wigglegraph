@@ -1,7 +1,7 @@
 from json import dump, load
 from json.decoder import JSONDecodeError
-from typing import Optional, Union
 from pathlib import Path
+from typing import Optional, Union
 
 from wiggle_graph_logger.graph_logger import graph_logger
 
