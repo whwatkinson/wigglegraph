@@ -9,6 +9,7 @@ from wiggle_query_language.clauses.find.short_circuits.find_short_circuits impor
     find_short_circuit,
 )
 from wiggle_query_language.graph.indexes.node_labels_index import load_node_labels_index
+from wiggle_query_language.graph.database.database import load_database
 
 DATABASE_SHAPE = dict[int, dict[str, Union[dict, list, str]]]
 
@@ -18,6 +19,8 @@ def find_node(
 ) -> Optional[list[Node]]:
     node_labels_index = load_node_labels_index(gdbms_file_path.indexes_file_path)
 
+    database = load_database(gdbms_file_path.database_file_path)
+    print(database)
     _ = node_labels_index[node_pre.node_label]
 
     matches = []

@@ -96,7 +96,7 @@ class ParsedFind(BaseModel):
     raw_statement: str = Field(regex=FIND_STATEMENT_ALL_REGEX.pattern)
     clause: Clause = Clause.FIND
     parsed_pattern: ParsedPattern
-    parsed_pattern_handles: set[str] = Field(default=set())
+    parsed_pattern_handles: set[str] = Field(default_factory=set)
 
     def __len__(self) -> int:
         return 1
