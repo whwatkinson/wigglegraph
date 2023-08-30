@@ -8,13 +8,11 @@ from testing import (
     WIGGLE_NUMBER_TEST_FILE_PATH,
 )
 from wiggle_query_language.graph.database.database import wipe_database
-from wiggle_query_language.graph.database.indexes.node_labels_index import (
-    wipe_node_labels_index,
-)
-from wiggle_query_language.graph.database.indexes.node_relationships_index import (
+from wiggle_query_language.graph.indexes.node_labels_index import wipe_node_labels_index
+from wiggle_query_language.graph.indexes.node_relationships_index import (
     wipe_node_relationships_index,
 )
-from wiggle_query_language.graph.database.indexes.relationship_names_index import (
+from wiggle_query_language.graph.indexes.relationship_names_index import (
     wipe_relationship_names_index,
 )
 
@@ -78,8 +76,8 @@ def clear_dbms_test() -> Generator:
     yield None
 
     wipe_database(DATABASE_TEST_FILE_PATH, im_sure=True)
-    wipe_node_relationships_index(WIGGLE_NUMBER_TEST_FILE_PATH, im_sure=True)
+    wipe_node_relationships_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     wipe_node_labels_index(INDEXES_TEST_FILE_PATH, im_sure=True)
     wipe_relationship_names_index(INDEXES_TEST_FILE_PATH, im_sure=True)
-    with open(INDEXES_TEST_FILE_PATH, "w") as file_handle:
+    with open(WIGGLE_NUMBER_TEST_FILE_PATH, "w") as file_handle:
         file_handle.write("0")

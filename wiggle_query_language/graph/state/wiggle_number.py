@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from wiggle_graph_logger.graph_logger import graph_logger
 from testing import WIGGLE_NUMBER_TEST_FILE_PATH
+from wiggle_graph_logger.graph_logger import graph_logger
 
 
 def get_current_wiggle_number(file_path: Path) -> int:

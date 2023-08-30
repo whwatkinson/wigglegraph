@@ -2,10 +2,10 @@ import logging
 from pathlib import Path
 
 from exceptions.wiggleshell.query import NotAValidQueryError
-from wiggle_graph_logger.graph_logger import graph_logger
 from models.wigish import GDBMSFilePath
 from models.wql import ParsedQuery
 from project_root import get_project_root
+from wiggle_graph_logger.graph_logger import graph_logger
 from wiggle_query_language.clauses.find import (
     find,
     parse_find_statement_from_query_string,
@@ -15,8 +15,8 @@ from wiggle_query_language.clauses.make import (
     parse_make_statement_from_query_string,
 )
 from wiggle_query_language.clauses.report import (
-    report,
     parse_report_statement_from_query_string,
+    report,
 )
 
 #  todo docstrings
@@ -35,7 +35,10 @@ def parse_query_string(query_string: str) -> ParsedQuery:
     find_parsed = parse_find_statement_from_query_string(query_string)
     criteria_parsed = None
 
-    find_query_handles = find_parsed.parsed_pattern.pattern_handles
+    if find_parsed:
+        find_query_handles = find_parsed.parsed_pattern.pattern_handles
+    else:
+        find_query_handles = None
     report_parsed = parse_report_statement_from_query_string(
         query_string, find_handles=find_query_handles
     )
@@ -51,8 +54,10 @@ def parse_query_string(query_string: str) -> ParsedQuery:
 
 
 def execute_query(parsed_query: ParsedQuery, gdbms_file_path: GDBMSFilePath) -> bool:
+    okay_flag = False
     if query_make := parsed_query.make_parsed:
         make(parsed_make_list=query_make, gdbms_file_path=gdbms_file_path)
+        okay_flag = True
 
     if query_find := parsed_query.find_parsed:
         found = find(
@@ -66,7 +71,8 @@ def execute_query(parsed_query: ParsedQuery, gdbms_file_path: GDBMSFilePath) -> 
                 parsed_report=query_report, found=found, gdbms_file_path=gdbms_file_path
             )
     else:
-        raise Exception("You must provide a FIND with a RETURN! FUBAR")
+        if not okay_flag:
+            raise Exception("You must provide a FIND with a REPORT! FUBAR")
 
     return True
 
@@ -94,19 +100,13 @@ def query(query_string: str, gdbms_file_path: GDBMSFilePath) -> bool:
 
 
 if __name__ == "__main__":
-    from testing import TEST_DBMS
+    from testing import TEST_GDBMS
 
     sample_query_fp = Path(
         f"{get_project_root()}/wiggle_query_language/example_queries/make_long.wql"
     )
 
-    # with open(sample_query_fp, "r") as file:
-    #     qry = file.read()
+    qry = """MAKE (:NodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]});"""
+    qry = """FIND (:Foo{none: null, int: 1})-[r:REL1{float: 3.14}]->(:Bar{str: '2', str2:"2_4"})-[r2:REL2{list: [1, '2', "2_4", "3 4", 3.14]}]->(:Baz{bool:true, bool2: false});"""
 
-    qry = """
-    FIND (:NodeLabel{str: '2'})<-[]-(:NodeLabel{str2:"2_4"})-[rel2:REL2{float: 3.14}]->(:NodeLabel2{list: [1, '2', "2_4", "3 4", 3.14]});
-    """
-
-    qry = """FIND (left_node_handle:LeftNodeLabel{none: null, int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})<-[lm:{int: 1, str: '2', str2:"2_4", float: 3.14, bool: false, none: null, list: [1, '2', "2_4", "3 4", 3.14]}]-(middle_node_label:MiddleNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]})-[rmr:RELMR{int: 1, str: '2', str2:"2_4", float: 3.14, list: [1, '2', "2_4", "3 4", 3.14]}]->(right_node_label:RightNodeLabel {int: 1, str: '2', str2:"2_4", float: 3.14, bool: true, none: null, list: [1, '2', "2_4", "3 4", 3.14]} );"""
-
-    query(qry, TEST_DBMS)
+    query(qry, TEST_GDBMS)

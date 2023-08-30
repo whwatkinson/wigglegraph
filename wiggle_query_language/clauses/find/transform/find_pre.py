@@ -1,9 +1,9 @@
 from typing import Optional, Union
 
+from models.wql import FindPre  # ParsedCriteriaYesNo,
 from models.wql import (
     Clause,
     FindNodePre,
-    FindPre,  # ParsedCriteriaYesNo,
     FindRelationshipPre,
     ParsedCriteria,
     ParsedFind,
@@ -96,7 +96,7 @@ def process_parsed_find(
     # Right Node
     if parsed_pattern.middle_node:
         right_handle = parsed_pattern.middle_node_handle
-        right_props_dict = get_property_dict(parsed_pattern.left_node_props)
+        right_props_dict = get_property_dict(parsed_pattern.right_node_props)
         right_label = parsed_pattern.right_node_label
         if parsed_criteria:
             right_props_dict.update(

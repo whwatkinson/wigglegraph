@@ -19,13 +19,13 @@ from wiggle_query_language.clauses.regexes.patterns.properties import (
     CHECK_PROPERTIES_SYNTAX_REGEX,
     PROPERTIES_LIST_VALUE_REGEX,
 )
-from wiggle_query_language.clauses.regexes.report.report_patterns import (
-    REPORT_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
-)
 from wiggle_query_language.clauses.regexes.patterns.relationships import (
     RELATIONSHIP_DIR_CHECK_REGEX,
 )
 from wiggle_query_language.clauses.regexes.patterns.utilities import ILLEGAL_CHARS_REGEX
+from wiggle_query_language.clauses.regexes.report.report_patterns import (
+    REPORT_STATEMENT_CHECK_CLAUSE_SYNTAX_REGEX,
+)
 
 
 def check_clause_spelling(query_string: str, clause: Clause) -> bool:

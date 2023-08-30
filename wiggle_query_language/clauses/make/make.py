@@ -15,13 +15,13 @@ from wiggle_query_language.clauses.parsing_helpers.parse_properties import (
     get_property_dict,
 )
 from wiggle_query_language.graph.database.database import add_item_to_database
-from wiggle_query_language.graph.database.indexes.node_labels_index import (
+from wiggle_query_language.graph.indexes.node_labels_index import (
     add_items_to_node_labels_index,
 )
-from wiggle_query_language.graph.database.indexes.node_relationships_index import (
+from wiggle_query_language.graph.indexes.node_relationships_index import (
     add_items_to_node_relationships_index,
 )
-from wiggle_query_language.graph.database.indexes.relationship_names_index import (
+from wiggle_query_language.graph.indexes.relationship_names_index import (
     add_items_to_relationship_names_index,
 )
 from wiggle_query_language.graph.state.wiggle_number import (
@@ -43,7 +43,7 @@ def make_nodes(make_pre: MakePre) -> list[Node]:
         nodes.append(make_node(make_pre.middle_node))
 
     if make_pre.right_node:
-        nodes.append(make_node(make_pre.left_node))
+        nodes.append(make_node(make_pre.right_node))
 
     return nodes
 
@@ -129,11 +129,18 @@ def add_indexes(
         for node in nodes_list
         if node.relations
     }
-    node_labels_set_to_add = set()
+
     relationship_names_set_to_add = set()
+    model_labels_index = dict()
+
+    for node in nodes_list:
+        node_label = node.node_label
+        if not model_labels_index.get(node_label, None):
+            model_labels_index[node_label] = {node.wn}
+        else:
+            model_labels_index[node_label].add(node.wn)
 
     for make_pre in emit_nodes_list:
-        node_labels_set_to_add = node_labels_set_to_add.union(make_pre.node_labels)
         relationship_names_set_to_add = relationship_names_set_to_add.union(
             make_pre.relationship_names
         )
@@ -142,7 +149,7 @@ def add_indexes(
         gdbms_file_path.indexes_file_path, rel_indexes_to_add_dict
     )
     add_items_to_node_labels_index(
-        gdbms_file_path.indexes_file_path, node_labels_set_to_add
+        gdbms_file_path.indexes_file_path, model_labels_index
     )
     add_items_to_relationship_names_index(
         gdbms_file_path.indexes_file_path, relationship_names_set_to_add
@@ -155,7 +162,7 @@ def make(parsed_make_list: list[ParsedMake], gdbms_file_path: GDBMSFilePath) -> 
     """
     Handles the loading from stmt to putting data in the DB.
     :param parsed_make_list: The list of parsed MAKE statements.
-    :param dbms_file_path: The path to the DBMS.
+    :param gdbms_file_path: The path to the DBMS.
     :return: A bool.
     """
     # Get the next available WN
